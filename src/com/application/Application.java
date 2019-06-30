@@ -8,7 +8,7 @@ import java.nio.file.Path;
 public class Application {
     public static void main(String[] args) {
         System.out.println("_________________________________________________________________");
-        System.out.println(" _____ _____ ____ _____    ___  _ __  __    _  _____ ___ _______ ");
+        System.out.println(" _______________________________________________________________ ");
         System.out.println("|_   _| ____/ ___|_   _|  / _ \\( |  \\/  |  / \\|_   _|_ _/ ___|||");
         System.out.println("  | | |  _| \\___ \\ | |   | | | |/| |\\/| | / _ \\ | |  | | |    ");
         System.out.println("  | | | |___ ___) || |   | |_| | | |  | |/ ___ \\| |  | | |______ ");
