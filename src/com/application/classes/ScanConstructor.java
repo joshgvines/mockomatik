@@ -8,6 +8,7 @@ public class ScanConstructor {
     private String fileName;
     private List<String> fileNameList = new ArrayList<>();
     private List<String> constructorList = new ArrayList<>();
+    private List<String> argumentList = new ArrayList<>();
 
     public ScanConstructor() {
 
@@ -29,8 +30,11 @@ public class ScanConstructor {
 
                 String line;
                 while ((line = br.readLine()) != null) {
+                    if (line.contains("int") || line.contains("String") || line.contains("boolean")) {
+                        argumentList.add(line);
+                    }
                     if (line.contains("public " + fileName + "(")) {
-                        setValidConstructorArguments( line, br );
+                        setValidConstructor( line, br);
                     }
                 }
             }
@@ -55,7 +59,7 @@ public class ScanConstructor {
      * @param line
      * @param br
      */
-    private void setValidConstructorArguments(String line, BufferedReader br) {
+    private void setValidConstructor(String line, BufferedReader br) {
         try {
             StringBuilder sb = new StringBuilder();
             sb.append(line + "\n");
@@ -74,8 +78,12 @@ public class ScanConstructor {
         }
     }
 
-    public List<String> getConstructorArguments() {
+    public List<String> getConstructor() {
         return constructorList;
+    }
+
+    public List<String> getArgumentList()  {
+        return argumentList;
     }
 
     public List<String> getFileName() {

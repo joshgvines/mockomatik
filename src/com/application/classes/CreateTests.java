@@ -27,11 +27,12 @@ public class CreateTests {
 
                     PrintWriter pw = new PrintWriter(file);
 
-                    Path thisPackage = FileSystems.getDefault().getPath(".").toAbsolutePath();
-                    pw.println("package " + thisPackage);
+//                    Package thisPackage = new Package();
+
+                    pw.println("package \n");
 
                     pw.println("public class " + fileNameList.get(i) + "Test {");
-                    pw.println(test);
+                    pw.println("    " + test);
                     pw.println("}");
                     pw.close();
 
