@@ -13,17 +13,18 @@ public class CreateTests {
 
     }
 
-    public void createTest(List<String> returnedConstructorList, String path, List<String> fileNameList) {
+    public void createTest(List<String> constructorList, List<String> argumentList, String path, List<String> fileNameList) {
         try {
 
-            String test;
-            for (int i = 0; i < returnedConstructorList.size(); i++) {
-                test = returnedConstructorList.get(i);
+            String testDependentObjects;
+            for (int i = 0; i < constructorList.size(); i++) {
+                testDependentObjects = constructorList.get(i);
                 File file = new File(path + fileNameList.get(i) + "Test.java");
-                if (test.contains("this.")) {
-                    int thisPosition = test.indexOf("this");
-                    int endPosition = test.indexOf("}");
-                    test = test.substring(thisPosition, endPosition);
+
+                if (testDependentObjects.contains( fileNameList.get(i) + "(")) {
+                    int thisPosition = testDependentObjects.indexOf(fileNameList.get(i) + "(");
+                    int endPosition = testDependentObjects.indexOf(")");
+                    testDependentObjects = testDependentObjects.substring(thisPosition, endPosition);
 
                     PrintWriter pw = new PrintWriter(file);
 
@@ -31,8 +32,24 @@ public class CreateTests {
 
                     pw.println("package \n");
 
-                    pw.println("public class " + fileNameList.get(i) + "Test {");
-                    pw.println("    " + test);
+                    pw.println("public class " + fileNameList.get(i) + "Test {\n");
+
+                    pw.println(     argumentList.get(i) + "\n");
+
+                    pw.println("    private " + fileNameList.get(i) + " cut;\n");
+
+                    pw.println("    @Mock " + testDependentObjects + "\n");
+
+                    pw.println("    @Before\n" +
+                               "    public void setUp() {\n" +
+                               "        cut = new " + fileNameList.get(i) + "();\n" +
+                               "    }\n");
+
+                    pw.println("    @After\n" +
+                               "    public void tearDown() {\n" +
+                               "        cut = null;\n" +
+                               "    }\n");
+
                     pw.println("}");
                     pw.close();
 
@@ -46,6 +63,10 @@ public class CreateTests {
             System.err.println(" > ERROR: createTest " + e);
             System.exit(0);
         }
+
+    }
+
+    public void classContent() {
 
     }
 

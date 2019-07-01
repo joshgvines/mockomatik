@@ -38,11 +38,15 @@ public class InputController {
 
     public void runTestProcess(String packageToTestPath, String packageForNewTest) {
         scanConstructor.checkIfConstructorIsValid( packageToTestPath );
-        List<String> returnedValidConstructorList = scanConstructor.getConstructorArguments();
+        List<String> returnedValidConstructorList = scanConstructor.getConstructor();
+        List<String> returnedValidArgumentList = scanConstructor.getArgumentList();
 
         if (returnedValidConstructorList != null) {
             List<String> fileName = scanConstructor.getFileName();
-            createTests.createTest( returnedValidConstructorList, packageForNewTest, fileName);
+
+            createTests.createTest( returnedValidConstructorList,
+                    returnedValidArgumentList, packageForNewTest, fileName);
+
             validateTests.runTests( packageForNewTest );
         }
     }
