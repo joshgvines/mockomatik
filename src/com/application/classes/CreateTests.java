@@ -13,13 +13,13 @@ public class CreateTests {
 
     }
 
-    public void createTest(List<String> constructorList, List<String> argumentList, String path, List<String> fileNameList) {
+    public void createTest(List<String> constructorList, List<String> argumentList, String packageForNewTest, List<String> fileNameList) {
         try {
 
             String testDependentObjects;
             for (int i = 0; i < constructorList.size(); i++) {
                 testDependentObjects = constructorList.get(i);
-                File file = new File(path + fileNameList.get(i) + "Test.java");
+                File file = new File(packageForNewTest + fileNameList.get(i) + "Test.java");
 
                 if (testDependentObjects.contains( fileNameList.get(i) + "(")) {
                     int thisPosition = testDependentObjects.indexOf(fileNameList.get(i) + "(");
@@ -28,9 +28,18 @@ public class CreateTests {
 
                     PrintWriter pw = new PrintWriter(file);
 
-//                    Package thisPackage = new Package();
+                    String destinationPackage = packageForNewTest;
+                    destinationPackage = destinationPackage.replaceAll("\\\\", ".");
 
-                    pw.println("package \n");
+                    int packageStartPosition = packageForNewTest.indexOf("src");
+                    int endpos = destinationPackage.length();
+
+                    destinationPackage = destinationPackage.toLowerCase();
+
+                    destinationPackage = destinationPackage.substring((packageStartPosition + 4), (endpos - 1));
+
+
+                    pw.println("package " + destinationPackage + "; \n");
 
                     pw.println("public class " + fileNameList.get(i) + "Test {\n");
 
@@ -54,6 +63,7 @@ public class CreateTests {
                     pw.close();
 
                     file.createNewFile();
+
                 } else {
                     System.err.println(" > ERROR: createTest");
                     System.exit(0);
@@ -63,10 +73,6 @@ public class CreateTests {
             System.err.println(" > ERROR: createTest " + e);
             System.exit(0);
         }
-
-    }
-
-    public void classContent() {
 
     }
 

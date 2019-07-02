@@ -16,11 +16,11 @@ public class ScanConstructor {
 
     /**
      * Checks if the file being scanned contains a valid constructor to be tested
-     * @param path
+     * @param packageToTestPath
      */
-    public void checkIfConstructorIsValid(String path) {
+    public void checkIfConstructorIsValid(String packageToTestPath) {
         try {
-            File dir = new File(path);
+            File dir = new File(packageToTestPath);
             for (File file : dir.listFiles()) {
 
                 setFileName(file);
