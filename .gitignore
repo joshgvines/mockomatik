@@ -1,6 +1,4 @@
-# Project idea
-.DS_Store
-.idea
-
-# IntelliJ
-out/
+# Basic Settings
+.idea/vcs.xml
+.idea/workspace.xml
+/out
