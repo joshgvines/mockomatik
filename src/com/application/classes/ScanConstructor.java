@@ -39,7 +39,12 @@ public class ScanConstructor {
                 }
             }
         } catch (IOException e) {
-            System.err.println(" > ERROR: checkIfConstructorIsValid, file name: " + fileName + " " + e);
+            System.err.println("\n > ERROR: Method: checkIfConstructorIsValid(), File Name: " + fileName + " " + e);
+            e.printStackTrace();
+            System.exit(0);
+        } catch (Exception e) {
+            System.err.println("\n > ERROR: Method: checkIfConstructorIsValid(), File Name: " + fileName + " " + e);
+            e.printStackTrace();
             System.exit(0);
         }
     }

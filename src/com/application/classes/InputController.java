@@ -1,5 +1,8 @@
 package com.application.classes;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,30 +13,50 @@ public class InputController {
     private Scanner sc = new Scanner(System.in);
 
     public void runProgram() {
-        boolean running = true;
-        while (running) {
-            running = userDecision();
+        while (true) {
+            userInput();
         }
     }
 
-    public boolean userDecision() {
+    public void userInput() {
         String packageToTestPath;
         String packageForNewTest;
+        boolean validateInput;
 
-        System.out.print("\nEnter test package path: ");
-        packageToTestPath = sc.nextLine();
-        if (packageToTestPath == null) {
-            System.out.println("Package to test path cannot be null!");
+        do {
+            System.out.print("\nEnter test package path: ");
+            packageToTestPath = sc.nextLine();
+        } while (!(inputValidation(packageToTestPath)));
+
+        do {
+            System.out.print("\nEnter location for new tests: ");
+            packageForNewTest = sc.nextLine();
+        } while (!(inputValidation(packageForNewTest)));
+
+         runTestProcess( packageToTestPath, packageForNewTest );
+
+    }
+
+    // Overkill input string sanitization lol
+    public boolean inputValidation(String input) {
+        // sentinel exit must be 'EXIT' , must not contain too much space , or have a erroneous length
+        if (input.contains("EXIT") && (input.length()) <= 5 && (input.length()) >= 4) {
+            System.out.println("\n > Good Bye!");
+            System.exit(0);
+        // path must not be null
+        } else if (input.equals(null) || input.isEmpty() || input.equals(" ")) {
+            System.out.println("\n > input cannot be null");
             return false;
-        }
-        System.out.print("\nEnter location for new tests: ");
-        packageForNewTest = sc.nextLine();
-        if (packageForNewTest == null) {
-            System.out.println("Location for new tests path cannot be null!");
+        // path must contain '\' , must be greater thant 4 char long , & must be less than 261 char long
+        } else if (!(input.contains("\\")) || (input.length() <= 4) || (input.length() >=  261)) {
+            System.out.println(" > invalid path!");
+            System.out.print(" > You Entered : ");
+            System.out.println(input);
             return false;
+        } else {
+            return true;
         }
-        runTestProcess( packageToTestPath, packageForNewTest );
-        return true;
+        return false;
     }
 
     public void runTestProcess(String packageToTestPath, String packageForNewTest) {
