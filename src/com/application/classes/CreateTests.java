@@ -15,6 +15,8 @@ public class CreateTests {
 
     public void createTest(List<String> constructorList, List<String> argumentList, String packageForNewTest, List<String> fileNameList) {
         try {
+            int startPosition;
+            int endPosition;
 
             String testDependentObjects;
             for (int i = 0; i < constructorList.size(); i++) {
@@ -22,21 +24,22 @@ public class CreateTests {
                 File file = new File(packageForNewTest + fileNameList.get(i) + "Test.java");
 
                 if (testDependentObjects.contains( fileNameList.get(i) + "(")) {
-                    int thisPosition = testDependentObjects.indexOf(fileNameList.get(i) + "(");
-                    int endPosition = testDependentObjects.indexOf(")");
-                    testDependentObjects = testDependentObjects.substring(thisPosition, endPosition);
+
+                    startPosition = testDependentObjects.indexOf(fileNameList.get(i) + "(");
+                    endPosition = testDependentObjects.indexOf(")");
+                    testDependentObjects = testDependentObjects.substring(startPosition, endPosition);
 
                     PrintWriter pw = new PrintWriter(file);
 
                     String destinationPackage = packageForNewTest;
                     destinationPackage = destinationPackage.replaceAll("\\\\", ".");
 
-                    int packageStartPosition = packageForNewTest.indexOf("src");
-                    int endpos = destinationPackage.length();
+                    startPosition = packageForNewTest.indexOf("src");
+                    endPosition = destinationPackage.length();
 
                     destinationPackage = destinationPackage.toLowerCase();
-
-                    destinationPackage = destinationPackage.substring((packageStartPosition + 4), (endpos - 1));
+                    destinationPackage = destinationPackage.substring(
+                            (startPosition + 4), (endPosition - 1));
 
 
                     pw.println("package " + destinationPackage + "; \n");
@@ -73,7 +76,10 @@ public class CreateTests {
             System.err.println(" > ERROR: createTest " + e);
             System.exit(0);
         }
+    }
 
+    public void classContent() {
+        //TODO:
     }
 
 }

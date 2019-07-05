@@ -13,11 +13,13 @@ public class Application {
         Path path = FileSystems.getDefault().getPath(".").toAbsolutePath();
         System.out.println("  >>> Your Location: " + path);
         System.out.println("  >>> Type 'EXIT' or use [ ctrl + c ] to quit program.");
-        if (!(path.equals("C:\\")) && !(path.equals("root"))) {
+
+        // TODO: better way to confirm location
+        if (!path.equals("C:\\") && !path.equals("root") && !(path.toString().length() < 4)) {
             InputController inputController = new InputController();
             inputController.runProgram();
         } else {
-            System.out.println("Do not run in root drive");
+            System.out.println("Do not run in root drive, folder, or location!");
         }
     }
 }
