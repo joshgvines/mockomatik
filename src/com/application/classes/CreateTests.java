@@ -13,11 +13,8 @@ public class CreateTests {
 
     }
 
-    public void createTest(List<String> constructorList, List<String> argumentList, String packageForNewTest, List<String> fileNameList) {
+    public void buildTest(List<String> constructorList, List<String> argumentList, String packageForNewTest, List<String> fileNameList) {
         try {
-            int startPosition;
-            int endPosition;
-
             String testDependentObjects;
             for (int i = 0; i < constructorList.size(); i++) {
                 testDependentObjects = constructorList.get(i);
@@ -25,15 +22,14 @@ public class CreateTests {
 
                 if (testDependentObjects.contains( fileNameList.get(i) + "(")) {
 
-                    startPosition = testDependentObjects.indexOf(fileNameList.get(i) + "(");
-                    endPosition = testDependentObjects.indexOf(")");
-                    testDependentObjects = testDependentObjects.substring(startPosition, endPosition);
-
-                    PrintWriter pw = new PrintWriter(file);
-
+                    String fileName = fileNameList.get(i);
+                    String arguments = argumentList.get(i);
                     String destinationPackage = packageForNewTest;
                     destinationPackage = destinationPackage.replaceAll("\\\\", ".");
 
+                    int startPosition = testDependentObjects.indexOf(fileNameList.get(i) + "(");
+                    int endPosition = testDependentObjects.indexOf(")");
+                    testDependentObjects = testDependentObjects.substring(startPosition, endPosition);
                     startPosition = packageForNewTest.indexOf("src");
                     endPosition = destinationPackage.length();
 
@@ -41,15 +37,12 @@ public class CreateTests {
                     destinationPackage = destinationPackage.substring(
                             (startPosition + 4), (endPosition - 1));
 
+                    PrintWriter pw = new PrintWriter(file);
 
                     pw.println("package " + destinationPackage + "; \n");
-
-                    pw.println("public class " + fileNameList.get(i) + "Test {\n");
-
-                    pw.println(     argumentList.get(i) + "\n");
-
-                    pw.println("    private " + fileNameList.get(i) + " cut;\n");
-
+                    pw.println("public class " + fileName + "Test {\n");
+                    pw.println(     arguments + "\n");
+                    pw.println("    private " + fileName + " cut;\n");
                     pw.println("    @Mock " + testDependentObjects + "\n");
 
                     pw.println("    @Before\n" +
@@ -61,7 +54,6 @@ public class CreateTests {
                                "    public void tearDown() {\n" +
                                "        cut = null;\n" +
                                "    }\n");
-
                     pw.println("}");
                     pw.close();
 
@@ -77,9 +69,4 @@ public class CreateTests {
             System.exit(0);
         }
     }
-
-    public void classContent() {
-        //TODO:
-    }
-
 }
