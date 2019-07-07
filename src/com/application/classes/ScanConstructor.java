@@ -31,8 +31,9 @@ public class ScanConstructor {
                 while ((line = br.readLine()) != null) {
                     if (line.contains("int") || line.contains("String") || line.contains("boolean")) {
                         argumentList.add(line);
-                    } else if (line.contains("public " + fileName + "(")) {
-                        readValidConstructor( line, br);
+                    }
+                    if (line.contains("public " + fileName + "(")) {
+                        readValidConstructor(line, br);
                     }
                 }
             }

@@ -21,7 +21,6 @@ public class CreateTests {
         String arguments;
         String destinationPackage;
         String testObjects;
-
         try {
             for (int index = 0; index < constructorList.size(); index++) {
                 testObjects = constructorList.get(index);
@@ -30,6 +29,8 @@ public class CreateTests {
                 if (testObjects.contains(fileNameList.get(index) + "(")) {
                     fileName = fileNameList.get(index);
                     arguments = argumentList.get(index);
+
+                    System.out.println(arguments);
 
                     destinationPackage = packageForNewTest;
                     destinationPackage = destinationPackage.replaceAll("\\\\", ".");
@@ -71,6 +72,9 @@ public class CreateTests {
         } catch (IOException e) {
             System.err.println(" > ERROR: createTest " + e);
             System.exit(0);
+        } catch (Exception e){
+            System.err.println(" > ERROR: createTest " + e);
+            System.exit(0);
         }
     }
     /**
@@ -88,6 +92,7 @@ public class CreateTests {
             destinationPackage = destinationPackage.substring(
                     (destinationPackage.indexOf("com") + 4), (destinationPackage.length() - 1));
         } else {
+            // TODO: throw correct error here
             System.err.println("Invalid path");
             System.exit(0);
         }
