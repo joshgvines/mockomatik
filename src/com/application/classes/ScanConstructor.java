@@ -24,7 +24,6 @@ public class ScanConstructor {
             for (File file : dir.listFiles()) {
 
                 setFileName(file);
-
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr);
 
@@ -32,20 +31,17 @@ public class ScanConstructor {
                 while ((line = br.readLine()) != null) {
                     if (line.contains("int") || line.contains("String") || line.contains("boolean")) {
                         argumentList.add(line);
-                    }
-                    if (line.contains("public " + fileName + "(")) {
-                        setValidConstructor( line, br);
+                    } else if (line.contains("public " + fileName + "(")) {
+                        readValidConstructor( line, br);
                     }
                 }
             }
         } catch (IOException e) {
             System.err.println("\n > ERROR: Method: checkIfConstructorIsValid(), File Name: " + fileName + " " + e);
             e.printStackTrace();
-            System.exit(0);
         } catch (Exception e) {
             System.err.println("\n > ERROR: Method: checkIfConstructorIsValid(), File Name: " + fileName + " " + e);
             e.printStackTrace();
-            System.exit(0);
         }
     }
 
@@ -64,7 +60,7 @@ public class ScanConstructor {
      * @param line
      * @param br
      */
-    private void setValidConstructor(String line, BufferedReader br) {
+    private void readValidConstructor(String line, BufferedReader br) {
         try {
             StringBuilder sb = new StringBuilder();
             sb.append(line + "\n");
@@ -78,8 +74,10 @@ public class ScanConstructor {
             }
         } catch (IOException e) {
             System.err.println(" > ERROR: setConstructorArguments, file name: " + fileName + " " + e);
+            e.printStackTrace();
         } catch (Exception e) {
             System.err.println(" > ERROR: setConstructorArguments, file name: " + fileName + " " + e);
+            e.printStackTrace();
         }
     }
 

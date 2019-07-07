@@ -13,49 +13,53 @@ public class CreateTests {
 
     }
 
-    public void buildTest(List<String> constructorList, List<String> argumentList, String packageForNewTest, List<String> fileNameList) {
+    public void buildTest(List<String> constructorList,
+                          List<String> argumentList,
+                          String packageForNewTest,
+                          List<String> fileNameList) {
+        String fileName;
+        String arguments;
+        String destinationPackage;
+        String testObjects;
+
         try {
-            String testDependentObjects;
-            for (int i = 0; i < constructorList.size(); i++) {
-                testDependentObjects = constructorList.get(i);
-                File file = new File(packageForNewTest + fileNameList.get(i) + "Test.java");
+            for (int index = 0; index < constructorList.size(); index++) {
+                testObjects = constructorList.get(index);
+                File file = new File(packageForNewTest + fileNameList.get(index) + "Test.java");
 
-                if (testDependentObjects.contains( fileNameList.get(i) + "(")) {
+                if (testObjects.contains(fileNameList.get(index) + "(")) {
+                    fileName = fileNameList.get(index);
+                    arguments = argumentList.get(index);
 
-                    String fileName = fileNameList.get(i);
-                    String arguments = argumentList.get(i);
-                    String destinationPackage = packageForNewTest;
+                    destinationPackage = packageForNewTest;
                     destinationPackage = destinationPackage.replaceAll("\\\\", ".");
 
-                    int startPosition = testDependentObjects.indexOf(fileNameList.get(i) + "(");
-                    int endPosition = testDependentObjects.indexOf(")");
-                    testDependentObjects = testDependentObjects.substring(startPosition, endPosition);
-                    startPosition = packageForNewTest.indexOf("src");
-                    endPosition = destinationPackage.length();
+                    testObjects = testObjects.substring(
+                            testObjects.indexOf(fileName + "("), testObjects.indexOf(")"));
 
-                    destinationPackage = destinationPackage.toLowerCase();
-                    destinationPackage = destinationPackage.substring(
-                            (startPosition + 4), (endPosition - 1));
+                    destinationPackage = createPackageStatement(destinationPackage);
 
-                    PrintWriter pw = new PrintWriter(file);
+                    PrintWriter writer = new PrintWriter(file);
 
-                    pw.println("package " + destinationPackage + "; \n");
-                    pw.println("public class " + fileName + "Test {\n");
-                    pw.println(     arguments + "\n");
-                    pw.println("    private " + fileName + " cut;\n");
-                    pw.println("    @Mock " + testDependentObjects + "\n");
+                    writer.println("package " + destinationPackage + "; \n");
 
-                    pw.println("    @Before\n" +
-                               "    public void setUp() {\n" +
-                               "        cut = new " + fileNameList.get(i) + "();\n" +
-                               "    }\n");
+                    writer.println("public class " + fileName + "Test {\n");
+                    writer.println(     arguments + "\n");
+                    writer.println("    private " + fileName + " cut;\n");
+                    writer.println("    @Mock " + testObjects + "\n");
 
-                    pw.println("    @After\n" +
-                               "    public void tearDown() {\n" +
-                               "        cut = null;\n" +
-                               "    }\n");
-                    pw.println("}");
-                    pw.close();
+                    writer.println("    @Before\n" +
+                                   "    public void setUp() {\n" +
+                                   "        cut = new " + fileName + "();\n" +
+                                   "    }\n");
+
+                    writer.println("    @After\n" +
+                                   "    public void tearDown() {\n" +
+                                   "        cut = null;\n" +
+                                   "    }\n");
+                    writer.println("}");
+
+                    writer.close();
 
                     file.createNewFile();
 
@@ -68,5 +72,25 @@ public class CreateTests {
             System.err.println(" > ERROR: createTest " + e);
             System.exit(0);
         }
+    }
+    /**
+     * Create the package statement for test class under construction
+     * @param destinationPackage
+     * @return
+     */
+    private String createPackageStatement(String destinationPackage) {
+        destinationPackage = destinationPackage.toLowerCase();
+        if (destinationPackage.contains("src")) {
+            destinationPackage = destinationPackage.substring(
+                    (destinationPackage.indexOf("src") + 4), (destinationPackage.length() - 1));
+        } else if (destinationPackage.contains("com")) {
+            destinationPackage = destinationPackage.toLowerCase();
+            destinationPackage = destinationPackage.substring(
+                    (destinationPackage.indexOf("com") + 4), (destinationPackage.length() - 1));
+        } else {
+            System.err.println("Invalid path");
+            System.exit(0);
+        }
+        return destinationPackage;
     }
 }

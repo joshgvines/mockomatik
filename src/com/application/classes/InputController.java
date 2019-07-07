@@ -47,7 +47,6 @@ public class InputController {
         return false;
     }
 
-
     public void runTestProcess(String packageToTestPath, String packageForNewTest) {
         scanConstructor.checkIfConstructorIsValid(packageToTestPath);
         List<String> returnedValidConstructorList = scanConstructor.getConstructor();
