@@ -72,6 +72,11 @@ public class CreateTests {
                     System.exit(0);
                 }
             }
+
+            OutputData outputData = new OutputData();
+
+            outputData.outputTextFile(fileNameList);
+
         } catch (IOException e) {
             System.err.println(" > ERROR: createTest " + e);
             System.exit(0);

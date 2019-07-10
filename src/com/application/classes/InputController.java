@@ -1,5 +1,6 @@
 package com.application.classes;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -19,7 +20,6 @@ public class InputController {
     public void userInput() {
         String packageToTestPath;
         String packageForNewTest;
-
         do {
             System.out.print("\nEnter test package path: ");
             packageToTestPath = sc.nextLine();
@@ -33,6 +33,7 @@ public class InputController {
     }
     // TODO regulate scanner input size before validation method?
     public boolean inputValidation(String input) {
+        File testDir = new File(input);
         if (input.equals(null) || input.isEmpty() || input.contains(" ")) {
             System.out.println("\n > Input cannot be null or contain spaces!");
             return false;
@@ -42,10 +43,11 @@ public class InputController {
         } else if (!input.contains("\\") || input.length() < 4 || input.length() > 260) {
             System.out.println(" > Invalid path! Example: C:\\src\\packagewithclasses\\, [ must end in a '\\' ]");
             return false;
-        } else {
-            return true;
+        } else if(!testDir.exists()) {
+            System.out.println("\n > The entered directory/location does not exist or is unreachable!");
+            return false;
         }
-        return false;
+        return true;
     }
 
     public void runTestProcess(String packageToTestPath, String packageForNewTest) {
