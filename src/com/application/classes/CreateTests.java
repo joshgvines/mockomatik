@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 public class CreateTests {
 
@@ -16,7 +17,8 @@ public class CreateTests {
     public void buildTest(List<String> constructorList,
                           List<String> argumentList,
                           String packageForNewTest,
-                          List<String> fileNameList) {
+                          List<String> fileNameList,
+                          List<List<String>> primaryImportCollection) {
         String fileName;
         String arguments;
         String destinationPackage;
@@ -30,19 +32,21 @@ public class CreateTests {
                     fileName = fileNameList.get(index);
                     arguments = argumentList.get(index);
 
-                    System.out.println(arguments);
-
-                    destinationPackage = packageForNewTest;
-                    destinationPackage = destinationPackage.replaceAll("\\\\", ".");
-
                     testObjects = testObjects.substring(
                             testObjects.indexOf(fileName + "("), testObjects.indexOf(")"));
 
-                    destinationPackage = createPackageStatement(destinationPackage);
+                    destinationPackage = createPackageStatement(packageForNewTest);
 
                     PrintWriter writer = new PrintWriter(file);
 
                     writer.println("package " + destinationPackage + "; \n");
+
+                    if (!primaryImportCollection.get(index).isEmpty()) {
+                        String imports = primaryImportCollection.get(index).toString();
+                        imports = imports.replaceAll("\\[", "");
+                        imports = imports.replaceAll("]", "");
+                        writer.println(imports + " \n");
+                    }
 
                     writer.println("public class " + fileName + "Test {\n");
                     writer.println(     arguments + "\n");
@@ -63,7 +67,6 @@ public class CreateTests {
                     writer.close();
 
                     file.createNewFile();
-
                 } else {
                     System.err.println(" > ERROR: createTest");
                     System.exit(0);
@@ -78,11 +81,14 @@ public class CreateTests {
         }
     }
     /**
-     * Create the package statement for test class under construction
-     * @param destinationPackage
-     * @return
+     * Create the package statement for test class under construction from path
+     * @param packageForNewTest
+     * @return destinationPackage
      */
-    private String createPackageStatement(String destinationPackage) {
+    private String createPackageStatement(String packageForNewTest) {
+        String destinationPackage = packageForNewTest;
+        destinationPackage = destinationPackage.replaceAll("\\\\", ".");
+
         destinationPackage = destinationPackage.toLowerCase();
         if (destinationPackage.contains("src")) {
             destinationPackage = destinationPackage.substring(

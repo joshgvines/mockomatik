@@ -2,15 +2,18 @@ package com.application.classes;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ScanConstructor {
+public class ScanClass {
     private String fileName;
     private List<String> fileNameList = new ArrayList<>();
     private List<String> constructorList = new ArrayList<>();
     private List<String> argumentList = new ArrayList<>();
+    private List<List<String>> primaryImportCollection = new ArrayList<>();
 
-    public ScanConstructor() {
+    public ScanClass() {
 
     }
 
@@ -18,17 +21,22 @@ public class ScanConstructor {
      * Checks if the file being scanned contains a valid constructor to be tested
      * @param packageToTestPath
      */
-    public void checkIfConstructorIsValid(String packageToTestPath) {
+    public void scanClassForContent(String packageToTestPath) {
         try {
             File dir = new File(packageToTestPath);
-            for (File file : dir.listFiles()) {
+            String line;
 
+            for (File file : dir.listFiles()) {
                 setFileName(file);
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr);
 
-                String line;
+                List<String> importList = new ArrayList<>();
+
                 while ((line = br.readLine()) != null) {
+                    if (line.contains("import")) {
+                        importList.add(line);
+                    }
                     if (line.contains("int") || line.contains("String") || line.contains("boolean")) {
                         argumentList.add(line);
                     }
@@ -36,12 +44,14 @@ public class ScanConstructor {
                         readValidConstructor(line, br);
                     }
                 }
+                primaryImportCollection.add(importList);
             }
+            System.out.print(primaryImportCollection);
         } catch (IOException e) {
-            System.err.println("\n > ERROR: Method: checkIfConstructorIsValid(), File Name: " + fileName + " " + e);
+            System.err.println("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
             e.printStackTrace();
         } catch (Exception e) {
-            System.err.println("\n > ERROR: Method: checkIfConstructorIsValid(), File Name: " + fileName + " " + e);
+            System.err.println("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
             e.printStackTrace();
         }
     }
@@ -92,5 +102,9 @@ public class ScanConstructor {
 
     public List<String> getFileName() {
         return fileNameList;
+    }
+
+    public List<List<String>> getPrimaryImportCollection() {
+        return primaryImportCollection;
     }
 }

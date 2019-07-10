@@ -1,10 +1,11 @@
 package com.application.classes;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class InputController {
-    private ScanConstructor scanConstructor = new ScanConstructor();
+    private ScanClass scanClass = new ScanClass();
     private CreateTests createTests = new CreateTests();
     private ValidateTests validateTests = new ValidateTests();
     private Scanner sc = new Scanner(System.in);
@@ -48,15 +49,16 @@ public class InputController {
     }
 
     public void runTestProcess(String packageToTestPath, String packageForNewTest) {
-        scanConstructor.checkIfConstructorIsValid(packageToTestPath);
-        List<String> returnedValidConstructorList = scanConstructor.getConstructor();
-        List<String> returnedValidArgumentList = scanConstructor.getArgumentList();
+        scanClass.scanClassForContent(packageToTestPath);
+        List<String> returnedValidConstructorList = scanClass.getConstructor();
+        List<String> returnedValidArgumentList = scanClass.getArgumentList();
+        List<List<String>> returnedValidImportCollection = scanClass.getPrimaryImportCollection();
 
         if (returnedValidConstructorList != null) {
-            List<String> fileName = scanConstructor.getFileName();
+            List<String> fileName = scanClass.getFileName();
 
             createTests.buildTest(returnedValidConstructorList,
-                    returnedValidArgumentList, packageForNewTest, fileName);
+                    returnedValidArgumentList, packageForNewTest, fileName, returnedValidImportCollection);
 
             validateTests.runTests(packageForNewTest);
         }
