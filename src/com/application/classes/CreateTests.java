@@ -23,6 +23,7 @@ public class CreateTests {
         String arguments;
         String destinationPackage;
         String testObjects;
+        String imports;
         try {
             for (int index = 0; index < constructorList.size(); index++) {
                 testObjects = constructorList.get(index);
@@ -31,22 +32,15 @@ public class CreateTests {
                 if (testObjects.contains(fileNameList.get(index) + "(")) {
                     fileName = fileNameList.get(index);
                     arguments = argumentList.get(index);
-
-                    testObjects = testObjects.substring(
-                            testObjects.indexOf(fileName + "("), testObjects.indexOf(")"));
-
+                    testObjects = testObjects.substring(testObjects.indexOf(fileName + "("), testObjects.indexOf(")"));
                     destinationPackage = createPackageStatement(packageForNewTest);
+                    imports = createImportStatements(primaryImportCollection.get(index));
 
                     PrintWriter writer = new PrintWriter(file);
 
                     writer.println("package " + destinationPackage + "; \n");
 
-                    if (!primaryImportCollection.get(index).isEmpty()) {
-                        String imports = primaryImportCollection.get(index).toString();
-                        imports = imports.replaceAll("\\[", "");
-                        imports = imports.replaceAll("]", "");
-                        writer.println(imports + " \n");
-                    }
+                    writer.print(imports);
 
                     writer.println("public class " + fileName + "Test {\n");
                     writer.println(     arguments + "\n");
@@ -85,10 +79,26 @@ public class CreateTests {
             System.exit(0);
         }
     }
+
+    /**
+     * Work functional import statements into correct format and location
+     * @param importList
+     * @return String imports
+     */
+    private String createImportStatements(List<String> importList) {
+        if (!importList.isEmpty()) {
+            String imports = importList.toString();
+            imports = imports.replaceAll("\\[", "");
+            imports = imports.replaceAll("]", "");
+            return imports + "\n\n";
+        }
+        return "";
+    }
+
     /**
      * Create the package statement for test class under construction from path
      * @param packageForNewTest
-     * @return destinationPackage
+     * @return String destinationPackage
      */
     private String createPackageStatement(String packageForNewTest) {
         String destinationPackage = packageForNewTest;
