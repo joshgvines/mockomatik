@@ -1,5 +1,9 @@
 package a.classestotest;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 public class TestClassOne {
@@ -9,12 +13,21 @@ public class TestClassOne {
 
     Scanner keyboard = new Scanner(System.in);
 
+
+
     public TestClassOne(String testClassInfoOne, String testClassInfoTwo) {
         this.testClassInfoOne = testClassInfoOne;
         this.testClassInfoTwo = testClassInfoTwo;
     }
 
-    public void testAnObject() {
+    public void testAnObject() throws IOException {
+
+        File file = new File("C:\\Users\\Josh\\github\\AutoTest\\src\\a\\classestotest\\TestClassOne.java");
+
+        FileReader fileReader = new FileReader(file);
+
+        BufferedReader buffFeader = new BufferedReader(fileReader);
+
         String testIn = keyboard.nextLine();
         System.out.println(testIn);
     }

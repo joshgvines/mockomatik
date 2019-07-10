@@ -35,7 +35,7 @@ public class ScanClass {
 
                 while ((line = br.readLine()) != null) {
                     if (line.contains("import")) {
-                        importList.add(line);
+                        importList.add(line + "\n");
                     }
                     if (line.contains("int") || line.contains("String") || line.contains("boolean")) {
                         argumentList.add(line);
@@ -46,7 +46,6 @@ public class ScanClass {
                 }
                 primaryImportCollection.add(importList);
             }
-            System.out.print(primaryImportCollection);
         } catch (IOException e) {
             System.err.println("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
             e.printStackTrace();

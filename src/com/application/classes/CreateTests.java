@@ -42,6 +42,7 @@ public class CreateTests {
 
                     writer.print(imports);
 
+                    writer.println("@RunWith(MockitoJUnitRunner.class)");
                     writer.println("public class " + fileName + "Test {\n");
                     writer.println(     arguments + "\n");
                     writer.println("    private " + fileName + " cut;\n");
@@ -59,16 +60,13 @@ public class CreateTests {
                     writer.println("}");
 
                     writer.close();
-
                     file.createNewFile();
                 } else {
                     System.err.println(" > ERROR: createTest");
                     System.exit(0);
                 }
             }
-
             OutputData outputData = new OutputData();
-
             outputData.outputTextFile(fileNameList);
 
         } catch (IOException e) {
@@ -90,7 +88,9 @@ public class CreateTests {
             String imports = importList.toString();
             imports = imports.replaceAll("\\[", "");
             imports = imports.replaceAll("]", "");
-            return imports + "\n\n";
+            imports = imports.replaceAll(", ", "");
+            imports.trim();
+            return imports + "\n";
         }
         return "";
     }
