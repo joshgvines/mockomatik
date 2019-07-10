@@ -22,7 +22,7 @@ public class TestClassOne {
 
     public void testAnObject() throws IOException {
 
-        File file = new File("C:\\Users\\Josh\\github\\AutoTest\\src\\a\\classestotest\\TestClassOne.java");
+        File file = new File("AutoTest\\src\\a\\classestotest\\TestClassOne.java");
 
         FileReader fileReader = new FileReader(file);
 

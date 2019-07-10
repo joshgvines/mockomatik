@@ -71,10 +71,10 @@ public class CreateTests {
 
         } catch (IOException e) {
             System.err.println(" > ERROR: createTest " + e);
-            System.exit(0);
+            e.printStackTrace();
         } catch (Exception e){
             System.err.println(" > ERROR: createTest " + e);
-            System.exit(0);
+            e.printStackTrace();
         }
     }
 
@@ -114,7 +114,7 @@ public class CreateTests {
                     (destinationPackage.indexOf("com") + 4), (destinationPackage.length() - 1));
         } else {
             // TODO: throw correct error here
-            System.err.println("Invalid path");
+            System.err.println("createPackageStatement: Invalid path");
             System.exit(0);
         }
         return destinationPackage;
