@@ -1,4 +1,7 @@
 # Basic Settings
 .idea/vcs.xml
 .idea/workspace.xml
+
+# Output
+/build
 /out

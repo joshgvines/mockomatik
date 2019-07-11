@@ -1,16 +1,20 @@
-package com.application.classes;
+package testomatic.classes;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScanConstructor {
+public class ScanClass {
     private String fileName;
     private List<String> fileNameList = new ArrayList<>();
     private List<String> constructorList = new ArrayList<>();
     private List<String> argumentList = new ArrayList<>();
+    private List<List<String>> primaryImportCollection = new ArrayList<>();
 
-    public ScanConstructor() {
+    public ScanClass() {
 
     }
 
@@ -18,29 +22,37 @@ public class ScanConstructor {
      * Checks if the file being scanned contains a valid constructor to be tested
      * @param packageToTestPath
      */
-    public void checkIfConstructorIsValid(String packageToTestPath) {
+    public void scanClassForContent(String packageToTestPath) {
         try {
             File dir = new File(packageToTestPath);
+            String line;
+
             for (File file : dir.listFiles()) {
-
                 setFileName(file);
-
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr);
 
-                String line;
+                List<String> importList = new ArrayList<>();
+
                 while ((line = br.readLine()) != null) {
+                    if (line.contains("import")) {
+                        importList.add(line + "\n");
+                    }
                     if (line.contains("int") || line.contains("String") || line.contains("boolean")) {
                         argumentList.add(line);
                     }
                     if (line.contains("public " + fileName + "(")) {
-                        setValidConstructor( line, br);
+                        readValidConstructor(line, br);
                     }
                 }
+                primaryImportCollection.add(importList);
             }
         } catch (IOException e) {
-            System.err.println(" > ERROR: checkIfConstructorIsValid, file name: " + fileName + " " + e);
-            System.exit(0);
+            System.err.println("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
+            e.printStackTrace();
         }
     }
 
@@ -59,7 +71,7 @@ public class ScanConstructor {
      * @param line
      * @param br
      */
-    private void setValidConstructor(String line, BufferedReader br) {
+    private void readValidConstructor(String line, BufferedReader br) {
         try {
             StringBuilder sb = new StringBuilder();
             sb.append(line + "\n");
@@ -73,8 +85,10 @@ public class ScanConstructor {
             }
         } catch (IOException e) {
             System.err.println(" > ERROR: setConstructorArguments, file name: " + fileName + " " + e);
+            e.printStackTrace();
         } catch (Exception e) {
             System.err.println(" > ERROR: setConstructorArguments, file name: " + fileName + " " + e);
+            e.printStackTrace();
         }
     }
 
@@ -88,5 +102,9 @@ public class ScanConstructor {
 
     public List<String> getFileName() {
         return fileNameList;
+    }
+
+    public List<List<String>> getPrimaryImportCollection() {
+        return primaryImportCollection;
     }
 }
