@@ -1,12 +1,9 @@
-package com.application.classes;
+package testomatic.classes;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 
 public class CreateTests {
 
@@ -34,7 +31,15 @@ public class CreateTests {
                     arguments = argumentList.get(index);
                     testObjects = testObjects.substring(testObjects.indexOf(fileName + "("), testObjects.indexOf(")"));
                     destinationPackage = createPackageStatement(packageForNewTest);
+
+                    // Possible Imports
                     imports = createImportStatements(primaryImportCollection.get(index));
+                    // Required Imports
+                    imports = imports + "import org.junit.After;\n";
+                    imports = imports + "import org.junit.Before;\n";
+                    imports = imports + "import org.junit.Test;\n";
+                    imports = imports + "import org.junit.runner.RunWith;\n";
+                    imports = imports + "import org.mockito.junit.MockitoJUnitRunner;\n\n";
 
                     PrintWriter writer = new PrintWriter(file);
 
@@ -66,7 +71,7 @@ public class CreateTests {
                     System.exit(0);
                 }
             }
-            OutputData outputData = new OutputData();
+            OutputData outputData = new testomatic.classes.OutputData();
             outputData.outputTextFile(fileNameList);
 
         } catch (IOException e) {
@@ -105,7 +110,10 @@ public class CreateTests {
         destinationPackage = destinationPackage.replaceAll("\\\\", ".");
 
         destinationPackage = destinationPackage.toLowerCase();
-        if (destinationPackage.contains("src")) {
+        if (destinationPackage.contains("java")) {
+            destinationPackage = destinationPackage.substring(
+                    (destinationPackage.indexOf("java") + 5), (destinationPackage.length() - 1));
+        } else if (destinationPackage.contains("src")) {
             destinationPackage = destinationPackage.substring(
                     (destinationPackage.indexOf("src") + 4), (destinationPackage.length() - 1));
         } else if (destinationPackage.contains("com")) {

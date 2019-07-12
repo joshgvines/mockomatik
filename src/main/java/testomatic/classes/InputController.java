@@ -1,14 +1,13 @@
-package com.application.classes;
+package testomatic.classes;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class InputController {
-    private ScanClass scanClass = new ScanClass();
+    private testomatic.classes.ScanClass scanClass = new ScanClass();
     private CreateTests createTests = new CreateTests();
-    private ValidateTests validateTests = new ValidateTests();
+    private testomatic.classes.ValidateTests validateTests = new ValidateTests();
     private Scanner sc = new Scanner(System.in);
 
     public void runProgram() {
@@ -21,11 +20,11 @@ public class InputController {
         String packageToTestPath;
         String packageForNewTest;
         do {
-            System.out.print("\nEnter test package path: ");
+            System.out.println("\nEnter test package path: ");
             packageToTestPath = sc.nextLine();
         } while (!(inputValidation(packageToTestPath)));
         do {
-            System.out.print("\nEnter location for new tests: ");
+            System.out.println("\nEnter location for new tests: ");
             packageForNewTest = sc.nextLine();
         } while (!(inputValidation(packageForNewTest)));
 
@@ -38,7 +37,7 @@ public class InputController {
             System.out.println("\n > Input cannot be null or contain spaces!");
             return false;
         } else if (input.contains("EXIT") && input.length() < 5) {
-            System.out.println("\n > Double check project for new classes, Good Bye!");
+            System.out.println("\n > Double check project for new testomatic.classes, Good Bye!");
             System.exit(0);
         } else if (!input.contains("\\") || input.length() < 4 || input.length() > 260) {
             System.out.println(" > Invalid path! Example: C:\\src\\packagewithclasses\\, [ must end in a '\\' ]");

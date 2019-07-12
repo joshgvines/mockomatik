@@ -1,11 +1,11 @@
-package com.application;
+package testomatic;
 
-import com.application.classes.InputController;
+import testomatic.classes.InputController;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
-public class Application {
+public class TestOMatic {
     public static void main(String[] args) {
         Logo logo = new Logo();
         logo.runLogo();

@@ -1,4 +1,4 @@
-package a.classestotest;
+package testomatic.a.classestotest;
 
 public class TestClassTwo {
 

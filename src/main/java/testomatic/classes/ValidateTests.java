@@ -1,4 +1,4 @@
-package com.application.classes;
+package testomatic.classes;
 
 public class ValidateTests {
 
