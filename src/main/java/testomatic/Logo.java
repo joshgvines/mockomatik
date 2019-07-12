@@ -1,4 +1,4 @@
-package com.application;
+package testomatic;
 
 public class Logo {
 
