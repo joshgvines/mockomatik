@@ -1,0 +1,2 @@
+Annotations will only work in a marked test directory.
+Package statements will not work if output in not directed to correct test package.

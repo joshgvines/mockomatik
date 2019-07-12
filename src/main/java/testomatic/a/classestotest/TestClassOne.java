@@ -15,10 +15,10 @@ public class TestClassOne {
 
 
 
-    public TestClassOne(String testClassInfoOne, String testClassInfoTwo) {
-        this.testClassInfoOne = testClassInfoOne;
-        this.testClassInfoTwo = testClassInfoTwo;
-    }
+//    public TestClassOne(String testClassInfoOne, String testClassInfoTwo) {
+//        this.testClassInfoOne = testClassInfoOne;
+//        this.testClassInfoTwo = testClassInfoTwo;
+//    }
 
     public void testAnObject() throws IOException {
 

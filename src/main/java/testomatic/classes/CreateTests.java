@@ -39,6 +39,7 @@ public class CreateTests {
                     imports = imports + "import org.junit.Before;\n";
                     imports = imports + "import org.junit.Test;\n";
                     imports = imports + "import org.junit.runner.RunWith;\n";
+                    imports = imports + "import org.mockito.Mock;\n";
                     imports = imports + "import org.mockito.junit.MockitoJUnitRunner;\n\n";
 
                     PrintWriter writer = new PrintWriter(file);
@@ -51,7 +52,7 @@ public class CreateTests {
                     writer.println("public class " + fileName + "Test {\n");
                     writer.println(     arguments + "\n");
                     writer.println("    private " + fileName + " cut;\n");
-                    writer.println("    @Mock " + testObjects + "\n");
+//                    writer.println("    @Mock " + testObjects + "\n");
 
                     writer.println("    @Before\n" +
                                    "    public void setUp() {\n" +
