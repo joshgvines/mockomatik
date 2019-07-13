@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class CreateTests {
+public class CreateTestClasses {
 
-    public CreateTests() {
+    public CreateTestClasses() {
 
     }
 
@@ -63,7 +63,15 @@ public class CreateTests {
                                    "    public void tearDown() {\n" +
                                    "        cut = null;\n" +
                                    "    }\n");
+
+                    writer.println("    @Test\n" +
+                                   "    public void testMethod() {\n" +
+                                   "        //blah\n" +
+                                   "    }");
+
                     writer.println("}");
+
+
 
                     writer.close();
                     file.createNewFile();

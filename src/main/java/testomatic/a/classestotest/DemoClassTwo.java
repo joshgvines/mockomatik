@@ -1,11 +1,11 @@
 package testomatic.a.classestotest;
 
-public class TestClassTwo {
+public class DemoClassTwo {
 
     private String testClassInfoOne;
     private String testClassInfoTwo;
 
-//    public TestClassTwo(String testClassInfoOne, String testClassInfoTwo) {
+//    public DemoClassTwo(String testClassInfoOne, String testClassInfoTwo) {
 //        this.testClassInfoOne = testClassInfoOne;
 //        this.testClassInfoTwo = testClassInfoTwo;
 //    }

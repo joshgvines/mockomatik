@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class TestClassOne {
+public class DemoClassOne {
 
     private String testClassInfoOne;
     private String testClassInfoTwo;
@@ -15,14 +15,14 @@ public class TestClassOne {
 
 
 
-//    public TestClassOne(String testClassInfoOne, String testClassInfoTwo) {
+//    public DemoClassOne(String testClassInfoOne, String testClassInfoTwo) {
 //        this.testClassInfoOne = testClassInfoOne;
 //        this.testClassInfoTwo = testClassInfoTwo;
 //    }
 
     public void testAnObject() throws IOException {
 
-        File file = new File("AutoTest\\src\\a\\classestotest\\TestClassOne.java");
+        File file = new File("AutoTest\\src\\a\\classestotest\\DemoClassOne.java");
 
         FileReader fileReader = new FileReader(file);
 

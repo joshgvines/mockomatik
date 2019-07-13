@@ -1,11 +1,5 @@
 package testomatic.a.classestotest; 
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Scanner;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,15 +8,15 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestClassOneTest {
+public class DemoClassTwoTest {
 
-    private String testClassInfoOne;
+    private String testClassInfoTwo;
 
-    private TestClassOne cut;
+    private DemoClassTwo cut;
 
     @Before
     public void setUp() {
-        cut = new TestClassOne();
+        cut = new DemoClassTwo();
     }
 
     @After
@@ -30,4 +24,8 @@ public class TestClassOneTest {
         cut = null;
     }
 
+    @Test
+    public void testMethod() {
+        //blah
+    }
 }

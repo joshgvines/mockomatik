@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class InputController {
     private testomatic.classes.ScanClass scanClass = new ScanClass();
-    private CreateTests createTests = new CreateTests();
+    private CreateTestClasses createTestClasses = new CreateTestClasses();
     private testomatic.classes.ValidateTests validateTests = new ValidateTests();
     private Scanner sc = new Scanner(System.in);
 
@@ -58,7 +58,7 @@ public class InputController {
         if (returnedValidConstructorList != null) {
             List<String> fileName = scanClass.getFileName();
 
-            createTests.buildTest(returnedValidConstructorList,
+            createTestClasses.buildTest(returnedValidConstructorList,
                     returnedValidArgumentList, packageForNewTest, fileName, returnedValidImportCollection);
 
             validateTests.runTests(packageForNewTest);
