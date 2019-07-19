@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 public class InputController {
     private testomatic.classes.ScanClass scanClass = new ScanClass();
-    private CreateTestClasses createTestClasses = new CreateTestClasses();
-    private testomatic.classes.ValidateTests validateTests = new ValidateTests();
+    private CreateClass createClass = new CreateClass();
+    private ValidateClass validateClass = new ValidateClass();
     private Scanner sc = new Scanner(System.in);
 
     public void runProgram() {
@@ -30,13 +30,14 @@ public class InputController {
 
         runTestProcess(packageToTestPath, packageForNewTest);
     }
-    // TODO regulate scanner input size before validation method?
+    // TODO: regulate scanner input size before validation method?
     public boolean inputValidation(String input) {
         File testDir = new File(input);
         if (input.equals(null) || input.isEmpty() || input.contains(" ")) {
             System.out.println("\n > Input cannot be null or contain spaces!");
             return false;
         } else if (input.contains("EXIT") && input.length() < 5) {
+            sc.close();
             System.out.println("\n > Double check project for new testomatic.classes, Good Bye!");
             System.exit(0);
         } else if (!input.contains("\\") || input.length() < 4 || input.length() > 260) {
@@ -50,18 +51,16 @@ public class InputController {
     }
 
     public void runTestProcess(String packageToTestPath, String packageForNewTest) {
-        scanClass.scanClassForContent(packageToTestPath);
-        List<String> returnedValidConstructorList = scanClass.getConstructor();
-        List<String> returnedValidArgumentList = scanClass.getArgumentList();
-        List<List<String>> returnedValidImportCollection = scanClass.getPrimaryImportCollection();
-
-        if (returnedValidConstructorList != null) {
-            List<String> fileName = scanClass.getFileName();
-
-            createTestClasses.buildTest(returnedValidConstructorList,
-                    returnedValidArgumentList, packageForNewTest, fileName, returnedValidImportCollection);
-
-            validateTests.runTests(packageForNewTest);
+        if (scanClass.scanClassForContent(packageToTestPath)) {
+            List<String> returnedValidConstructorList = scanClass.getConstructor();
+            List<String> returnedValidArgumentList = scanClass.getArgumentList();
+            List<List<String>> returnedValidImportCollection = scanClass.getPrimaryImportCollection();
+            if (returnedValidConstructorList != null) {
+                List<String> fileName = scanClass.getFileName();
+                createClass.buildTest(returnedValidConstructorList,
+                        returnedValidArgumentList, packageForNewTest, fileName, returnedValidImportCollection);
+                validateClass.runTests(packageForNewTest);
+            }
         }
     }
 

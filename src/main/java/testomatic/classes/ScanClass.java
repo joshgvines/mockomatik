@@ -24,7 +24,7 @@ public class ScanClass {
      * Checks if the file being scanned contains a valid constructor to be tested
      * @param packageToTestPath
      */
-    public void scanClassForContent(String packageToTestPath) {
+    public boolean scanClassForContent(String packageToTestPath) {
         try {
             File dir = new File(packageToTestPath);
             String line;
@@ -56,6 +56,10 @@ public class ScanClass {
             System.err.println("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
             e.printStackTrace();
         }
+        if (this.fileNameList !=null) {
+            return true;
+        }
+        return false;
     }
 
     /**

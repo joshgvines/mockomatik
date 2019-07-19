@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class CreateTestClasses {
+public class CreateClass {
 
-    public CreateTestClasses() {
+    public CreateClass() {
 
     }
 
@@ -54,11 +54,22 @@ public class CreateTestClasses {
                     writer.println("    private " + fileName + " cut;\n");
 //                    writer.println("    @Mock " + testObjects + "\n");
 
-                    writer.println("    @Before\n" +
-                                   "    public void setUp() {\n" +
-                                   "        cut = new " + fileName + "();\n" +
-                                   "    }\n");
+                    // Create Class Under Test Objects
+                    if (!argumentList.isEmpty()) {
+                        writer.println("    @Before\n" +
+                                "    public void setUp() {\n" +
+                                "       cut = new " + fileName + "(\n" +
+                                "       " + testObjects + "\n" +
+                                "       );\n" +
+                                "    }\n");
+                    } else {
+                        writer.println("    @Before\n" +
+                                "    public void setUp() {\n" +
+                                "        cut = new " + fileName + "();\n" +
+                                "    }\n");
+                    }
 
+                    // Content
                     writer.println("    @After\n" +
                                    "    public void tearDown() {\n" +
                                    "        cut = null;\n" +
@@ -70,7 +81,6 @@ public class CreateTestClasses {
                                    "    }");
 
                     writer.println("}");
-
 
 
                     writer.close();

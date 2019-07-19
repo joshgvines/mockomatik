@@ -13,12 +13,10 @@ public class DemoClassOne {
 
     Scanner keyboard = new Scanner(System.in);
 
-
-
-//    public DemoClassOne(String testClassInfoOne, String testClassInfoTwo) {
-//        this.testClassInfoOne = testClassInfoOne;
-//        this.testClassInfoTwo = testClassInfoTwo;
-//    }
+    public DemoClassOne(String testClassInfoOne, String testClassInfoTwo) {
+        this.testClassInfoOne = testClassInfoOne;
+        this.testClassInfoTwo = testClassInfoTwo;
+    }
 
     public void testAnObject() throws IOException {
 
