@@ -27,8 +27,8 @@ public class CreateClass {
                 testObjects = constructorList.get(index);
                 File file = new File(packageForNewTest + fileNameList.get(index) + "Test.java");
 
-                if (testObjects.contains(fileNameList.get(index) + "(")) {
-
+//                if (testObjects.contains(fileNameList.get(index) + "(")) {
+                if (!testObjects.isEmpty()) {
                     fileName = fileNameList.get(index);
 
 //                    variables = variableList.get(index);
@@ -101,7 +101,7 @@ public class CreateClass {
                     writer.close();
                     file.createNewFile();
                 } else {
-                    System.err.println(" > ERROR: createTest");
+                    System.err.println(" > ERROR: CreateClass > buildTest() > !testObjects.isEmpty() ");
                     System.exit(0);
                 }
             }

@@ -26,32 +26,44 @@ public class ScanClass {
     public boolean scanClassForContent(String packageToTestPath) {
         try {
             File dir = new File(packageToTestPath);
-            String line;
 
             for (File file : dir.listFiles()) {
-                setFileName(file);
-                FileReader fr = new FileReader(file);
-                BufferedReader br = new BufferedReader(fr);
+                if (file.isFile()) {
+                    System.out.println(file.getName());
+                }
+            }
 
-                List<String> importList = new ArrayList<>();
-                List<String> variableList = new ArrayList<>();
+//            for (File file : dir.listFiles()) {
+            for (File file : dir.listFiles()) {
+                if (file.isFile()) {
+                    setFileName(file);
+                    FileReader fr = new FileReader(file);
+                    BufferedReader br = new BufferedReader(fr);
 
-                while ((line = br.readLine()) != null) {
-                    if (line.contains("import") && !line.contains(fileName)) {
-                        importList.add(line + "\n");
-                    }
-                    if (line.contains("String ") || line.contains("int ") || line.contains("boolean ") ||
-                        line.contains("double ") || line.contains("Integer ") || line.contains("Boolean ") ) {
-                        if (!line.contains(fileName) && !line.contains(".") && !line.contains("()")) {
-                            variableList.add(line + "\n");
+                    List<String> importList = new ArrayList<>();
+                    List<String> variableList = new ArrayList<>();
+
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        if (line.contains("import") && !line.contains(fileName)) {
+                            importList.add(line + "\n");
+                        }
+                        if (line.contains("String ") || line.contains("int ") || line.contains("boolean ") ||
+                                line.contains("double ") || line.contains("Integer ") || line.contains("Boolean ")) {
+                            if (!line.contains(fileName) && !line.contains(".") && !line.contains("()")) {
+                                variableList.add(line + "\n");
+                            }
+                        }
+                        if (line.contains("public " + fileName + "(")) {
+                            readValidConstructor(line, br);
                         }
                     }
-                    if (line.contains("public " + fileName + "(")) {
-                        readValidConstructor(line, br);
-                    }
+                    fr.close();
+                    br.close();
+                    fileNameList.add(fileName);
+                    primaryVariableList.add(variableList);
+                    primaryImportList.add(importList);
                 }
-                primaryVariableList.add(variableList);
-                primaryImportList.add(importList);
             }
         } catch (IOException e) {
             System.err.println("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
@@ -74,6 +86,7 @@ public class ScanClass {
         fileName = file.getName();
         int fileExtensionPosition = fileName.indexOf(".");
         fileName = fileName.substring(0, fileExtensionPosition);
+//        fileNameList.add(fileName);
     }
 
     /**
@@ -89,7 +102,6 @@ public class ScanClass {
                 sb.append(line + "\n");
                 if (line.contains("}")) {
                     constructorList.add(sb.toString());
-                    fileNameList.add(fileName);
                     break;
                 }
             }

@@ -21,9 +21,9 @@ public class DemoStressTest {
 
     /////////////////////////////////////////////////////////////
 
-            DemoClassTwo dct = new DemoClassTwo();
+//            DemoClassTwo dct = new DemoClassTwo();
 
-                  DemoClassOne dco = new DemoClassOne(testClassInfoOne, testClassInfoTwo);
+//                  DemoClassOne dco = new DemoClassOne(testClassInfoOne, testClassInfoTwo);
 
 
                   //String double int \\ \n \t \t\t\t  char blah ==== blah ;;; ;;; ;; kjafljl/\\
