@@ -40,8 +40,8 @@ public class InputController {
             sc.close();
             System.out.println("\n > Double check project for new testomatic.classes, Good Bye!");
             System.exit(0);
-        } else if (!input.contains("\\") || input.length() < 4 || input.length() > 260) {
-            System.out.println(" > Invalid path! Example: C:\\src\\packagewithclasses\\, [ must end in a '\\' ]");
+        } else if (!input.contains("\\") || input.length() < 4 || input.length() > 260 || !input.endsWith("\\")) {
+            System.out.println(" > Invalid path! Example: C:\\src\\packagewithclasses\\, [ must end with a '\\' ]");
             return false;
         } else if(!testDir.exists()) {
             System.out.println("\n > The entered directory/location does not exist or is unreachable!");
@@ -53,12 +53,14 @@ public class InputController {
     public void runTestProcess(String packageToTestPath, String packageForNewTest) {
         if (scanClass.scanClassForContent(packageToTestPath)) {
             List<String> returnedValidConstructorList = scanClass.getConstructor();
-            List<String> returnedValidArgumentList = scanClass.getArgumentList();
-            List<List<String>> returnedValidImportCollection = scanClass.getPrimaryImportCollection();
+            List<List<String>> returnedValidVariableList = scanClass.getPrimaryVariableList();
+            List<List<String>> returnedValidImportList = scanClass.getPrimaryImportList();
+
             if (returnedValidConstructorList != null) {
                 List<String> fileName = scanClass.getFileName();
-                createClass.buildTest(returnedValidConstructorList,
-                        returnedValidArgumentList, packageForNewTest, fileName, returnedValidImportCollection);
+                createClass.buildTest(packageForNewTest, fileName, returnedValidConstructorList,
+                        returnedValidVariableList, returnedValidImportList);
+
                 validateClass.runTests(packageForNewTest);
             }
         }

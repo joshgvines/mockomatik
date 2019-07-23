@@ -5,23 +5,22 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ScanClass {
     private String fileName;
     private List<String> fileNameList = new ArrayList<>();
     private List<String> constructorList = new ArrayList<>();
-    private List<String> argumentList = new ArrayList<>();
-    private List<List<String>> primaryImportCollection = new ArrayList<>();
+    private List<List<String>> primaryVariableList = new ArrayList<>();
+    private List<List<String>> primaryImportList = new ArrayList<>();
 
     public ScanClass() {
 
     }
 
     /**
-     * Checks if the file being scanned contains a valid constructor to be tested
+     * Checks if the file being read into buffer contains a valid constructor and arguments to be tested
+     * then uses '.add(line)' for appropriate arrayList.
      * @param packageToTestPath
      */
     public boolean scanClassForContent(String packageToTestPath) {
@@ -35,19 +34,24 @@ public class ScanClass {
                 BufferedReader br = new BufferedReader(fr);
 
                 List<String> importList = new ArrayList<>();
+                List<String> variableList = new ArrayList<>();
 
                 while ((line = br.readLine()) != null) {
-                    if (line.contains("import")) {
+                    if (line.contains("import") && !line.contains(fileName)) {
                         importList.add(line + "\n");
                     }
-                    if (line.contains("int") || line.contains("String") || line.contains("boolean")) {
-                        argumentList.add(line);
+                    if (line.contains("String ") || line.contains("int ") || line.contains("boolean ") ||
+                        line.contains("double ") || line.contains("Integer ") || line.contains("Boolean ") ) {
+                        if (!line.contains(fileName) && !line.contains(".") && !line.contains("()")) {
+                            variableList.add(line + "\n");
+                        }
                     }
                     if (line.contains("public " + fileName + "(")) {
                         readValidConstructor(line, br);
                     }
                 }
-                primaryImportCollection.add(importList);
+                primaryVariableList.add(variableList);
+                primaryImportList.add(importList);
             }
         } catch (IOException e) {
             System.err.println("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
@@ -102,15 +106,15 @@ public class ScanClass {
         return constructorList;
     }
 
-    public List<String> getArgumentList()  {
-        return argumentList;
-    }
-
     public List<String> getFileName() {
         return fileNameList;
     }
 
-    public List<List<String>> getPrimaryImportCollection() {
-        return primaryImportCollection;
+    public List<List<String>> getPrimaryVariableList()  {
+        return primaryVariableList;
+    }
+
+    public List<List<String>> getPrimaryImportList() {
+        return primaryImportList;
     }
 }
