@@ -26,35 +26,35 @@ public class ScanClass {
     public boolean scanClassForContent(String packageToTestPath) {
         try {
             File dir = new File(packageToTestPath);
-
+            // TODO: Needs support for classes with only default constructor
+            // TODO: change bufferedReader size, avoid creating a new bufferedReader every iteration
             for (File file : dir.listFiles()) {
-                if (file.isFile()) {
-                    System.out.println(file.getName());
-                }
-            }
-
-//            for (File file : dir.listFiles()) {
-            for (File file : dir.listFiles()) {
-                if (file.isFile()) {
+                if (file.isFile() && file.getName().contains(".java")) {
                     setFileName(file);
+
                     FileReader fr = new FileReader(file);
-                    BufferedReader br = new BufferedReader(fr);
+                    BufferedReader br = new BufferedReader(fr, 16384);
 
                     List<String> importList = new ArrayList<>();
                     List<String> variableList = new ArrayList<>();
 
                     String line;
+                    // TODO: Needs support for multi line comment, should skip all content until a ' */ ' is found.
                     while ((line = br.readLine()) != null) {
-                        if (line.contains("import") && !line.contains(fileName)) {
+                        if (line.contains("import") && !line.contains(fileName) && !line.contains("//")) {
                             importList.add(line + "\n");
                         }
+                        // Check type
                         if (line.contains("String ") || line.contains("int ") || line.contains("boolean ") ||
                                 line.contains("double ") || line.contains("Integer ") || line.contains("Boolean ")) {
+                            // Check for incompatible characters
                             if (!line.contains(fileName) && !line.contains(".") && !line.contains("()")) {
                                 variableList.add(line + "\n");
                             }
                         }
-                        if (line.contains("public " + fileName + "(")) {
+                        // Check for constructor
+                        if (line.contains("public " + fileName + "(") && !line.contains("//") &&
+                                !line.contains("/*")  && !line.contains("*/")) {
                             readValidConstructor(line, br);
                         }
                     }
@@ -86,7 +86,6 @@ public class ScanClass {
         fileName = file.getName();
         int fileExtensionPosition = fileName.indexOf(".");
         fileName = fileName.substring(0, fileExtensionPosition);
-//        fileNameList.add(fileName);
     }
 
     /**
@@ -99,10 +98,12 @@ public class ScanClass {
             StringBuilder sb = new StringBuilder();
             sb.append(line + "\n");
             while ((line = br.readLine()) != null) {
-                sb.append(line + "\n");
-                if (line.contains("}")) {
-                    constructorList.add(sb.toString());
-                    break;
+                if (!line.contains("//") && !line.contains("/*") && !line.contains("*/")) {
+                    sb.append(line + "\n");
+                    if (line.contains("}")) {
+                        constructorList.add(sb.toString());
+                        break;
+                    }
                 }
             }
         } catch (IOException e) {

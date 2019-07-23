@@ -1,14 +1,18 @@
 package testomatic.a.classestotest;
 
-public class DemoClassTwo {
+import java.util.Scanner;
+
+public class DemoClassB {
 
     private String testClassInfoOne;
     private String testClassInfoTwo;
 
-//    public DemoClassTwo(String testClassInfoOne, String testClassInfoTwo) {
-//        this.testClassInfoOne = testClassInfoOne;
-//        this.testClassInfoTwo = testClassInfoTwo;
-//    }
+    Scanner keyboard = new Scanner(System.in);
+
+    public DemoClassB(String testClassInfoOne, String testClassInfoTwo) {
+        this.testClassInfoOne = testClassInfoOne;
+        this.testClassInfoTwo = testClassInfoTwo;
+    }
 
     public void outputClassInfo() {
         System.out.println(testClassInfoOne);
@@ -17,4 +21,5 @@ public class DemoClassTwo {
     public String getTestClassInfo() {
         return testClassInfoOne;
     }
+
 }

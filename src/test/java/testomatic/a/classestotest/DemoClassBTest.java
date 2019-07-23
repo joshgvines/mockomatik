@@ -1,5 +1,7 @@
 package testomatic.a.classestotest; 
 
+import java.util.Scanner;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,13 +10,19 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DemoClassThreeTest {
+public class DemoClassBTest {
 
-	private DemoClassThree cut;
+    private String testClassInfoOne;
+    private String testClassInfoTwo;
+
+
+	private DemoClassB cut;
 
 	@Before
 	public void setUp() {
-		cut = new DemoClassThree();
+		cut = new DemoClassB(testClassInfoOne,
+					testClassInfoTwo
+		);
 	}
 
 	@After

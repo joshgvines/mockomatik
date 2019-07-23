@@ -31,10 +31,6 @@ public class CreateClass {
                 if (!testObjects.isEmpty()) {
                     fileName = fileNameList.get(index);
 
-//                    variables = variableList.get(index);
-
-
-
                     destinationPackage = createPackageStatement(packageForNewTest);
 
                     // Possible Imports
@@ -66,7 +62,7 @@ public class CreateClass {
                     writer.println("\tprivate " + fileName + " cut;\n");
 
                     // Create Class Under Test Objects
-                    if (!testObjects.isEmpty() && !testObjects.contains("//")) {
+                    if (!testObjects.isEmpty() && !testObjects.contains("//") && testObjects.contains("(")) {
 
                         System.out.println("\n" + fileName + " " + testObjects + "\n");
 
@@ -156,7 +152,7 @@ public class CreateClass {
             testObjects = testObjects.replaceAll("\\s", "");
         }
         if(testObjects.contains(",")) {
-            testObjects = testObjects.replaceAll(",", ",\n\t\t\t\t\t\t\t");
+            testObjects = testObjects.replaceAll(",", ",\n\t\t\t\t\t");
         }
         return testObjects;
     }
