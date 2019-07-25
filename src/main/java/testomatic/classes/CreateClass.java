@@ -28,7 +28,7 @@ public class CreateClass {
                 File file = new File(packageForNewTest + fileNameList.get(index) + "Test.java");
 
 //                if (testObjects.contains(fileNameList.get(index) + "(")) {
-                if (!testObjects.isEmpty()) {
+                if (constructorList.size() > 0) {
                     fileName = fileNameList.get(index);
 
                     destinationPackage = createPackageStatement(packageForNewTest);
@@ -55,7 +55,7 @@ public class CreateClass {
                     if(!primaryVariableList.isEmpty()){
                         variables = createVariableStatements(primaryVariableList.get(index));
                         if (!variables.contains("//")) {
-                            writer.println(variables);
+                            writer.print(variables);
                         }
                     }
 
@@ -64,7 +64,7 @@ public class CreateClass {
                     // Create Class Under Test Objects
                     if (!testObjects.isEmpty() && !testObjects.contains("//") && testObjects.contains("(")) {
 
-                        System.out.println("\n" + fileName + " " + testObjects + "\n");
+                        System.out.println("\n 1) " + fileName + "\n" + testObjects + "\n");
 
                         testObjects = createConstructorArguments(testObjects, fileName);
                         // TODO: To be, or not to be, mocked?
@@ -144,6 +144,24 @@ public class CreateClass {
         if (testObjects.contains("Double")) {
             testObjects = testObjects.replaceAll("Double ", "");
         }
+        if (testObjects.contains("float")) {
+            testObjects = testObjects.replaceAll("float ", "");
+        }
+        if (testObjects.contains("Float")) {
+            testObjects = testObjects.replaceAll("Float ", "");
+        }
+        if (testObjects.contains("short")) {
+            testObjects = testObjects.replaceAll("short ", "");
+        }
+        if (testObjects.contains("Short")) {
+            testObjects = testObjects.replaceAll("Short ", "");
+        }
+        if (testObjects.contains("char")) {
+            testObjects = testObjects.replaceAll("char ", "");
+        }
+        if (testObjects.contains("Char")) {
+            testObjects = testObjects.replaceAll("Char ", "");
+        }
         if (testObjects.contains(fileName)) {
             testObjects = testObjects.replaceAll(fileName, "");
         }
@@ -152,7 +170,7 @@ public class CreateClass {
             testObjects = testObjects.replaceAll("\\s", "");
         }
         if(testObjects.contains(",")) {
-            testObjects = testObjects.replaceAll(",", ",\n\t\t\t\t\t");
+            testObjects = testObjects.replaceAll(",", ",\r\t\t\t");
         }
         return testObjects;
     }
@@ -218,6 +236,5 @@ public class CreateClass {
         }
         return destinationPackage;
     }
-
 
 }

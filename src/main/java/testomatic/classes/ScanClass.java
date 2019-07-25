@@ -26,7 +26,6 @@ public class ScanClass {
     public boolean scanClassForContent(String packageToTestPath) {
         try {
             File dir = new File(packageToTestPath);
-            // TODO: Needs support for classes with only default constructor
             // TODO: change bufferedReader size, avoid creating a new bufferedReader every iteration
             for (File file : dir.listFiles()) {
                 if (file.isFile() && file.getName().contains(".java")) {
@@ -39,27 +38,35 @@ public class ScanClass {
                     List<String> variableList = new ArrayList<>();
 
                     String line;
+                    boolean defaultConstructor = false;
                     // TODO: Needs support for multi line comment, should skip all content until a ' */ ' is found.
                     while ((line = br.readLine()) != null) {
                         if (line.contains("import") && !line.contains(fileName) && !line.contains("//")) {
                             importList.add(line + "\n");
                         }
                         // Check type
-                        if (line.contains("String ") || line.contains("int ") || line.contains("boolean ") ||
-                                line.contains("double ") || line.contains("Integer ") || line.contains("Boolean ")) {
+                        if (line.contains("String ") || line.contains("int ") || line.contains("Integer ") ||
+                                line.contains("double ") || line.contains("Double ") || line.contains("float ") ||
+                                line.contains("Float ") || line.contains("long ") || line.contains("Long ") ||
+                                line.contains("short ") || line.contains("Short ") || line.contains("boolean ") ||
+                                line.contains("Boolean ") || line.contains("char ")) {
                             // Check for incompatible characters
-                            if (!line.contains(fileName) && !line.contains(".") && !line.contains("()")) {
+                            if (!line.contains(fileName) && !line.contains("(") && !line.contains("this.")) {
                                 variableList.add(line + "\n");
                             }
                         }
                         // Check for constructor
                         if (line.contains("public " + fileName + "(") && !line.contains("//") &&
                                 !line.contains("/*")  && !line.contains("*/")) {
-                            readValidConstructor(line, br);
+                            defaultConstructor = readValidConstructor(line, br);
                         }
                     }
                     fr.close();
                     br.close();
+
+                    if (!defaultConstructor) {
+                        constructorList.add("//");
+                    }
                     fileNameList.add(fileName);
                     primaryVariableList.add(variableList);
                     primaryImportList.add(importList);
@@ -93,7 +100,7 @@ public class ScanClass {
      * @param line
      * @param br
      */
-    private void readValidConstructor(String line, BufferedReader br) {
+    private boolean readValidConstructor(String line, BufferedReader br) {
         try {
             StringBuilder sb = new StringBuilder();
             sb.append(line + "\n");
@@ -102,7 +109,7 @@ public class ScanClass {
                     sb.append(line + "\n");
                     if (line.contains("}")) {
                         constructorList.add(sb.toString());
-                        break;
+                        return true;
                     }
                 }
             }
@@ -113,6 +120,7 @@ public class ScanClass {
             System.err.println(" > ERROR: setConstructorArguments, file name: " + fileName + " " + e);
             e.printStackTrace();
         }
+        return false;
     }
 
     public List<String> getConstructor() {

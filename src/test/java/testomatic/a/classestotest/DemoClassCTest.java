@@ -14,13 +14,11 @@ public class DemoClassCTest {
     private String testClassInfoTwo = "test value Two";
         int unused = 100;
 
-
 	private DemoClassC cut;
 
 	@Before
 	public void setUp() {
-		cut = new DemoClassC(testClassInfoOne,
-					testClassInfoTwo
+		cut = new DemoClassC(testClassInfoOne,			testClassInfoTwo
 		);
 	}
 

@@ -10,13 +10,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class DemoClassATest {
 
-
 	private DemoClassA cut;
 
 	@Before
 	public void setUp() {
-		cut = new DemoClassA(
-		);
+		cut = new DemoClassA();
 	}
 
 	@After

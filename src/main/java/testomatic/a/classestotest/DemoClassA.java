@@ -5,9 +5,7 @@ public class DemoClassA {
 
 
 
-    public DemoClassA() {
 
-    }
 
 
    // blah

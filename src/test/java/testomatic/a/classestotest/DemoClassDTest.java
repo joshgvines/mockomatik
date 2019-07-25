@@ -13,13 +13,11 @@ public class DemoClassDTest {
     private String testClassInfoOne = "test";
     private String testClassInfoTwo = "test";
 
-
 	private DemoClassD cut;
 
 	@Before
 	public void setUp() {
-		cut = new DemoClassD(testClassInfoOne,
-					testClassInfoTwo
+		cut = new DemoClassD(testClassInfoOne,			testClassInfoTwo
 		);
 	}
 
