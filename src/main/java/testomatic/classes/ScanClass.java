@@ -41,6 +41,9 @@ public class ScanClass {
                     boolean defaultConstructor = false;
                     // TODO: Needs support for multi line comment, should skip all content until a ' */ ' is found.
                     while ((line = br.readLine()) != null) {
+                        if (line.contains("/*")) {
+                            ignoreMultiLineComments(line, br);
+                        }
                         if (line.contains("import") && !line.contains(fileName) && !line.contains("//")) {
                             importList.add(line + "\n");
                         }
@@ -49,7 +52,8 @@ public class ScanClass {
                                 line.contains("double ") || line.contains("Double ") || line.contains("float ") ||
                                 line.contains("Float ") || line.contains("long ") || line.contains("Long ") ||
                                 line.contains("short ") || line.contains("Short ") || line.contains("boolean ") ||
-                                line.contains("Boolean ") || line.contains("char ")) {
+                                line.contains("Boolean ") || line.contains("char ") || line.contains("byte ") ||
+                                line.contains("Byte ")) {
                             // Check for incompatible characters
                             if (!line.contains(fileName) && !line.contains("(") && !line.contains("this.")) {
                                 variableList.add(line + "\n");
@@ -114,13 +118,30 @@ public class ScanClass {
                 }
             }
         } catch (IOException e) {
-            System.err.println(" > ERROR: setConstructorArguments, file name: " + fileName + " " + e);
+            System.err.println(" > ERROR: setConstructorArguments > file name: " + fileName + " " + e);
             e.printStackTrace();
         } catch (Exception e) {
-            System.err.println(" > ERROR: setConstructorArguments, file name: " + fileName + " " + e);
+            System.err.println(" > ERROR: setConstructorArguments > file name: " + fileName + " " + e);
             e.printStackTrace();
         }
         return false;
+    }
+
+    private void ignoreMultiLineComments(String line, BufferedReader br) {
+        try {
+            while((line = br.readLine()) != null) {
+                if(line.contains("*/")) {
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            System.err.println(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println(" > ERROR: setConstructorArguments() > file name: " + fileName + " " + e);
+            e.printStackTrace();
+        }
+
     }
 
     public List<String> getConstructor() {

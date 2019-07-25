@@ -8,17 +8,16 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DemoClassCTest {
+public class DemoClassD_IrregularConstructorTest {
 
-    private String testClassInfoOne = "test value One";
-    private String testClassInfoTwo = "test value Two";
-        int unused = 100;
+    private String testClassInfoOne = "test";
+    private String testClassInfoTwo = "test";
 
-	private DemoClassC cut;
+	private DemoClassD_IrregularConstructor cut;
 
 	@Before
 	public void setUp() {
-		cut = new DemoClassC(testClassInfoOne,			testClassInfoTwo
+		cut = new DemoClassD_IrregularConstructor(testClassInfoOne,			testClassInfoTwo
 		);
 	}
 

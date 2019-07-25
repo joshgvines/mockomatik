@@ -2,7 +2,7 @@ package testomatic.a.classestotest;
 
 import java.util.Scanner;
 
-public class DemoClassB {
+public class DemoClassB_PrimitiveTypes {
 
     private String testClassInfoOne;
     private String testClassInfoTwo;
@@ -25,10 +25,13 @@ public class DemoClassB {
     private int testint = 3000000;
     private Integer testInt = 7000000;
 
+    private byte testbyte = 1;
+    private Byte testByte = 2;
+
     Scanner keyboard = new Scanner(System.in);
 
     // Partially unused constructor;
-    public DemoClassB(float testfloat, double testdouble, short testshort) {
+    public DemoClassB_PrimitiveTypes(float testfloat, double testdouble, short testshort) {
         this.testfloat = testfloat;
         this.testdouble = testdouble;
     }

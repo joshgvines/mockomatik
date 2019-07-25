@@ -8,16 +8,17 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DemoClassDTest {
+public class DemoClassC_MultiLineCommentTest {
 
-    private String testClassInfoOne = "test";
-    private String testClassInfoTwo = "test";
+    private String testClassInfoOne = "test value One";
+    private String testClassInfoTwo = "test value Two";
+        int unused = 100;
 
-	private DemoClassD cut;
+	private DemoClassC_MultiLineComment cut;
 
 	@Before
 	public void setUp() {
-		cut = new DemoClassD(testClassInfoOne,			testClassInfoTwo
+		cut = new DemoClassC_MultiLineComment(testClassInfoOne,			testClassInfoTwo
 		);
 	}
 

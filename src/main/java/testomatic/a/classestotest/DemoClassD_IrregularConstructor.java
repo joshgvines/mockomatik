@@ -2,14 +2,15 @@ package testomatic.a.classestotest;
 
 // import is commented out
 
-public class DemoClassD {
+public class DemoClassD_IrregularConstructor {
 
     private String testClassInfoOne = "test";
     private String testClassInfoTwo = "test";
 
     // Constructor is partially commented out
-    public DemoClassD(String testClassInfoOne, String testClassInfoTwo) {
-        this.testClassInfoOne = testClassInfoOne;
+                                       public DemoClassD_IrregularConstructor(String testClassInfoOne,
+                                                                              String testClassInfoTwo) {
+                    this.testClassInfoOne = testClassInfoOne;
 //        this.testClassInfoTwo = testClassInfoTwo;
 
 

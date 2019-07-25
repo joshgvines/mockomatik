@@ -61,24 +61,24 @@ public class CreateClass {
 
                     writer.println("\tprivate " + fileName + " cut;\n");
 
+                    writer.print(
+                            "\t@Before\n" +
+                            "\tpublic void setUp() {\n" );
+                    // TODO: Add support for classes with multiple constructors
                     // Create Class Under Test Objects
                     if (!testObjects.isEmpty() && !testObjects.contains("//") && testObjects.contains("(")) {
 
                         System.out.println("\n 1) " + fileName + "\n" + testObjects + "\n");
 
                         testObjects = createConstructorArguments(testObjects, fileName);
-                        // TODO: To be, or not to be, mocked?
+                        // TODO: If objects are able to be mocked they will go here when support is added
 //                        writer.println("\t@Mock " + testObjects + "\n");
                         writer.println(
-                                "\t@Before\n" +
-                                "\tpublic void setUp() {\n" +
                                 "\t\tcut = new " + fileName + "(" + testObjects + "\n" +
                                 "\t\t);\n" +
                                 "\t}\n");
                     } else {
                         writer.println(
-                                "\t@Before\n" +
-                                "\tpublic void setUp() {\n" +
                                 "\t\tcut = new " + fileName + "();\n" +
                                 "\t}\n");
                     }
@@ -161,6 +161,12 @@ public class CreateClass {
         }
         if (testObjects.contains("Char")) {
             testObjects = testObjects.replaceAll("Char ", "");
+        }
+        if (testObjects.contains("byte")) {
+            testObjects = testObjects.replaceAll("byte ", "");
+        }
+        if (testObjects.contains("Byte")) {
+            testObjects = testObjects.replaceAll("Byte ", "");
         }
         if (testObjects.contains(fileName)) {
             testObjects = testObjects.replaceAll(fileName, "");

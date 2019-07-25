@@ -8,13 +8,13 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DemoClassATest {
+public class DemoClassA_DefaultConstructorTest {
 
-	private DemoClassA cut;
+	private DemoClassA_DefaultConstructor cut;
 
 	@Before
 	public void setUp() {
-		cut = new DemoClassA();
+		cut = new DemoClassA_DefaultConstructor();
 	}
 
 	@After

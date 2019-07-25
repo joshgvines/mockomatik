@@ -1,15 +1,25 @@
 package testomatic.a.classestotest;
 
 // A Basic Class
-public class DemoClassC {
+public class DemoClassC_MultiLineComment {
 
     private String testClassInfoOne = "test value One";
     private String testClassInfoTwo = "test value Two";
 
-    public DemoClassC(String testClassInfoOne, String testClassInfoTwo) {
+    public DemoClassC_MultiLineComment(String testClassInfoOne, String testClassInfoTwo) {
         this.testClassInfoOne = testClassInfoOne;
         this.testClassInfoTwo = testClassInfoTwo;
     }
+
+    /*
+    blah
+    blah
+    String
+    double
+    Double
+    public
+    String these lines should be ignored
+     */
 
     public void printClassInfo() {
         System.out.println(testClassInfoOne);

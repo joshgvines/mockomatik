@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DemoClassBTest {
+public class DemoClassB_PrimitiveTypesTest {
 
     private String testClassInfoOne;
     private String testClassInfoTwo;
@@ -25,12 +25,14 @@ public class DemoClassBTest {
     private Long testLong = 50000000000000L;
     private int testint = 3000000;
     private Integer testInt = 7000000;
+    private byte testbyte = 1;
+    private Byte testByte = 2;
 
-	private DemoClassB cut;
+	private DemoClassB_PrimitiveTypes cut;
 
 	@Before
 	public void setUp() {
-		cut = new DemoClassB(testfloat,			testdouble,			testshort
+		cut = new DemoClassB_PrimitiveTypes(testfloat,			testdouble,			testshort
 		);
 	}
 
