@@ -34,7 +34,7 @@ public class CreateClass {
                     destinationPackage = createPackageStatement(packageForNewTest);
 
                     // Possible Imports
-                    imports = createImportStatements(primaryImportList.get(index));
+                    imports = listToString(primaryImportList.get(index));
                     // Required Imports
                     imports = imports + "import org.junit.After;\n";
                     imports = imports + "import org.junit.Before;\n";
@@ -53,7 +53,7 @@ public class CreateClass {
                     writer.println("public class " + fileName + "Test {\n");
 
                     if(!primaryVariableList.isEmpty()){
-                        variables = createVariableStatements(primaryVariableList.get(index));
+                        variables = listToString(primaryVariableList.get(index));
                         if (!variables.contains("//")) {
                             writer.print(variables);
                         }
@@ -177,38 +177,20 @@ public class CreateClass {
 
     /**
      * Modify import statements into correct format and location
-     * @param importList
-     * @return String imports
+     * @param list
+     * @return String listToString
      */
-    private String createImportStatements(List<String> importList) {
-        if (!importList.isEmpty()) {
-            String imports = importList.toString();
-            imports = imports.replaceAll("\\[", "");
-            imports = imports.replaceAll("]", "");
-            imports = imports.replaceAll(", ", "");
-            imports.trim();
-            return imports + "\n";
+    private String listToString(List<String> list) {
+        if (!list.isEmpty()) {
+            String listToString = list.toString();
+            listToString = listToString.replaceAll("\\[", "");
+            listToString = listToString.replaceAll("]", "");
+            listToString = listToString.replaceAll(", ", "");
+            listToString.trim();
+            return listToString + "\n";
         }
         return "";
     }
-
-    /**
-     * Modify variable statements into correct format and location
-     * @param variableList
-     * @return String variables
-     */
-    private String createVariableStatements(List<String> variableList) {
-        if (!variableList.isEmpty()) {
-            String variables = variableList.toString();
-            variables = variables.replaceAll("\\[", "");
-            variables = variables.replaceAll("]", "");
-            variables = variables.replaceAll(", ", "");
-            variables.trim();
-            return variables + "\n";
-        }
-        return "";
-    }
-
     /**
      * Create the package statement for test class under construction from path
      * @param packageForNewTest
