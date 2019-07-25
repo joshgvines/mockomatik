@@ -39,10 +39,9 @@ public class ScanClass {
 
                     String line;
                     boolean defaultConstructor = false;
-                    // TODO: Needs support for multi line comment, should skip all content until a ' */ ' is found.
                     while ((line = br.readLine()) != null) {
                         if (line.contains("/*")) {
-                            ignoreMultiLineComments(line, br);
+                            ignoreMultiLineComments(br);
                         }
                         if (line.contains("import") && !line.contains(fileName) && !line.contains("//")) {
                             importList.add(line + "\n");
@@ -127,8 +126,13 @@ public class ScanClass {
         return false;
     }
 
-    private void ignoreMultiLineComments(String line, BufferedReader br) {
+    /**
+     * Ignores all line until the end of a multiline comment in  found.
+     * @param br
+     */
+    private void ignoreMultiLineComments(BufferedReader br) {
         try {
+            String line;
             while((line = br.readLine()) != null) {
                 if(line.contains("*/")) {
                     break;
@@ -138,7 +142,7 @@ public class ScanClass {
             System.err.println(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
             e.printStackTrace();
         } catch (Exception e) {
-            System.err.println(" > ERROR: setConstructorArguments() > file name: " + fileName + " " + e);
+            System.err.println(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
             e.printStackTrace();
         }
 
