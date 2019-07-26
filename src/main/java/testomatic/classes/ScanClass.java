@@ -47,6 +47,11 @@ public class ScanClass {
                         if (line.contains("import") && !line.contains(fileName) && !line.contains("//")) {
                             importList.add(line + "\n");
                         }
+                        // Check for constructor
+                        if (line.contains("public " + fileName + "(") && !line.contains("//") &&
+                                !line.contains("/*")  && !line.contains("*/")) {
+                            defaultConstructor = readValidConstructor(line, br, constructorList);
+                        }
                         // Check type
                         if (line.contains(" String ") || line.contains(" int ") || line.contains(" Integer ") ||
                                 line.contains(" double ")  || line.contains(" Double ") || line.contains(" float ")   ||
@@ -57,24 +62,19 @@ public class ScanClass {
                             // Check for incompatible characters
                             if (!line.contains(fileName) && !line.contains("(") && !line.contains("this.")) {
                                 // Force variables to private modifier
-                                if (line.contains("public ")) {
+                                if (line.contains(" public ")) {
                                     line = line.replaceAll("public ", "private ");
                                 }
-                                if (line.contains("protected ")) {
+                                if (line.contains(" protected ")) {
                                     line = line.replaceAll("protected ", "private ");
                                 }
-                                if (!line.contains("private ")) {
+                                if (!line.contains(" private ")) {
                                     line = "private " + line;
                                     line = line.replaceAll("\\s+", " ");
                                     line = "\t" + line;
                                 }
                                 variableList.add(line + "\n");
                             }
-                        }
-                        // Check for constructor
-                        if (line.contains("public " + fileName + "(") && !line.contains("//") &&
-                                !line.contains("/*")  && !line.contains("*/")) {
-                            defaultConstructor = readValidConstructor(line, br, constructorList);
                         }
                     }
                     fr.close();

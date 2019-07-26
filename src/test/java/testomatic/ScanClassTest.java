@@ -1,4 +1,4 @@
-package testomatic.classes;
+package testomatic;
 
 import org.junit.Test;
 

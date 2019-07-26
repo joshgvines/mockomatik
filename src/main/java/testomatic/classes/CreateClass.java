@@ -23,14 +23,14 @@ public class CreateClass {
         String imports;
 
         try {
-            for (int index = 0; index < fileNameList.size(); index++) {
-                File file = new File(packageForNewTest + fileNameList.get(index) + "Test.java");
+            for (int primaryIndex = 0; primaryIndex < fileNameList.size(); primaryIndex++) {
+                File file = new File(packageForNewTest + fileNameList.get(primaryIndex) + "Test.java");
 
                 destinationPackage = createPackageStatement(packageForNewTest);
-                fileName = fileNameList.get(index);
+                fileName = fileNameList.get(primaryIndex);
 
                 // Possible Imports
-                imports = listToString(primaryImportList.get(index));
+                imports = listToString(primaryImportList.get(primaryIndex));
                 // Required Imports
                 imports = imports + "import org.junit.After;\n";
                 imports = imports + "import org.junit.Before;\n";
@@ -49,40 +49,84 @@ public class CreateClass {
                 writer.println("public class " + fileName + "Test {\n");
 
                 if(!primaryVariableList.isEmpty()){
-                    variables = listToString(primaryVariableList.get(index));
+                    variables = listToString(primaryVariableList.get(primaryIndex));
                     writer.print(variables);
                 }
 
-                writer.println("\tprivate " + fileName + " cut;\n");
-                writer.print(
-                        "\t@Before\n" +
-                        "\tpublic void setUp() {\n" );
+                if (!primaryConstructorList.isEmpty() && primaryConstructorList.get(primaryIndex) != null) {
 
-                if (!primaryConstructorList.isEmpty() && primaryConstructorList.get(index) != null) {
-                    testObjects = listToString(primaryConstructorList.get(index));
-                    if (!testObjects.isEmpty() && !testObjects.contains("//") && testObjects.contains("(")) {
-                        testObjects = createConstructorArguments(testObjects, fileName);
+                    System.out.println(primaryIndex + ") " + fileName + "\n" +
+                            primaryConstructorList.get(primaryIndex));
+
+                    // Multiple constructors
+                    if (primaryConstructorList.get(primaryIndex).size() > 1) {
+
+                        List<String> constructorList = primaryConstructorList.get(primaryIndex);
+
+                        writer.print("\tprivate " + fileName);
+                        for (int cutIndex = 0; cutIndex < constructorList.size(); cutIndex++) {
+                            if (cutIndex == (constructorList.size() - 1)) {
+                                writer.println(" cut" + (cutIndex + 1) + ";\n");
+                            } else {
+                                writer.print(" cut" + (cutIndex + 1) + ", ");
+                            }
+                        }
+                        writer.print(
+                                "\t@Before\n" +
+                                "\tpublic void setUp() {\n" );
+
+                        for (int constructorIndex = 0; constructorIndex < constructorList.size(); constructorIndex++) {
+                            testObjects = makeConstructorArgs(constructorList.get(constructorIndex), fileName);
+                            writer.println(
+                                    "\t\tcut" + (constructorIndex + 1) + " = new " + fileName + "(" + testObjects + "\n" +
+                                            "\t\t);");
+                        }
                         writer.println(
-                                "\t\tcut = new " + fileName + "(" + testObjects + "\n" +
-                                        "\t\t);\n" +
-                                        "\t}\n");
+                                "\t}\n\n" +
+                                "\t@After\n" +
+                                "\tpublic void tearDown() {");
+
+                        for (int tearDownIndex = 0; tearDownIndex < constructorList.size(); tearDownIndex++) {
+                            if (tearDownIndex == (constructorList.size() - 1)) {
+                                writer.println("\t\tcut" + (tearDownIndex + 1) + " = null;\n\t}\n");
+                            } else {
+                                writer.println("\t\tcut" + (tearDownIndex + 1) + " = null;");
+                            }
+                        }
                     } else {
-                        writer.println(
-                                "\t\tcut = new " + fileName + "();\n" +
-                                        "\t}\n");
-                    }
 
-                    writer.println(
-                            "\t@After\n" +
-                            "\tpublic void tearDown() {\n" +
-                            "\t\tcut = null;\n" +
-                            "\t}\n");
+                        writer.println("\tprivate " + fileName + " cut;\n");
+                        writer.print(
+                                "\t@Before\n" +
+                                "\tpublic void setUp() {\n" );
+
+                        // Single Constructor
+                        testObjects = listToString(primaryConstructorList.get(primaryIndex));
+                        if (!testObjects.contains("//") && testObjects.contains("(")) {
+                            testObjects = makeConstructorArgs(testObjects, fileName);
+                            writer.println(
+                                    "\t\tcut = new " + fileName + "(" + testObjects + "\n" +
+                                            "\t\t);\n" +
+                                            "\t}\n");
+                        } else {
+                            // Default Constructor
+                            writer.println(
+                                    "\t\tcut = new " + fileName + "();\n" +
+                                            "\t}\n");
+                        }
+                        writer.println(
+                                "\t@After\n" +
+                                "\tpublic void tearDown() {\n" +
+                                "\t\tcut = null;\n" +
+                                "\t}\n");
+                    }
                     writer.println(
                             "\t@Test\n" +
                             "\tpublic void testMethod() {\n" +
                             "\t\t//blah\n" +
                             "\t}");
                     writer.println("}");
+
                     writer.close();
                     file.createNewFile();
                 } else {
@@ -95,19 +139,13 @@ public class CreateClass {
         } catch (IOException e) {
             System.out.println(" > ERROR: CreateClass > buildTest()\n" +  e);
             e.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(" > ERROR: CreateClass > buildTest()\n" + e);
             e.printStackTrace();
         }
     }
 
-    /**
-     * Modifies variables and objects needed for class under test constructor(s).
-     * @param testObjects
-     * @param fileName
-     * @return String testObjects
-     */
-    private String createConstructorArguments(String testObjects, String fileName) {
+    private String makeConstructorArgs(String testObjects, String fileName) {
         int startOfObjects = testObjects.indexOf(fileName + "(");
         testObjects = testObjects.substring(startOfObjects, testObjects.indexOf(")"));
 
@@ -169,33 +207,29 @@ public class CreateClass {
         return testObjects;
     }
 
-    /**
-     * Modify import statements into correct format and location
-     * @param list
-     * @return String listToString
-     */
     private String listToString(List<String> list) {
         if (!list.isEmpty()) {
             String listToString = list.toString();
+
             listToString = listToString.replaceAll("\\[", "");
             listToString = listToString.replaceAll("]", "");
-            listToString = listToString.replaceAll(", ", "");
+
+            // Differentiate between variables and constructor arguments
+            if (listToString.contains("private ")) {
+                listToString = listToString.replaceAll(", ", "");
+            }
             listToString.trim();
 
             return listToString + "\n";
         }
         return "";
     }
-    /**
-     * Create the package statement for test class under construction from path
-     * @param packageForNewTest
-     * @return String destinationPackage
-     */
+
     private String createPackageStatement(String packageForNewTest) {
         String destinationPackage = packageForNewTest;
         destinationPackage = destinationPackage.replaceAll("\\\\", ".");
 
-        // TODO: needs to adapt to different project environments, or give the option to add a package type
+        // TODO: Needs to adapt to different project environments, or give the option to add a package type
         destinationPackage = destinationPackage.toLowerCase();
         if (destinationPackage.contains("java")) {
             destinationPackage = destinationPackage.substring(
@@ -208,8 +242,8 @@ public class CreateClass {
             destinationPackage = destinationPackage.substring(
                     (destinationPackage.indexOf("com") + 4), (destinationPackage.length() - 1));
         } else {
-            // TODO: throw correct error here
-            System.err.println(" > ERROR: CreateClass > createPackageStatement()\n" +
+            // TODO: Throw correct error here
+            System.out.println(" > ERROR: CreateClass > createPackageStatement()\n" +
                     " > An invalid or incompatible path was entered as a destination package!");
             System.exit(0);
         }

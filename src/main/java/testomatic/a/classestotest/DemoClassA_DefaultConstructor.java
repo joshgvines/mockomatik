@@ -24,7 +24,4 @@ public class DemoClassA_DefaultConstructor {
 
 
 
-
-
-
 }
