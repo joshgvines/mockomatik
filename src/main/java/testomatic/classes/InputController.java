@@ -20,11 +20,11 @@ public class InputController {
         String packageToTestPath;
         String packageForNewTest;
         do {
-            System.out.println("\nEnter test package path: ");
+            System.out.println("\n > Enter A Path To Classes: ");
             packageToTestPath = sc.nextLine();
         } while (!(inputValidation(packageToTestPath)));
         do {
-            System.out.println("\nEnter location for new tests: ");
+            System.out.println("\n > Enter A Path For New Tests: ");
             packageForNewTest = sc.nextLine();
         } while (!(inputValidation(packageForNewTest)));
 
@@ -52,7 +52,7 @@ public class InputController {
 
     public void runTestProcess(String packageToTestPath, String packageForNewTest) {
         if (scanClass.scanClassForContent(packageToTestPath)) {
-            List<String> returnedValidConstructorList = scanClass.getConstructor();
+            List<List<String>> returnedValidConstructorList = scanClass.getConstructor();
             List<List<String>> returnedValidVariableList = scanClass.getPrimaryVariableList();
             List<List<String>> returnedValidImportList = scanClass.getPrimaryImportList();
 

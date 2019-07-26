@@ -13,7 +13,7 @@ public class CreateClass {
 
     public void buildTest(String packageForNewTest,
                           List<String> fileNameList,
-                          List<String> constructorList,
+                          List<List<String>> primaryConstructorList,
                           List<List<String>> primaryVariableList,
                           List<List<String>> primaryImportList) {
         String fileName;
@@ -23,65 +23,55 @@ public class CreateClass {
         String imports;
 
         try {
-            for (int index = 0; index < constructorList.size(); index++) {
-                testObjects = constructorList.get(index);
+            for (int index = 0; index < fileNameList.size(); index++) {
                 File file = new File(packageForNewTest + fileNameList.get(index) + "Test.java");
 
-//                if (testObjects.contains(fileNameList.get(index) + "(")) {
-                if (constructorList.size() > 0) {
-                    fileName = fileNameList.get(index);
+                destinationPackage = createPackageStatement(packageForNewTest);
+                fileName = fileNameList.get(index);
 
-                    destinationPackage = createPackageStatement(packageForNewTest);
+                // Possible Imports
+                imports = listToString(primaryImportList.get(index));
+                // Required Imports
+                imports = imports + "import org.junit.After;\n";
+                imports = imports + "import org.junit.Before;\n";
+                imports = imports + "import org.junit.Test;\n";
+                imports = imports + "import org.junit.runner.RunWith;\n";
+                imports = imports + "import org.mockito.Mock;\n";
+                imports = imports + "import org.mockito.junit.MockitoJUnitRunner;\n\n";
 
-                    // Possible Imports
-                    imports = listToString(primaryImportList.get(index));
-                    // Required Imports
-                    imports = imports + "import org.junit.After;\n";
-                    imports = imports + "import org.junit.Before;\n";
-                    imports = imports + "import org.junit.Test;\n";
-                    imports = imports + "import org.junit.runner.RunWith;\n";
-                    imports = imports + "import org.mockito.Mock;\n";
-                    imports = imports + "import org.mockito.junit.MockitoJUnitRunner;\n\n";
+                PrintWriter writer = new PrintWriter(file);
 
-                    PrintWriter writer = new PrintWriter(file);
+                writer.println("package " + destinationPackage + "; \n");
 
-                    writer.println("package " + destinationPackage + "; \n");
+                writer.print(imports);
 
-                    writer.print(imports);
+                writer.println("@RunWith(MockitoJUnitRunner.class)");
+                writer.println("public class " + fileName + "Test {\n");
 
-                    writer.println("@RunWith(MockitoJUnitRunner.class)");
-                    writer.println("public class " + fileName + "Test {\n");
+                if(!primaryVariableList.isEmpty()){
+                    variables = listToString(primaryVariableList.get(index));
+                    writer.print(variables);
+                }
 
-                    if(!primaryVariableList.isEmpty()){
-                        variables = listToString(primaryVariableList.get(index));
-                        if (!variables.contains("//")) {
-                            writer.print(variables);
-                        }
-                    }
+                writer.println("\tprivate " + fileName + " cut;\n");
+                writer.print(
+                        "\t@Before\n" +
+                        "\tpublic void setUp() {\n" );
 
-                    writer.println("\tprivate " + fileName + " cut;\n");
-
-                    writer.print(
-                            "\t@Before\n" +
-                            "\tpublic void setUp() {\n" );
-                    // TODO: Add support for classes with multiple constructors
-                    // Create Class Under Test Objects
+                if (!primaryConstructorList.isEmpty() && primaryConstructorList.get(index) != null) {
+                    testObjects = listToString(primaryConstructorList.get(index));
                     if (!testObjects.isEmpty() && !testObjects.contains("//") && testObjects.contains("(")) {
-
-                        System.out.println("\n 1) " + fileName + "\n" + testObjects + "\n");
-
                         testObjects = createConstructorArguments(testObjects, fileName);
-                        // TODO: If objects are able to be mocked they will go here when support is added
-//                        writer.println("\t@Mock " + testObjects + "\n");
                         writer.println(
                                 "\t\tcut = new " + fileName + "(" + testObjects + "\n" +
-                                "\t\t);\n" +
-                                "\t}\n");
+                                        "\t\t);\n" +
+                                        "\t}\n");
                     } else {
                         writer.println(
                                 "\t\tcut = new " + fileName + "();\n" +
-                                "\t}\n");
+                                        "\t}\n");
                     }
+
                     writer.println(
                             "\t@After\n" +
                             "\tpublic void tearDown() {\n" +
@@ -93,22 +83,20 @@ public class CreateClass {
                             "\t\t//blah\n" +
                             "\t}");
                     writer.println("}");
-
                     writer.close();
                     file.createNewFile();
                 } else {
-                    System.err.println(" > ERROR: CreateClass > buildTest() > !testObjects.isEmpty() ");
+                    System.out.println(" > ERROR: CreateClass > buildTest() > !testObjects.isEmpty() ");
                     System.exit(0);
                 }
             }
-            OutputData outputData = new testomatic.classes.OutputData();
+            OutputData outputData = new OutputData();
             outputData.outputTextFile(fileNameList);
-
         } catch (IOException e) {
-            System.err.println(" > ERROR: buildTest() " + e);
+            System.out.println(" > ERROR: CreateClass > buildTest()\n" +  e);
             e.printStackTrace();
         } catch (Exception e){
-            System.err.println(" > ERROR: buildTest() " + e);
+            System.out.println(" > ERROR: CreateClass > buildTest()\n" + e);
             e.printStackTrace();
         }
     }
@@ -123,49 +111,49 @@ public class CreateClass {
         int startOfObjects = testObjects.indexOf(fileName + "(");
         testObjects = testObjects.substring(startOfObjects, testObjects.indexOf(")"));
 
-        if (testObjects.contains("String")) {
+        if (testObjects.contains("String ")) {
             testObjects = testObjects.replaceAll("String ", "");
         }
-        if (testObjects.contains("int")) {
+        if (testObjects.contains("int ")) {
             testObjects = testObjects.replaceAll("int ", "");
         }
-        if (testObjects.contains("Integer")) {
+        if (testObjects.contains("Integer ")) {
             testObjects = testObjects.replaceAll("Integer ", "");
         }
-        if (testObjects.contains("boolean")) {
+        if (testObjects.contains("boolean ")) {
             testObjects = testObjects.replaceAll("boolean ", "");
         }
-        if (testObjects.contains("Boolean")) {
+        if (testObjects.contains("Boolean ")) {
             testObjects = testObjects.replaceAll("Boolean ", "");
         }
-        if (testObjects.contains("double")) {
+        if (testObjects.contains("double ")) {
             testObjects = testObjects.replaceAll("double ", "");
         }
-        if (testObjects.contains("Double")) {
+        if (testObjects.contains("Double ")) {
             testObjects = testObjects.replaceAll("Double ", "");
         }
-        if (testObjects.contains("float")) {
+        if (testObjects.contains("float ")) {
             testObjects = testObjects.replaceAll("float ", "");
         }
-        if (testObjects.contains("Float")) {
+        if (testObjects.contains("Float ")) {
             testObjects = testObjects.replaceAll("Float ", "");
         }
-        if (testObjects.contains("short")) {
+        if (testObjects.contains("short ")) {
             testObjects = testObjects.replaceAll("short ", "");
         }
-        if (testObjects.contains("Short")) {
+        if (testObjects.contains("Short ")) {
             testObjects = testObjects.replaceAll("Short ", "");
         }
-        if (testObjects.contains("char")) {
+        if (testObjects.contains("char ")) {
             testObjects = testObjects.replaceAll("char ", "");
         }
-        if (testObjects.contains("Char")) {
+        if (testObjects.contains("Char ")) {
             testObjects = testObjects.replaceAll("Char ", "");
         }
-        if (testObjects.contains("byte")) {
+        if (testObjects.contains("byte ")) {
             testObjects = testObjects.replaceAll("byte ", "");
         }
-        if (testObjects.contains("Byte")) {
+        if (testObjects.contains("Byte ")) {
             testObjects = testObjects.replaceAll("Byte ", "");
         }
         if (testObjects.contains(fileName)) {
@@ -176,7 +164,7 @@ public class CreateClass {
             testObjects = testObjects.replaceAll("\\s", "");
         }
         if(testObjects.contains(",")) {
-            testObjects = testObjects.replaceAll(",", ",\r\t\t\t");
+            testObjects = testObjects.replaceAll(",", ",\n\t\t\t");
         }
         return testObjects;
     }
@@ -193,6 +181,7 @@ public class CreateClass {
             listToString = listToString.replaceAll("]", "");
             listToString = listToString.replaceAll(", ", "");
             listToString.trim();
+
             return listToString + "\n";
         }
         return "";
@@ -206,6 +195,7 @@ public class CreateClass {
         String destinationPackage = packageForNewTest;
         destinationPackage = destinationPackage.replaceAll("\\\\", ".");
 
+        // TODO: needs to adapt to different project environments, or give the option to add a package type
         destinationPackage = destinationPackage.toLowerCase();
         if (destinationPackage.contains("java")) {
             destinationPackage = destinationPackage.substring(
@@ -219,7 +209,8 @@ public class CreateClass {
                     (destinationPackage.indexOf("com") + 4), (destinationPackage.length() - 1));
         } else {
             // TODO: throw correct error here
-            System.err.println("createPackageStatement: Invalid path");
+            System.err.println(" > ERROR: CreateClass > createPackageStatement()\n" +
+                    " > An invalid or incompatible path was entered as a destination package!");
             System.exit(0);
         }
         return destinationPackage;
