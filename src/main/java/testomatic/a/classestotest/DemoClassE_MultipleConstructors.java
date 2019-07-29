@@ -5,6 +5,8 @@ public class DemoClassE_MultipleConstructors {
 
     String testString;
     int testInt;
+    int testByte;
+    String otherString;
 
     public DemoClassE_MultipleConstructors() {
         this.testString = "test";
@@ -18,6 +20,12 @@ public class DemoClassE_MultipleConstructors {
     public DemoClassE_MultipleConstructors(String testString, int testInt) {
         this.testString = testString;
         this.testInt = testInt;
+    }
+
+    public DemoClassE_MultipleConstructors(String testString, int testInt, /*byte testByte*/ String otherString) {
+//        this.testString = testString;
+        this.testInt = testInt;
+        this.otherString = otherString;
     }
 
     public String getTestString() {

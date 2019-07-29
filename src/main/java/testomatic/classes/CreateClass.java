@@ -6,11 +6,16 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class CreateClass {
+    OutputData outputData = new OutputData();
 
-    public CreateClass() {
-
-    }
-
+    /**
+     * Outputs content for tests with PrintWriter
+     * @param packageForNewTest
+     * @param fileNameList
+     * @param primaryConstructorList
+     * @param primaryVariableList
+     * @param primaryImportList
+     */
     public void buildTest(String packageForNewTest,
                           List<String> fileNameList,
                           List<List<String>> primaryConstructorList,
@@ -32,17 +37,16 @@ public class CreateClass {
                 // Possible Imports
                 imports = listToString(primaryImportList.get(primaryIndex));
                 // Required Imports
-                imports = imports + "import org.junit.After;\n";
-                imports = imports + "import org.junit.Before;\n";
-                imports = imports + "import org.junit.Test;\n";
-                imports = imports + "import org.junit.runner.RunWith;\n";
-                imports = imports + "import org.mockito.Mock;\n";
-                imports = imports + "import org.mockito.junit.MockitoJUnitRunner;\n\n";
+                imports += "import org.junit.After;\n";
+                imports += "import org.junit.Before;\n";
+                imports += "import org.junit.Test;\n";
+                imports += "import org.junit.runner.RunWith;\n";
+                imports += "import org.mockito.Mock;\n";
+                imports += "import org.mockito.junit.MockitoJUnitRunner;\n\n";
 
                 PrintWriter writer = new PrintWriter(file);
 
                 writer.println("package " + destinationPackage + "; \n");
-
                 writer.print(imports);
 
                 writer.println("@RunWith(MockitoJUnitRunner.class)");
@@ -54,13 +58,10 @@ public class CreateClass {
                 }
 
                 if (!primaryConstructorList.isEmpty() && primaryConstructorList.get(primaryIndex) != null) {
-
-                    System.out.println(primaryIndex + ") " + fileName + "\n" +
-                            primaryConstructorList.get(primaryIndex));
+                    outputData.outputConstructorInfo(primaryIndex, fileName, primaryConstructorList.get(primaryIndex));
 
                     // Multiple constructors
                     if (primaryConstructorList.get(primaryIndex).size() > 1) {
-
                         List<String> constructorList = primaryConstructorList.get(primaryIndex);
 
                         writer.print("\tprivate " + fileName);
@@ -76,7 +77,7 @@ public class CreateClass {
                                 "\tpublic void setUp() {\n" );
 
                         for (int constructorIndex = 0; constructorIndex < constructorList.size(); constructorIndex++) {
-                            testObjects = makeConstructorArgs(constructorList.get(constructorIndex), fileName);
+                            testObjects = createConstructorArgs(constructorList.get(constructorIndex), fileName);
                             writer.println(
                                     "\t\tcut" + (constructorIndex + 1) + " = new " + fileName + "(" + testObjects + "\n" +
                                             "\t\t);");
@@ -94,7 +95,6 @@ public class CreateClass {
                             }
                         }
                     } else {
-
                         writer.println("\tprivate " + fileName + " cut;\n");
                         writer.print(
                                 "\t@Before\n" +
@@ -103,7 +103,7 @@ public class CreateClass {
                         // Single Constructor
                         testObjects = listToString(primaryConstructorList.get(primaryIndex));
                         if (!testObjects.contains("//") && testObjects.contains("(")) {
-                            testObjects = makeConstructorArgs(testObjects, fileName);
+                            testObjects = createConstructorArgs(testObjects, fileName);
                             writer.println(
                                     "\t\tcut = new " + fileName + "(" + testObjects + "\n" +
                                             "\t\t);\n" +
@@ -135,7 +135,7 @@ public class CreateClass {
                 }
             }
             OutputData outputData = new OutputData();
-            outputData.outputTextFile(fileNameList);
+            outputData.outputFilesFound(fileNameList);
         } catch (IOException e) {
             System.out.println(" > ERROR: CreateClass > buildTest()\n" +  e);
             e.printStackTrace();
@@ -145,86 +145,48 @@ public class CreateClass {
         }
     }
 
-    private String makeConstructorArgs(String testObjects, String fileName) {
+    /**
+     * Formats arguments to be used in constructor tests
+     * @param testObjects
+     * @param fileName
+     * @return
+     */
+    private String createConstructorArgs(String testObjects, String fileName) {
         int startOfObjects = testObjects.indexOf(fileName + "(");
         testObjects = testObjects.substring(startOfObjects, testObjects.indexOf(")"));
 
-        if (testObjects.contains("String ")) {
-            testObjects = testObjects.replaceAll("String ", "");
-        }
-        if (testObjects.contains("int ")) {
-            testObjects = testObjects.replaceAll("int ", "");
-        }
-        if (testObjects.contains("Integer ")) {
-            testObjects = testObjects.replaceAll("Integer ", "");
-        }
-        if (testObjects.contains("boolean ")) {
-            testObjects = testObjects.replaceAll("boolean ", "");
-        }
-        if (testObjects.contains("Boolean ")) {
-            testObjects = testObjects.replaceAll("Boolean ", "");
-        }
-        if (testObjects.contains("double ")) {
-            testObjects = testObjects.replaceAll("double ", "");
-        }
-        if (testObjects.contains("Double ")) {
-            testObjects = testObjects.replaceAll("Double ", "");
-        }
-        if (testObjects.contains("float ")) {
-            testObjects = testObjects.replaceAll("float ", "");
-        }
-        if (testObjects.contains("Float ")) {
-            testObjects = testObjects.replaceAll("Float ", "");
-        }
-        if (testObjects.contains("short ")) {
-            testObjects = testObjects.replaceAll("short ", "");
-        }
-        if (testObjects.contains("Short ")) {
-            testObjects = testObjects.replaceAll("Short ", "");
-        }
-        if (testObjects.contains("char ")) {
-            testObjects = testObjects.replaceAll("char ", "");
-        }
-        if (testObjects.contains("Char ")) {
-            testObjects = testObjects.replaceAll("Char ", "");
-        }
-        if (testObjects.contains("byte ")) {
-            testObjects = testObjects.replaceAll("byte ", "");
-        }
-        if (testObjects.contains("Byte ")) {
-            testObjects = testObjects.replaceAll("Byte ", "");
-        }
-        if (testObjects.contains(fileName)) {
-            testObjects = testObjects.replaceAll(fileName, "");
-        }
+        testObjects = testObjects.replaceAll("String ", "");
+        testObjects = testObjects.replaceAll("int ", "");
+        testObjects = testObjects.replaceAll("Integer ", "");
+        testObjects = testObjects.replaceAll("boolean ", "");
+        testObjects = testObjects.replaceAll("Boolean ", "");
+        testObjects = testObjects.replaceAll("double ", "");
+        testObjects = testObjects.replaceAll("Double ", "");
+        testObjects = testObjects.replaceAll("float ", "");
+        testObjects = testObjects.replaceAll("Float ", "");
+        testObjects = testObjects.replaceAll("short ", "");
+        testObjects = testObjects.replaceAll("Short ", "");
+        testObjects = testObjects.replaceAll("char ", "");
+        testObjects = testObjects.replaceAll("Char ", "");
+        testObjects = testObjects.replaceAll("byte ", "");
+        testObjects = testObjects.replaceAll("Byte ", "");
+        testObjects = testObjects.replaceAll(fileName, "");
+
         if (testObjects.contains("(")) {
             testObjects = testObjects.replaceAll("\\(", "");
             testObjects = testObjects.replaceAll("\\s", "");
         }
         if(testObjects.contains(",")) {
-            testObjects = testObjects.replaceAll(",", ",\n\t\t\t");
+            testObjects = testObjects.replaceAll(",", ",\n\t\t\t\t\t");
         }
         return testObjects;
     }
 
-    private String listToString(List<String> list) {
-        if (!list.isEmpty()) {
-            String listToString = list.toString();
-
-            listToString = listToString.replaceAll("\\[", "");
-            listToString = listToString.replaceAll("]", "");
-
-            // Differentiate between variables and constructor arguments
-            if (listToString.contains("private ")) {
-                listToString = listToString.replaceAll(", ", "");
-            }
-            listToString.trim();
-
-            return listToString + "\n";
-        }
-        return "";
-    }
-
+    /**
+     * Creates a package statement based on the location of the file.
+     * @param packageForNewTest
+     * @return
+     */
     private String createPackageStatement(String packageForNewTest) {
         String destinationPackage = packageForNewTest;
         destinationPackage = destinationPackage.replaceAll("\\\\", ".");
@@ -248,6 +210,26 @@ public class CreateClass {
             System.exit(0);
         }
         return destinationPackage;
+    }
+
+    /**
+     * Converts a list of Strings to a usable string.
+     * @param list
+     * @return
+     */
+    private String listToString(List<String> list) {
+        if (!list.isEmpty()) {
+            String listToString = list.toString();
+            listToString = listToString.replaceAll("\\[", "");
+            listToString = listToString.replaceAll("]", "");
+
+            // Differentiate between variables and constructor arguments
+            if (listToString.contains("private ")) {
+                listToString = listToString.replaceAll(", ", "");
+            }
+            return listToString + "\n";
+        }
+        return "";
     }
 
 }

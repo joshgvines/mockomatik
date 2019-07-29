@@ -33,8 +33,8 @@ public class DemoClassB_PrimitiveTypesTest {
 	@Before
 	public void setUp() {
 		cut = new DemoClassB_PrimitiveTypes(testfloat,
-			testdouble,
-			testshort
+					testdouble,
+					testshort
 		);
 	}
 

@@ -18,7 +18,7 @@ public class DemoClassD_IrregularConstructorTest {
 	@Before
 	public void setUp() {
 		cut = new DemoClassD_IrregularConstructor(testClassInfoOne,
-			testClassInfoTwo
+					testClassInfoTwo
 		);
 	}
 

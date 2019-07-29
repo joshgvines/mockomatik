@@ -39,7 +39,7 @@ public class ScanClass {
                     List<String> constructorList = new ArrayList<>();
 
                     String line;
-                    boolean defaultConstructor = false;
+                    boolean defaultConstructor = true;
                     while ((line = br.readLine()) != null) {
                         if (line.contains("/*")) {
                             ignoreMultiLineComments(br);
@@ -79,8 +79,8 @@ public class ScanClass {
                     }
                     fr.close();
                     br.close();
-                    if (!defaultConstructor) {
-                        constructorList.add("//");
+                    if (defaultConstructor) {
+                        constructorList.add("// Ignored, Only Default Constructor");
                     }
                     fileNameList.add(fileName);
                     primaryVariableList.add(variableList);
@@ -125,7 +125,7 @@ public class ScanClass {
                     sb.append(line + "\n");
                     if (line.contains("}")) {
                         constructorList.add(sb.toString());
-                        return true;
+                        return false;
                     }
                 }
             }
@@ -136,7 +136,7 @@ public class ScanClass {
             System.out.println(" > ERROR: setConstructorArguments > file name: " + fileName + " " + e);
             e.printStackTrace();
         }
-        return false;
+        return true;
     }
 
     /**

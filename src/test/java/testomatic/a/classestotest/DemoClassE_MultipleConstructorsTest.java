@@ -12,6 +12,8 @@ public class DemoClassE_MultipleConstructorsTest {
 
 	private String testString;
 	private int testInt;
+	private int testByte;
+	private String otherString;
 
 	private DemoClassE_MultipleConstructors cut1,  cut2,  cut3;
 
@@ -22,7 +24,7 @@ public class DemoClassE_MultipleConstructorsTest {
 		cut2 = new DemoClassE_MultipleConstructors(testString
 		);
 		cut3 = new DemoClassE_MultipleConstructors(testString,
-			testInt
+					testInt
 		);
 	}
 
