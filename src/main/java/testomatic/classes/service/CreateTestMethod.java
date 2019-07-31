@@ -10,17 +10,30 @@ public class CreateTestMethod {
         for(int index = 0; index < testMethodList.size(); index++) {
 
             String method = testMethodList.get(index);
+            String methodName = "";
+            if (method.contains("(") && method.contains(")")) {
+                if (method.contains("get") && !method.contains(" void ")) {
+                    methodName = method.substring(method.indexOf("get"), method.indexOf("("));
+                    String testMethodName = methodName.replaceAll("get", "Get");
+
+                    writer.println(
+                            "\t@Test\n" +
+                            "\tpublic void test" + testMethodName + "() {\n" +
+                            "\t\t//Type testResp = cut." + methodName + "()\n" +
+                            "\t}\n");
+                }
+                if (method.contains("set") && method.contains(" void ")) {
+                    methodName = method.substring(method.indexOf("set"), method.indexOf("("));
+                    String testMethodName = methodName.replaceAll("set", "Set");
+
+                    writer.println(
+                            "\t@Test\n" +
+                            "\tpublic void test" + testMethodName + "() {\n" +
+                            "\t\t//cut." + methodName + "( variableToSet... )\n" +
+                            "\t}\n");
+                }
 
 
-
-            if (method.contains("get") && method.contains("(")){
-                String methodName = method.substring(method.indexOf("get"), method.indexOf("("));
-                methodName = methodName.replaceAll("get", "Get");
-                writer.println(
-                        "\t@Test\n" +
-                        "\tpublic void test" + methodName + "() {\n" +
-                        "\t\t//blah\n" +
-                        "\t}\n");
             } else {
                 // ignored
             }

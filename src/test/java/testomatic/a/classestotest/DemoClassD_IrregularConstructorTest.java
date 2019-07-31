@@ -29,7 +29,7 @@ public class DemoClassD_IrregularConstructorTest {
 
 	@Test
 	public void testGetTestClassInfo() {
-		//blah
+		//Type testResp = cut.getTestClassInfo()
 	}
 
 	@Test

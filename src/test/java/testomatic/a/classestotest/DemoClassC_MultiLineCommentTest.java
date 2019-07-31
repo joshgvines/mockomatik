@@ -29,12 +29,12 @@ public class DemoClassC_MultiLineCommentTest {
 
 	@Test
 	public void testGetTestClassInfoOne() {
-		//blah
+		//Type testResp = cut.getTestClassInfoOne()
 	}
 
 	@Test
 	public void testGetTestClassInfoTwo() {
-		//blah
+		//Type testResp = cut.getTestClassInfoTwo()
 	}
 
 	@Test

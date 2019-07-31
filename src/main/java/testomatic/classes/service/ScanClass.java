@@ -49,7 +49,7 @@ public class ScanClass {
                         if (line.contains("public " + fileName + "(") && !line.contains("//")) {
                             defaultConstructor = readValidConstructor(line, br, constructorList);
                         }
-                        if (line.contains("public ") && line.contains("get") && line.contains("(")) {
+                        if (line.contains("public ") && line.contains("(") && (line.contains("set")|| line.contains("get"))) {
                             readValidMethod(line, br, testMethodList);
                         }
                         // Check type
@@ -84,10 +84,7 @@ public class ScanClass {
                         constructorList.add("// Ignored");
                     }
                     if (testMethodList.isEmpty() || testMethodList == null) {
-                        System.out.println("\n" + fileName + " ignored");
-                        System.out.println(testMethodList);
                         testMethodList.add("// Ignored");
-                        System.out.println(testMethodList);
                     }
                     fileNameList.add(fileName);
                     primaryTestMethodList.add(testMethodList);
