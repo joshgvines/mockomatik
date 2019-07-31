@@ -1,8 +1,8 @@
 package testomatic.classes.control;
 
+import testomatic.classes.model.TestConstructors;
 import testomatic.classes.model.TestMethods;
-import testomatic.classes.service.CreateTestClass;
-import testomatic.classes.service.CreateTestMethod;
+import testomatic.classes.service.CreateTestClasses;
 import testomatic.classes.service.ScanClass;
 import testomatic.classes.service.ValidateClass;
 
@@ -12,11 +12,12 @@ import java.util.Scanner;
 
 public class InputController {
     private ScanClass scanClass = new ScanClass();
-    private CreateTestClass createTestClass = new CreateTestClass();
+    private CreateTestClasses createTestClasses = new CreateTestClasses();
     private ValidateClass validateClass = new ValidateClass();
     private Scanner sc = new Scanner(System.in);
+
     private TestMethods testMethods = new TestMethods();
-    private CreateTestMethod createTestMethod = new CreateTestMethod();
+    private TestConstructors testConstructors = new TestConstructors();
 
     public void runProgram() {
         while (true) {
@@ -28,15 +29,26 @@ public class InputController {
         String packageToTestPath;
         String packageForNewTest;
         do {
-            System.out.println("\n > Enter A Path To Classes: ");
+            System.out.println("\n > Enter A Path To A Package You Want To Test: ");
             packageToTestPath = sc.nextLine();
+            if (packageToTestPath.equals("KILL")) {
+                System.out.println(" > You have not done anything yet...");
+            }
         } while (!(inputValidation(packageToTestPath)));
         do {
-            System.out.println("\n > Enter A Path For New Tests: ");
+            System.out.println("\n > Enter A Path To A Destination For New Tests: ");
             packageForNewTest = sc.nextLine();
+            if (packageForNewTest.equals("KILL")) {
+                packageToTestPath = "";
+                break;
+            }
         } while (!(inputValidation(packageForNewTest)));
 
-        runTestProcess(packageToTestPath, packageForNewTest);
+        if (!packageForNewTest.equals("KILL")) {
+            runTestProcess(packageToTestPath, packageForNewTest);
+        } else {
+            System.out.println(" > Run Canceled...");
+        }
     }
 
     // TODO: regulate scanner input size before validation method?
@@ -62,22 +74,20 @@ public class InputController {
     public void runTestProcess(String packageToTestPath, String packageForNewTest) {
         if (scanClass.scanClassForContent(packageToTestPath)) {
 
+            List<List<String>> primaryVariableList = scanClass.getPrimaryVariableList();
+            List<List<String>> primaryImportList = scanClass.getPrimaryImportList();
+            List<String> fileName = scanClass.getFileNameList();
+
             // TODO: experimenting with mvc...
+            testConstructors.setPrimaryConstructorList(scanClass.getPrimaryConstructorList());
+            testMethods.setPrimaryTestMethodList(scanClass.getPrimaryTestMethodList());
 
-            List<List<String>> returnedValidConstructorList = scanClass.getConstructor();
-            List<List<String>> returnedValidVariableList = scanClass.getPrimaryVariableList();
-            List<List<String>> returnedValidImportList = scanClass.getPrimaryImportList();
-
-            if (returnedValidConstructorList != null) {
-
-                testMethods.setPrimaryTestMethodList(scanClass.getPrimaryTestMethodList());
-
-                List<String> fileName = scanClass.getFileName();
-                createTestClass.buildTest(testMethods, packageForNewTest, fileName, returnedValidConstructorList,
-                        returnedValidVariableList, returnedValidImportList);
-
-                validateClass.runTests(packageForNewTest);
-            }
+            createTestClasses.createTest(
+                    testMethods, testConstructors,
+                    packageForNewTest, fileName,
+                    primaryVariableList, primaryImportList
+            );
+            validateClass.runTests(packageForNewTest);
         }
     }
 

@@ -133,8 +133,4 @@ public class DemoClassB_PrimitiveTypesTest {
 		//cut.setTestShort( variableToSet... )
 	}
 
-	@Test
-	public void testMethod() {
-		//blah
-	}
 }

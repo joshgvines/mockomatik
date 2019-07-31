@@ -37,8 +37,4 @@ public class DemoClassC_MultiLineCommentTest {
 		//Type testResp = cut.getTestClassInfoTwo()
 	}
 
-	@Test
-	public void testMethod() {
-		//blah
-	}
 }

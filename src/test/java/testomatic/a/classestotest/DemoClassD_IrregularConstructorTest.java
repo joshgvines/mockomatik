@@ -32,8 +32,4 @@ public class DemoClassD_IrregularConstructorTest {
 		//Type testResp = cut.getTestClassInfo()
 	}
 
-	@Test
-	public void testMethod() {
-		//blah
-	}
 }

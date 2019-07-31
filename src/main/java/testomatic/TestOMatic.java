@@ -12,7 +12,8 @@ public class TestOMatic {
 
         Path path = FileSystems.getDefault().getPath(".").toAbsolutePath();
         System.out.println("  >>> Your Location: " + path);
-        System.out.println("  >>> Type 'EXIT' or use [ ctrl + c ] to quit program.");
+        System.out.println("  >>> Type 'EXIT' Or Use [ ctrl + c ] To Quit Program.");
+        System.out.println("  >>> Type 'KILL' To Cancel/Restart Current Run.");
 
         // TODO: better way to confirm location
         if (!path.equals("C:\\") && !path.equals("root") && !(path.toString().length() < 4)) {

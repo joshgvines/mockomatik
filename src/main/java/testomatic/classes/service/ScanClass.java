@@ -190,11 +190,7 @@ public class ScanClass {
         }
     }
 
-    public List<List<String>> getConstructor() {
-        return primaryConstructorList;
-    }
-
-    public List<String> getFileName() {
+    public List<String> getFileNameList() {
         return fileNameList;
     }
 
@@ -208,5 +204,9 @@ public class ScanClass {
 
     public List<List<String>> getPrimaryTestMethodList() {
         return primaryTestMethodList;
+    }
+
+    public List<List<String>> getPrimaryConstructorList() {
+        return primaryConstructorList;
     }
 }
