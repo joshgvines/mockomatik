@@ -28,6 +28,11 @@ public class DemoClassD_IrregularConstructorTest {
 	}
 
 	@Test
+	public void testGetTestClassInfo() {
+		//blah
+	}
+
+	@Test
 	public void testMethod() {
 		//blah
 	}

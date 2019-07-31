@@ -49,11 +49,9 @@ public class ScanClass {
                         if (line.contains("public " + fileName + "(") && !line.contains("//")) {
                             defaultConstructor = readValidConstructor(line, br, constructorList);
                         }
-
-                        if (line.contains("public ") && line.contains("get")) {
+                        if (line.contains("public ") && line.contains("get") && line.contains("(")) {
                             readValidMethod(line, br, testMethodList);
                         }
-
                         // Check type
                         if (line.contains(" String ") || line.contains(" int ") || line.contains(" Integer ") ||
                                 line.contains(" double ")  || line.contains(" Double ") || line.contains(" float ")   ||
@@ -81,11 +79,18 @@ public class ScanClass {
                     }
                     fr.close();
                     br.close();
+                    // TODO: not sure how this is picking up on constructors with comments?????
                     if (defaultConstructor) {
-                        constructorList.add("// Ignored, Only Default Constructor");
+                        constructorList.add("// Ignored");
                     }
-                    primaryTestMethodList.add(testMethodList);
+                    if (testMethodList.isEmpty() || testMethodList == null) {
+                        System.out.println("\n" + fileName + " ignored");
+                        System.out.println(testMethodList);
+                        testMethodList.add("// Ignored");
+                        System.out.println(testMethodList);
+                    }
                     fileNameList.add(fileName);
+                    primaryTestMethodList.add(testMethodList);
                     primaryVariableList.add(variableList);
                     primaryImportList.add(importList);
                     primaryConstructorList.add(constructorList);
@@ -98,7 +103,7 @@ public class ScanClass {
             System.out.println("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
             e.printStackTrace();
         }
-        if (this.fileNameList !=null) {
+        if (this.fileNameList != null && !this.fileNameList.isEmpty()) {
             return true;
         }
         return false;

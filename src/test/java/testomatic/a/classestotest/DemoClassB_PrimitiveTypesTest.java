@@ -44,6 +44,51 @@ public class DemoClassB_PrimitiveTypesTest {
 	}
 
 	@Test
+	public void testGetTestClassInfoOne() {
+		//blah
+	}
+
+	@Test
+	public void testGetTestClassInfoTwo() {
+		//blah
+	}
+
+	@Test
+	public void testGetTestfloat() {
+		//blah
+	}
+
+	@Test
+	public void testGetTestFloat() {
+		//blah
+	}
+
+	@Test
+	public void testGetTestdouble() {
+		//blah
+	}
+
+	@Test
+	public void testGetTestDouble() {
+		//blah
+	}
+
+	@Test
+	public void testGetTestChar() {
+		//blah
+	}
+
+	@Test
+	public void testGetTestshort() {
+		//blah
+	}
+
+	@Test
+	public void testGetTestShort() {
+		//blah
+	}
+
+	@Test
 	public void testMethod() {
 		//blah
 	}

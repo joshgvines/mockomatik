@@ -1,19 +1,30 @@
 package testomatic.classes.service;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 public class CreateTestMethod {
 
-    public void buildMethod(List<List<String>> primaryTestMethodList) {
+    public void buildMethod(List<String> testMethodList, PrintWriter writer) {
 
-        for(List<String> index : primaryTestMethodList) {
-            System.out.println("__Get/Set_____________________________________________");
-            for(String read : index) {
-                System.out.println(read + "\n");
+        for(int index = 0; index < testMethodList.size(); index++) {
+
+            String method = testMethodList.get(index);
+
+
+
+            if (method.contains("get") && method.contains("(")){
+                String methodName = method.substring(method.indexOf("get"), method.indexOf("("));
+                methodName = methodName.replaceAll("get", "Get");
+                writer.println(
+                        "\t@Test\n" +
+                        "\tpublic void test" + methodName + "() {\n" +
+                        "\t\t//blah\n" +
+                        "\t}\n");
+            } else {
+                // ignored
             }
         }
-
-
 
     }
 

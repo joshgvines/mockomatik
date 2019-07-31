@@ -64,18 +64,17 @@ public class InputController {
 
             // TODO: experimenting with mvc...
 
-            testMethods.setPrimaryTestMethodList(scanClass.getPrimaryTestMethodList());
-
             List<List<String>> returnedValidConstructorList = scanClass.getConstructor();
             List<List<String>> returnedValidVariableList = scanClass.getPrimaryVariableList();
             List<List<String>> returnedValidImportList = scanClass.getPrimaryImportList();
 
             if (returnedValidConstructorList != null) {
-                List<String> fileName = scanClass.getFileName();
-                createTestClass.buildTest(packageForNewTest, fileName, returnedValidConstructorList,
-                        returnedValidVariableList, returnedValidImportList);
 
-                createTestMethod.buildMethod(testMethods.getPrimaryTestMethodList());
+                testMethods.setPrimaryTestMethodList(scanClass.getPrimaryTestMethodList());
+
+                List<String> fileName = scanClass.getFileName();
+                createTestClass.buildTest(testMethods, packageForNewTest, fileName, returnedValidConstructorList,
+                        returnedValidVariableList, returnedValidImportList);
 
                 validateClass.runTests(packageForNewTest);
             }

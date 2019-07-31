@@ -109,43 +109,4 @@ public class DemoClassB_PrimitiveTypes {
         this.testShort = testShort;
     }
 
-    public long getTestlong() {
-        return testlong;
-    }
-
-    public void setTestlong(long testlong) {
-        this.testlong = testlong;
-    }
-
-    public Long getTestLong() {
-        return testLong;
-    }
-
-    public void setTestLong(Long testLong) {
-        this.testLong = testLong;
-    }
-
-    public int getTestint() {
-        return testint;
-    }
-
-    public void setTestint(int testint) {
-        this.testint = testint;
-    }
-
-    public Integer getTestInt() {
-        return testInt;
-    }
-
-    public void setTestInt(Integer testInt) {
-        this.testInt = testInt;
-    }
-
-    public Scanner getKeyboard() {
-        return keyboard;
-    }
-
-    public void setKeyboard(Scanner keyboard) {
-        this.keyboard = keyboard;
-    }
 }

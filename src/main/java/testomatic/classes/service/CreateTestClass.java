@@ -1,12 +1,16 @@
 package testomatic.classes.service;
 
+import testomatic.classes.model.TestMethods;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
 public class CreateTestClass {
-    OutputData outputData = new OutputData();
+    CreateTestMethod createTestMethod = new CreateTestMethod();
+//    TestMethods testMethods = new TestMethods();
+//    OutputData outputData = new OutputData();
 
     /**
      * Outputs content for tests with PrintWriter
@@ -16,7 +20,8 @@ public class CreateTestClass {
      * @param primaryVariableList
      * @param primaryImportList
      */
-    public void buildTest(String packageForNewTest,
+    public void buildTest(TestMethods testMethods,
+                          String packageForNewTest,
                           List<String> fileNameList,
                           List<List<String>> primaryConstructorList,
                           List<List<String>> primaryVariableList,
@@ -58,7 +63,8 @@ public class CreateTestClass {
                 }
 
                 if (!primaryConstructorList.isEmpty() && primaryConstructorList.get(primaryIndex) != null) {
-                    outputData.outputConstructorInfo(primaryIndex, fileName, primaryConstructorList.get(primaryIndex));
+
+//                    outputData.outputConstructorInfo(primaryIndex, fileName, primaryConstructorList.get(primaryIndex));
 
                     // Multiple constructors
                     if (primaryConstructorList.get(primaryIndex).size() > 1) {
@@ -120,6 +126,9 @@ public class CreateTestClass {
                                 "\t\tcut = null;\n" +
                                 "\t}\n");
                     }
+
+                    createTestMethod.buildMethod(testMethods.getPrimaryTestMethodList().get(primaryIndex), writer);
+
                     writer.println(
                             "\t@Test\n" +
                             "\tpublic void testMethod() {\n" +
@@ -152,8 +161,11 @@ public class CreateTestClass {
      * @return
      */
     private String createConstructorArgs(String testObjects, String fileName) {
-        int startOfObjects = testObjects.indexOf(fileName + "(");
-        testObjects = testObjects.substring(startOfObjects, testObjects.indexOf(")"));
+
+        if (testObjects.contains(")")) {
+            int startOfObjects = testObjects.indexOf(fileName + "(");
+            testObjects = testObjects.substring(startOfObjects, testObjects.indexOf(")"));
+        }
 
         testObjects = testObjects.replaceAll("String ", "");
         testObjects = testObjects.replaceAll("int ", "");

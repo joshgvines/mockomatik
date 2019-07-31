@@ -28,6 +28,16 @@ public class DemoClassC_MultiLineCommentTest {
 	}
 
 	@Test
+	public void testGetTestClassInfoOne() {
+		//blah
+	}
+
+	@Test
+	public void testGetTestClassInfoTwo() {
+		//blah
+	}
+
+	@Test
 	public void testMethod() {
 		//blah
 	}
