@@ -20,22 +20,15 @@ public class DemoClassE_MultipleConstructorsTest {
 	@Before
 	public void setUp() {
 		cut1 = new DemoClassE_MultipleConstructors(
-		);	}
-
-
+		);
 		cut2 = new DemoClassE_MultipleConstructors(testString
-		);	}
-
-
+		);
 		cut3 = new DemoClassE_MultipleConstructors(testString,
 					testInt
-		);	}
-
-
+		);
 		cut4 = new DemoClassE_MultipleConstructors(// Ignored
-		);	}
-
-
+		);
+	}
 	@After
 	public void tearDown() {
 		cut1 = null;

@@ -31,10 +31,10 @@ public class CreateTestConstructors {
                     testObjects = createConstructorArgs(constructorList.get(constructorIndex), fileName);
                     writer.println(
                             "\t\tcut" + (constructorIndex + 1) + " = new " + fileName + "(" + testObjects + "\n" +
-                                    "\t\t);" +
-                                    "\t}\n\n");
+                                    "\t\t);"
+                    );
                 }
-                writer.println("\t@After\n" +
+                writer.println("\t}\n" + "\t@After\n" +
                         "\tpublic void tearDown() {"
                 );
                 for (int tearDownIndex = 0; tearDownIndex < constructorList.size(); tearDownIndex++) {
@@ -53,10 +53,10 @@ public class CreateTestConstructors {
                 testObjects = listToString(constructorList);
                 if (!testObjects.contains("//") && testObjects.contains("(")) {
                     testObjects = createConstructorArgs(testObjects, fileName);
-                    writer.println(
-                            "\t\tcut = new " + fileName + "(" + testObjects + "\n" +
-                                    "\t\t);\n" +
-                                    "\t}\n");
+                    writer.println("\t\tcut = new " + fileName + "(" + testObjects + "\n" +
+                            "\t\t);\n" +
+                            "\t}\n"
+                    );
                 } else {
                     // Default Constructor
                     writer.println("\t\tcut = new " + fileName + "();\n" +
