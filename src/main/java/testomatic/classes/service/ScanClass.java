@@ -1,4 +1,4 @@
-package testomatic.classes;
+package testomatic.classes.service;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,10 +13,7 @@ public class ScanClass {
     private List<List<String>> primaryVariableList = new ArrayList<>();
     private List<List<String>> primaryImportList = new ArrayList<>();
     private List<List<String>> primaryConstructorList = new ArrayList<>();
-
-    public ScanClass() {
-
-    }
+    private List<List<String>> primaryTestMethodList = new ArrayList<>();
 
     /**
      * Checks if the file being read into buffer contains a valid constructor and arguments to be tested
@@ -37,6 +34,7 @@ public class ScanClass {
                     List<String> importList = new ArrayList<>();
                     List<String> variableList = new ArrayList<>();
                     List<String> constructorList = new ArrayList<>();
+                    List<String> testMethodList = new ArrayList<>();
 
                     String line;
                     boolean defaultConstructor = true;
@@ -48,10 +46,14 @@ public class ScanClass {
                             importList.add(line + "\n");
                         }
                         // Check for constructor
-                        if (line.contains("public " + fileName + "(") && !line.contains("//") &&
-                                !line.contains("/*")  && !line.contains("*/")) {
+                        if (line.contains("public " + fileName + "(") && !line.contains("//")) {
                             defaultConstructor = readValidConstructor(line, br, constructorList);
                         }
+
+                        if (line.contains("public ") && line.contains("get")) {
+                            readValidMethod(line, br, testMethodList);
+                        }
+
                         // Check type
                         if (line.contains(" String ") || line.contains(" int ") || line.contains(" Integer ") ||
                                 line.contains(" double ")  || line.contains(" Double ") || line.contains(" float ")   ||
@@ -82,6 +84,7 @@ public class ScanClass {
                     if (defaultConstructor) {
                         constructorList.add("// Ignored, Only Default Constructor");
                     }
+                    primaryTestMethodList.add(testMethodList);
                     fileNameList.add(fileName);
                     primaryVariableList.add(variableList);
                     primaryImportList.add(importList);
@@ -160,6 +163,31 @@ public class ScanClass {
         }
     }
 
+    /**
+     * Reads a method to to potentially be tested
+     * @param line
+     * @param br
+     */
+    private void readValidMethod(String line, BufferedReader br, List<String> testMethodList) {
+        try {
+            StringBuilder sb = new StringBuilder();
+            sb.append(line + "\n");
+            while((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+                if (line.contains("}")) {
+                    testMethodList.add(sb.toString());
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            System.err.println(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
+            e.printStackTrace();
+        }
+    }
+
     public List<List<String>> getConstructor() {
         return primaryConstructorList;
     }
@@ -174,5 +202,9 @@ public class ScanClass {
 
     public List<List<String>> getPrimaryImportList() {
         return primaryImportList;
+    }
+
+    public List<List<String>> getPrimaryTestMethodList() {
+        return primaryTestMethodList;
     }
 }

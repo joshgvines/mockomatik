@@ -1,11 +1,11 @@
-package testomatic.classes;
+package testomatic.classes.service;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class CreateClass {
+public class CreateTestClass {
     OutputData outputData = new OutputData();
 
     /**
@@ -130,17 +130,17 @@ public class CreateClass {
                     writer.close();
                     file.createNewFile();
                 } else {
-                    System.out.println(" > ERROR: CreateClass > buildTest() > !testObjects.isEmpty() ");
+                    System.out.println(" > ERROR: CreateTestClass > buildTest() > !testObjects.isEmpty() ");
                     System.exit(0);
                 }
             }
             OutputData outputData = new OutputData();
             outputData.outputFilesFound(fileNameList);
         } catch (IOException e) {
-            System.out.println(" > ERROR: CreateClass > buildTest()\n" +  e);
+            System.out.println(" > ERROR: CreateTestClass > buildTest()\n" +  e);
             e.printStackTrace();
         } catch (Exception e) {
-            System.out.println(" > ERROR: CreateClass > buildTest()\n" + e);
+            System.out.println(" > ERROR: CreateTestClass > buildTest()\n" + e);
             e.printStackTrace();
         }
     }
@@ -205,7 +205,7 @@ public class CreateClass {
                     (destinationPackage.indexOf("com") + 4), (destinationPackage.length() - 1));
         } else {
             // TODO: Throw correct error here
-            System.out.println(" > ERROR: CreateClass > createPackageStatement()\n" +
+            System.out.println(" > ERROR: CreateTestClass > createPackageStatement()\n" +
                     " > An invalid or incompatible path was entered as a destination package!");
             System.exit(0);
         }

@@ -1,6 +1,6 @@
 package testomatic;
 
-import testomatic.classes.InputController;
+import testomatic.classes.control.InputController;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;

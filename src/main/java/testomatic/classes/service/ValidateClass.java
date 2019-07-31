@@ -1,4 +1,4 @@
-package testomatic.classes;
+package testomatic.classes.service;
 
 public class ValidateClass {
 

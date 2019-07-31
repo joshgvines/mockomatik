@@ -12,7 +12,6 @@ public class DemoClassC_MultiLineCommentTest {
 
     private String testClassInfoOne = "test value One";
     private String testClassInfoTwo = "test value Two";
-	private int unused = 100;
 
 	private DemoClassC_MultiLineComment cut;
 

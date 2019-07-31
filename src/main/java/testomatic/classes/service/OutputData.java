@@ -1,4 +1,4 @@
-package testomatic.classes;
+package testomatic.classes.service;
 
 import java.io.File;
 import java.util.List;

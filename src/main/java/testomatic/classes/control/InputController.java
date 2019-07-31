@@ -1,14 +1,22 @@
-package testomatic.classes;
+package testomatic.classes.control;
+
+import testomatic.classes.model.TestMethods;
+import testomatic.classes.service.CreateTestClass;
+import testomatic.classes.service.CreateTestMethod;
+import testomatic.classes.service.ScanClass;
+import testomatic.classes.service.ValidateClass;
 
 import java.io.File;
 import java.util.List;
 import java.util.Scanner;
 
 public class InputController {
-    private testomatic.classes.ScanClass scanClass = new ScanClass();
-    private CreateClass createClass = new CreateClass();
+    private ScanClass scanClass = new ScanClass();
+    private CreateTestClass createTestClass = new CreateTestClass();
     private ValidateClass validateClass = new ValidateClass();
     private Scanner sc = new Scanner(System.in);
+    private TestMethods testMethods = new TestMethods();
+    private CreateTestMethod createTestMethod = new CreateTestMethod();
 
     public void runProgram() {
         while (true) {
@@ -30,6 +38,7 @@ public class InputController {
 
         runTestProcess(packageToTestPath, packageForNewTest);
     }
+
     // TODO: regulate scanner input size before validation method?
     public boolean inputValidation(String input) {
         File testDir = new File(input);
@@ -52,14 +61,21 @@ public class InputController {
 
     public void runTestProcess(String packageToTestPath, String packageForNewTest) {
         if (scanClass.scanClassForContent(packageToTestPath)) {
+
+            // TODO: experimenting with mvc...
+
+            testMethods.setPrimaryTestMethodList(scanClass.getPrimaryTestMethodList());
+
             List<List<String>> returnedValidConstructorList = scanClass.getConstructor();
             List<List<String>> returnedValidVariableList = scanClass.getPrimaryVariableList();
             List<List<String>> returnedValidImportList = scanClass.getPrimaryImportList();
 
             if (returnedValidConstructorList != null) {
                 List<String> fileName = scanClass.getFileName();
-                createClass.buildTest(packageForNewTest, fileName, returnedValidConstructorList,
+                createTestClass.buildTest(packageForNewTest, fileName, returnedValidConstructorList,
                         returnedValidVariableList, returnedValidImportList);
+
+                createTestMethod.buildMethod(testMethods.getPrimaryTestMethodList());
 
                 validateClass.runTests(packageForNewTest);
             }
