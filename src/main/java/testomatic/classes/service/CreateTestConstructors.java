@@ -13,7 +13,7 @@ public class CreateTestConstructors {
      */
     public void createConstructors(List<String> constructorList, String fileName, PrintWriter writer) {
         String testObjects;
-        if (!constructorList.isEmpty() && constructorList != null) {
+        try {
             // Multiple constructors
             if (constructorList.size() > 1) {
                 writer.print("\tprivate " + fileName);
@@ -27,10 +27,10 @@ public class CreateTestConstructors {
                 writer.print("\t@Before\n" +
                         "\tpublic void setUp() {\n"
                 );
-                for (int constructorIndex = 0; constructorIndex < constructorList.size(); constructorIndex++) {
-                    testObjects = createConstructorArgs(constructorList.get(constructorIndex), fileName);
+                for (int setUpIndex = 0; setUpIndex < constructorList.size(); setUpIndex++) {
+                    testObjects = createConstructorArgs(constructorList.get(setUpIndex), fileName);
                     writer.println(
-                            "\t\tcut" + (constructorIndex + 1) + " = new " + fileName + "(" + testObjects + "\n" +
+                            "\t\tcut" + (setUpIndex + 1) + " = new " + fileName + "(" + testObjects + "\n" +
                                     "\t\t);"
                     );
                 }
@@ -44,34 +44,49 @@ public class CreateTestConstructors {
                         writer.println("\t\tcut" + (tearDownIndex + 1) + " = null;");
                     }
                 }
-            } else {
+            }
+            // Single Constructor
+            // TODO: redundant check, needs to ensure single constructor is testable first
+            else if (constructorList.size() == 1) {
                 writer.println("\tprivate " + fileName + " cut;\n");
                 writer.print("\t@Before\n" +
                         "\tpublic void setUp() {\n"
                 );
-                // Single Constructor
+                System.out.println(constructorList);
+
                 testObjects = listToString(constructorList);
-                if (!testObjects.contains("//") && testObjects.contains("(")) {
-                    testObjects = createConstructorArgs(testObjects, fileName);
-                    writer.println("\t\tcut = new " + fileName + "(" + testObjects + "\n" +
-                            "\t\t);\n" +
-                            "\t}\n"
-                    );
-                } else {
-                    // Default Constructor
-                    writer.println("\t\tcut = new " + fileName + "();\n" +
-                            "\t}\n"
-                    );
-                }
+
+                System.out.println(testObjects);
+
+                testObjects = createConstructorArgs(testObjects, fileName);
+                writer.println("\t\tcut = new " + fileName + "(" + testObjects + "\n" +
+                        "\t\t);\n" +
+                        "\t}\n"
+                );
                 writer.println("\t@After\n" +
                         "\tpublic void tearDown() {\n" +
                         "\t\tcut = null;\n" +
                         "\t}\n"
                 );
             }
-        } else {
-            System.out.println(" > ERROR: CreateTestClasses > createTest() > !testObjects.isEmpty() ");
-            System.exit(0);
+            // Default Constructor
+            else {
+                writer.println("\tprivate " + fileName + " cut;\n");
+                writer.print("\t@Before\n" +
+                        "\tpublic void setUp() {\n"
+                );
+                writer.println("\t\tcut = new " + fileName + "();\n" +
+                        "\t}\n"
+                );
+                writer.println("\t@After\n" +
+                        "\tpublic void tearDown() {\n" +
+                        "\t\tcut = null;\n" +
+                        "\t}\n"
+                );
+            }
+        } catch (Exception e) {
+            System.out.println(" > ERROR: CreateTestClasses > createTest() " + e );
+            e.printStackTrace();
         }
     }
 
@@ -82,34 +97,40 @@ public class CreateTestConstructors {
      * @return
      */
     private String createConstructorArgs(String testObjects, String fileName) {
-        if (testObjects.contains(")")) {
-            int startOfObjects = testObjects.indexOf(fileName + "(");
-            testObjects = testObjects.substring(startOfObjects, testObjects.indexOf(")"));
+        try {
+            if (testObjects.contains(")")) {
+                int startOfObjects = testObjects.indexOf(fileName + "(");
+                testObjects = testObjects.substring(startOfObjects, testObjects.indexOf(")"));
+            }
+            testObjects = testObjects.replaceAll("String ", "");
+            testObjects = testObjects.replaceAll("int ", "");
+            testObjects = testObjects.replaceAll("Integer ", "");
+            testObjects = testObjects.replaceAll("boolean ", "");
+            testObjects = testObjects.replaceAll("Boolean ", "");
+            testObjects = testObjects.replaceAll("double ", "");
+            testObjects = testObjects.replaceAll("Double ", "");
+            testObjects = testObjects.replaceAll("float ", "");
+            testObjects = testObjects.replaceAll("Float ", "");
+            testObjects = testObjects.replaceAll("short ", "");
+            testObjects = testObjects.replaceAll("Short ", "");
+            testObjects = testObjects.replaceAll("char ", "");
+            testObjects = testObjects.replaceAll("Char ", "");
+            testObjects = testObjects.replaceAll("byte ", "");
+            testObjects = testObjects.replaceAll("Byte ", "");
+            testObjects = testObjects.replaceAll(fileName, "");
+            if (testObjects.contains("(")) {
+                testObjects = testObjects.replaceAll("\\(", "");
+                testObjects = testObjects.replaceAll("\\s", "");
+            }
+            if(testObjects.contains(",")) {
+                testObjects = testObjects.replaceAll(",", ",\n\t\t\t\t\t");
+            }
+            return testObjects;
+        } catch (Exception e) {
+            System.out.println("CreateTestConstructor > createConstructorArgs()" + e);
+            e.printStackTrace();
         }
-        testObjects = testObjects.replaceAll("String ", "");
-        testObjects = testObjects.replaceAll("int ", "");
-        testObjects = testObjects.replaceAll("Integer ", "");
-        testObjects = testObjects.replaceAll("boolean ", "");
-        testObjects = testObjects.replaceAll("Boolean ", "");
-        testObjects = testObjects.replaceAll("double ", "");
-        testObjects = testObjects.replaceAll("Double ", "");
-        testObjects = testObjects.replaceAll("float ", "");
-        testObjects = testObjects.replaceAll("Float ", "");
-        testObjects = testObjects.replaceAll("short ", "");
-        testObjects = testObjects.replaceAll("Short ", "");
-        testObjects = testObjects.replaceAll("char ", "");
-        testObjects = testObjects.replaceAll("Char ", "");
-        testObjects = testObjects.replaceAll("byte ", "");
-        testObjects = testObjects.replaceAll("Byte ", "");
-        testObjects = testObjects.replaceAll(fileName, "");
-        if (testObjects.contains("(")) {
-            testObjects = testObjects.replaceAll("\\(", "");
-            testObjects = testObjects.replaceAll("\\s", "");
-        }
-        if(testObjects.contains(",")) {
-            testObjects = testObjects.replaceAll(",", ",\n\t\t\t\t\t");
-        }
-        return testObjects;
+        return "";
     }
 
     /**
@@ -118,15 +139,20 @@ public class CreateTestConstructors {
      * @return
      */
     private String listToString(List<String> list) {
-        if (!list.isEmpty()) {
-            String listToString = list.toString();
-            listToString = listToString.replaceAll("\\[", "");
-            listToString = listToString.replaceAll("]", "");
-            // Differentiate between variables and constructor arguments
-            if (listToString.contains("private ")) {
-                listToString = listToString.replaceAll(", ", "");
+        try {
+            if (!list.isEmpty()) {
+                String listToString = list.toString();
+                listToString = listToString.replaceAll("\\[", "");
+                listToString = listToString.replaceAll("]", "");
+                // Differentiate between variables and constructor arguments
+                if (listToString.contains("private ")) {
+                    listToString = listToString.replaceAll(", ", "");
+                }
+                return listToString + "\n";
             }
-            return listToString + "\n";
+        } catch(Exception e) {
+            System.out.println("CreateTestConstructors > listToString()" + e);
+            e.printStackTrace();
         }
         return "";
     }

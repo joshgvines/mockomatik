@@ -14,7 +14,9 @@ public class DemoClassA_DefaultConstructorTest {
 
 	@Before
 	public void setUp() {
-		cut = new DemoClassA_DefaultConstructor();
+		cut = new DemoClassA_DefaultConstructor(// Ignored
+
+		);
 	}
 
 	@After

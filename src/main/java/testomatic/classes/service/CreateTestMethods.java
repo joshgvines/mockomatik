@@ -21,6 +21,7 @@ public class CreateTestMethods {
             boolean isMethod;
             for(int index = 0; index < testMethodList.size(); index++) {
                 method = testMethodList.get(index);
+                // TODO: Strings should never be null or throw a null exception
                 methodName = "";
                 testMethodName = "";
                 isMethod = true;
