@@ -45,92 +45,97 @@ public class DemoClassB_PrimitiveTypesTest {
 
 	@Test
 	public void testGetTestClassInfoOne() {
-		//Type testResp = cut.getTestClassInfoOne()
+		//cut.getTestClassInfoOne( ... )
 	}
 
 	@Test
 	public void testSetTestClassInfoOne() {
-		//cut.setTestClassInfoOne( variableToSet... )
+		//cut.setTestClassInfoOne( ... )
 	}
 
 	@Test
 	public void testGetTestClassInfoTwo() {
-		//Type testResp = cut.getTestClassInfoTwo()
+		//cut.getTestClassInfoTwo( ... )
 	}
 
 	@Test
 	public void testSetTestClassInfoTwo() {
-		//cut.setTestClassInfoTwo( variableToSet... )
+		//cut.setTestClassInfoTwo( ... )
 	}
 
 	@Test
 	public void testGetTestfloat() {
-		//Type testResp = cut.getTestfloat()
+		//cut.getTestfloat( ... )
 	}
 
 	@Test
 	public void testSetTestfloat() {
-		//cut.setTestfloat( variableToSet... )
+		//cut.setTestfloat( ... )
 	}
 
 	@Test
 	public void testGetTestFloat() {
-		//Type testResp = cut.getTestFloat()
+		//cut.getTestFloat( ... )
 	}
 
 	@Test
 	public void testSetTestFloat() {
-		//cut.setTestFloat( variableToSet... )
+		//cut.setTestFloat( ... )
 	}
 
 	@Test
 	public void testGetTestdouble() {
-		//Type testResp = cut.getTestdouble()
+		//cut.getTestdouble( ... )
 	}
 
 	@Test
 	public void testSetTestdouble() {
-		//cut.setTestdouble( variableToSet... )
+		//cut.setTestdouble( ... )
 	}
 
 	@Test
 	public void testGetTestDouble() {
-		//Type testResp = cut.getTestDouble()
+		//cut.getTestDouble( ... )
 	}
 
 	@Test
 	public void testSetTestDouble() {
-		//cut.setTestDouble( variableToSet... )
+		//cut.setTestDouble( ... )
 	}
 
 	@Test
 	public void testGetTestChar() {
-		//Type testResp = cut.getTestChar()
+		//cut.getTestChar( ... )
 	}
 
 	@Test
 	public void testSetTestChar() {
-		//cut.setTestChar( variableToSet... )
+		//cut.setTestChar( ... )
 	}
 
 	@Test
 	public void testGetTestshort() {
-		//Type testResp = cut.getTestshort()
+		//cut.getTestshort( ... )
 	}
 
 	@Test
 	public void testSetTestshort() {
-		//cut.setTestshort( variableToSet... )
+		//cut.setTestshort( ... )
 	}
 
 	@Test
 	public void testGetTestShort() {
-		//Type testResp = cut.getTestShort()
+		//cut.getTestShort( ... )
 	}
 
 	@Test
 	public void testSetTestShort() {
-		//cut.setTestShort( variableToSet... )
+		//cut.setTestShort( ... )
+	}
+
+	@Test
+	public void testAStringReturnTypeMethod() {
+		//cut.aStringReturnTypeMethod( ... )
 	}
 
 }

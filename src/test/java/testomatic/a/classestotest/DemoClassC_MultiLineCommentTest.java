@@ -28,13 +28,18 @@ public class DemoClassC_MultiLineCommentTest {
 	}
 
 	@Test
+	public void testPrintClassInfo() {
+		//cut.printClassInfo( ... )
+	}
+
+	@Test
 	public void testGetTestClassInfoOne() {
-		//Type testResp = cut.getTestClassInfoOne()
+		//cut.getTestClassInfoOne( ... )
 	}
 
 	@Test
 	public void testGetTestClassInfoTwo() {
-		//Type testResp = cut.getTestClassInfoTwo()
+		//cut.getTestClassInfoTwo( ... )
 	}
 
 }

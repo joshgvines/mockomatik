@@ -43,4 +43,12 @@ public class DemoClassE_MultipleConstructors {
     public void setTestInt(int testInt) {
         this.testInt = testInt;
     }
+
+    public void aRandomVoidMethod() {
+        System.out.println("this is a random method");
+    }
+
+    public String aRandomeStringMethod() {
+        return "random";
+    }
 }

@@ -109,4 +109,8 @@ public class DemoClassB_PrimitiveTypes {
         this.testShort = testShort;
     }
 
+    public String aStringReturnTypeMethod() {
+        return "method";
+    }
+
 }

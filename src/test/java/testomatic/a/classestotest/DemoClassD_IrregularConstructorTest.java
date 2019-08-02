@@ -28,8 +28,13 @@ public class DemoClassD_IrregularConstructorTest {
 	}
 
 	@Test
+	public void testOutputClassInfo() {
+		//cut.outputClassInfo( ... )
+	}
+
+	@Test
 	public void testGetTestClassInfo() {
-		//Type testResp = cut.getTestClassInfo()
+		//cut.getTestClassInfo( ... )
 	}
 
 }

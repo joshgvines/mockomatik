@@ -59,7 +59,7 @@ public class InputController {
             return false;
         } else if (input.contains("EXIT") && input.length() < 5) {
             sc.close();
-            System.out.println("\n > Double check project for new classes or erroneous files, Good Bye!");
+            System.out.println("\n > Double check project for new testomatic.classes or erroneous files, Good Bye!");
             System.exit(0);
         } else if (!input.contains("\\") || input.length() < 4 || input.length() > 260 || !input.endsWith("\\")) {
             System.out.println(" > Invalid path! Example: C:\\src\\packagewithclasses\\, [ must end with a '\\' ]");

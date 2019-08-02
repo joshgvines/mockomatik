@@ -31,7 +31,6 @@ public class CreateTestClasses {
         String variables;
         String destinationPackage;
         String imports;
-
         try {
             for (int primaryIndex = 0; primaryIndex < fileNameList.size(); primaryIndex++) {
                 File file = new File(packageForNewTest + fileNameList.get(primaryIndex) + "Test.java");
@@ -80,8 +79,10 @@ public class CreateTestClasses {
             outputData.outputFilesFound(fileNameList);
         } catch (IOException e) {
             System.out.println(" > ERROR: CreateTestClasses > createTest()\n" +  e);
+            e.printStackTrace();
         } catch (Exception e) {
             System.out.println(" > ERROR: CreateTestClasses > createTest()\n" + e);
+            e.printStackTrace();
         }
     }
 
@@ -125,7 +126,6 @@ public class CreateTestClasses {
             String listToString = list.toString();
             listToString = listToString.replaceAll("\\[", "");
             listToString = listToString.replaceAll("]", "");
-
             // Differentiate between variables and constructor arguments
             if (listToString.contains("private ")) {
                 listToString = listToString.replaceAll(", ", "");

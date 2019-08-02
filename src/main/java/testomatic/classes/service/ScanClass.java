@@ -39,21 +39,23 @@ public class ScanClass {
                     String line;
                     boolean defaultConstructor = true;
                     while ((line = br.readLine()) != null) {
+                        // Check for multiline comments
                         if (line.contains("/*")) {
                             ignoreMultiLineComments(br);
-                        }
-                        if (line.contains("import") && !line.contains(fileName) && !line.contains("//")) {
+                        // Check for imports
+                        } else if (line.contains("import") && !line.contains(fileName) && !line.contains("//")) {
                             importList.add(line + "\n");
                         }
                         // Check for constructor
-                        if (line.contains("public " + fileName + "(") && !line.contains("//")) {
+                        else if (line.contains("public " + fileName + "(") && !line.contains("//")) {
                             defaultConstructor = readValidConstructor(line, br, constructorList);
                         }
-                        if (line.contains("public ") && line.contains("(") && (line.contains("set")|| line.contains("get"))) {
+                        // Check for methods
+                        else if (line.contains("public ") && line.contains("(")) {
                             readValidMethod(line, br, testMethodList);
                         }
-                        // Check type
-                        if (line.contains(" String ") || line.contains(" int ") || line.contains(" Integer ") ||
+                        // Check for valid primitive variables
+                        else if (line.contains(" String ") || line.contains(" int ") || line.contains(" Integer ") ||
                                 line.contains(" double ")  || line.contains(" Double ") || line.contains(" float ")   ||
                                 line.contains(" Float ")   || line.contains(" long ")   || line.contains(" Long ")    ||
                                 line.contains(" short ")   || line.contains(" Short ")  || line.contains(" boolean ") ||
@@ -95,10 +97,8 @@ public class ScanClass {
             }
         } catch (IOException e) {
             System.out.println("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
-            e.printStackTrace();
         } catch (Exception e) {
             System.out.println("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
-            e.printStackTrace();
         }
         if (this.fileNameList != null && !this.fileNameList.isEmpty()) {
             return true;
@@ -136,10 +136,8 @@ public class ScanClass {
             }
         } catch (IOException e) {
             System.out.println(" > ERROR: setConstructorArguments > file name: " + fileName + " " + e);
-            e.printStackTrace();
         } catch (Exception e) {
             System.out.println(" > ERROR: setConstructorArguments > file name: " + fileName + " " + e);
-            e.printStackTrace();
         }
         return true;
     }
@@ -158,10 +156,8 @@ public class ScanClass {
             }
         } catch (IOException e) {
             System.err.println(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
-            e.printStackTrace();
         } catch (Exception e) {
             System.err.println(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
-            e.printStackTrace();
         }
     }
 
@@ -183,10 +179,8 @@ public class ScanClass {
             }
         } catch (IOException e) {
             System.err.println(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
-            e.printStackTrace();
         } catch (Exception e) {
             System.err.println(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
-            e.printStackTrace();
         }
     }
 
