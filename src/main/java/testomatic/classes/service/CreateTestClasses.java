@@ -62,7 +62,7 @@ public class CreateTestClasses {
                 }
 
                 // Write test constructor(s) to file
-                createTestConstructors.createConstructors(
+                createTestConstructors.createConstructor(
                         testConstructors.getPrimaryConstructorList().get(primaryIndex), fileName, writer
                 );
                 // write test method(s) to file

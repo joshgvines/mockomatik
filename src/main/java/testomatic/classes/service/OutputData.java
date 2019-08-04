@@ -3,11 +3,8 @@ package testomatic.classes.service;
 import java.io.File;
 import java.util.List;
 
+// TODO: output to text file
 public class OutputData {
-
-    public OutputData() {
-
-    }
 
     public void outputConstructorInfo(int primaryIndex, String fileName, List<String> constructorList) {
 
@@ -17,15 +14,12 @@ public class OutputData {
     }
 
     public void outputFilesFound(List<String> fileNameList) {
-        // TODO: also output to text file
-        boolean successful;
         System.out.println("\n __Files Found:______________________________________");
         if (!fileNameList.isEmpty() && fileNameList != null) {
             for (String fileName : fileNameList) {
                 System.out.println(" > " + fileName + " : " + "if success here");
             }
         }
-        System.out.println("\n > Done! \n");
     }
 
 }

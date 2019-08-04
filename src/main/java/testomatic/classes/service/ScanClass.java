@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScanClass {
+
     private String fileName;
     private List<String> fileNameList = new ArrayList<>();
     private List<List<String>> primaryVariableList = new ArrayList<>();

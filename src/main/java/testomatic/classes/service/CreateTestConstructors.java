@@ -11,7 +11,7 @@ public class CreateTestConstructors {
      * @param fileName
      * @param writer
      */
-    public void createConstructors(List<String> constructorList, String fileName, PrintWriter writer) {
+    public void createConstructor(List<String> constructorList, String fileName, PrintWriter writer) {
         String testObjects;
         try {
             // Multiple constructors
@@ -46,18 +46,13 @@ public class CreateTestConstructors {
                 }
             }
             // Single Constructor
-            // TODO: redundant check, needs to ensure single constructor is testable first
+            // TODO: change redundant check
             else if (constructorList.size() == 1) {
                 writer.println("\tprivate " + fileName + " cut;\n");
                 writer.print("\t@Before\n" +
                         "\tpublic void setUp() {\n"
                 );
-                System.out.println(constructorList);
-
                 testObjects = listToString(constructorList);
-
-                System.out.println(testObjects);
-
                 testObjects = createConstructorArgs(testObjects, fileName);
                 writer.println("\t\tcut = new " + fileName + "(" + testObjects + "\n" +
                         "\t\t);\n" +
@@ -85,7 +80,7 @@ public class CreateTestConstructors {
                 );
             }
         } catch (Exception e) {
-            System.out.println(" > ERROR: CreateTestClasses > createTest() " + e );
+            System.out.println(" > ERROR: CreateTestClasses > createConstructor() " + e );
             e.printStackTrace();
         }
     }

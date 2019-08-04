@@ -5,25 +5,22 @@ import java.util.List;
 
 public class CreateTestMethods {
 
+    private String type;
+    private String method;
+    private String methodName;
+    private String testMethodName;
+
     /**
-     *
+     * Create @Test methods for test classes
      * @param testMethodList
      * @param writer
      */
     public void createMethod(List<String> testMethodList, PrintWriter writer) {
-        if (testMethodList.toString().contains("(") && testMethodList.toString().contains(")")) {
-
-            String type,
-                    method,
-                    methodName,
-                    testMethodName;
-
+        if (testMethodList.toString().contains("(")) {
             boolean isMethod;
             for(int index = 0; index < testMethodList.size(); index++) {
                 method = testMethodList.get(index);
                 // TODO: Strings should never be null or throw a null exception
-                methodName = "";
-                testMethodName = "";
                 isMethod = true;
                 try {
                     // check for getters
@@ -47,7 +44,6 @@ public class CreateTestMethods {
                         type = type.substring(0, type.indexOf(" "));
                         methodName = method.substring((method.indexOf(type) + (type.length() + 1)), method.indexOf("("));
                         testMethodName = methodName.substring(0, 1).toUpperCase() + methodName.substring(1);
-//                        .substring(0, 1).toUpperCase() + methodName.substring(1);
                     } else {
                         isMethod = false;
                     }
@@ -74,7 +70,6 @@ public class CreateTestMethods {
                     "\t}"
             );
         }
-
     }
 
 }

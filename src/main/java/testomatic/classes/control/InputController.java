@@ -11,13 +11,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class InputController {
-    private ScanClass scanClass = new ScanClass();
-    private CreateTestClasses createTestClasses = new CreateTestClasses();
-    private ValidateClass validateClass = new ValidateClass();
     private Scanner sc = new Scanner(System.in);
 
-    private TestMethods testMethods = new TestMethods();
+    private CreateTestClasses createTestClasses = new CreateTestClasses();
     private TestConstructors testConstructors = new TestConstructors();
+    private TestMethods testMethods = new TestMethods();
+    private ScanClass scanClass = new ScanClass();
+
+    private ValidateClass validateClass = new ValidateClass();
 
     public void runProgram() {
         while (true) {
@@ -28,26 +29,31 @@ public class InputController {
     public void userInput() {
         String packageToTestPath;
         String packageForNewTest;
-        do {
-            System.out.println("\n > Enter A Path To A Package You Want To Test: ");
-            packageToTestPath = sc.nextLine();
-            if (packageToTestPath.equals("KILL")) {
-                System.out.println(" > You have not done anything yet...");
-            }
-        } while (!(inputValidation(packageToTestPath)));
-        do {
-            System.out.println("\n > Enter A Path To A Destination For New Tests: ");
-            packageForNewTest = sc.nextLine();
-            if (packageForNewTest.equals("KILL")) {
-                packageToTestPath = "";
-                break;
-            }
-        } while (!(inputValidation(packageForNewTest)));
+        try {
+            do {
+                System.out.println("\n > Enter A Path To A Package You Want To Test: ");
+                packageToTestPath = sc.nextLine();
+                if (packageToTestPath.equals("KILL")) {
+                    System.out.println(" > You have not done anything yet...");
+                }
+            } while (!(inputValidation(packageToTestPath)));
+            do {
+                System.out.println("\n > Enter A Path To A Destination For New Tests: ");
+                packageForNewTest = sc.nextLine();
+                if (packageForNewTest.equals("KILL")) {
+                    packageToTestPath = "";
+                    break;
+                }
+            } while (!(inputValidation(packageForNewTest)));
 
-        if (!packageForNewTest.equals("KILL")) {
-            runTestProcess(packageToTestPath, packageForNewTest);
-        } else {
-            System.out.println(" > Run Canceled...");
+            if (!packageForNewTest.equals("KILL")) {
+                runTestProcess(packageToTestPath, packageForNewTest);
+            } else {
+                System.out.println(" > Run Canceled...");
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR: InputController > userInput() " + e);
+            e.printStackTrace();
         }
     }
 
@@ -72,22 +78,28 @@ public class InputController {
     }
 
     public void runTestProcess(String packageToTestPath, String packageForNewTest) {
-        if (scanClass.scanClassForContent(packageToTestPath)) {
+        try {
+            if (scanClass.scanClassForContent(packageToTestPath)) {
+                List<List<String>> primaryVariableList = scanClass.getPrimaryVariableList();
+                List<List<String>> primaryImportList = scanClass.getPrimaryImportList();
+                List<String> fileName = scanClass.getFileNameList();
 
-            List<List<String>> primaryVariableList = scanClass.getPrimaryVariableList();
-            List<List<String>> primaryImportList = scanClass.getPrimaryImportList();
-            List<String> fileName = scanClass.getFileNameList();
+                // TODO: experimenting with mvc...
+                testConstructors.setPrimaryConstructorList(scanClass.getPrimaryConstructorList());
+                testMethods.setPrimaryTestMethodList(scanClass.getPrimaryTestMethodList());
 
-            // TODO: experimenting with mvc...
-            testConstructors.setPrimaryConstructorList(scanClass.getPrimaryConstructorList());
-            testMethods.setPrimaryTestMethodList(scanClass.getPrimaryTestMethodList());
-
-            createTestClasses.createTest(
-                    testMethods, testConstructors,
-                    packageForNewTest, fileName,
-                    primaryVariableList, primaryImportList
-            );
+                createTestClasses.createTest(
+                        testMethods, testConstructors,
+                        packageForNewTest, fileName,
+                        primaryVariableList, primaryImportList
+                );
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR: InputController > runTestProcess()");
+            e.printStackTrace();
+        } finally {
             validateClass.runTests(packageForNewTest);
+            System.out.println(" > Done!");
         }
     }
 
