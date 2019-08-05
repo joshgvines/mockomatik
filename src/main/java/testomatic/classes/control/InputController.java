@@ -9,9 +9,11 @@ import testomatic.classes.service.ValidateClass;
 import java.io.File;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class InputController {
-    private Scanner sc = new Scanner(System.in);
+
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private CreateTestClasses createTestClasses = new CreateTestClasses();
     private TestConstructors testConstructors = new TestConstructors();
@@ -29,7 +31,7 @@ public class InputController {
     public void userInput() {
         String packageToTestPath;
         String packageForNewTest;
-        try {
+        try (Scanner sc = new Scanner(System.in)) {
             do {
                 System.out.println("\n > Enter A Path To A Package You Want To Test: ");
                 packageToTestPath = sc.nextLine();
@@ -52,19 +54,18 @@ public class InputController {
                 System.out.println(" > Run Canceled...");
             }
         } catch (Exception e) {
-            System.out.println("ERROR: InputController > userInput() " + e);
-            e.printStackTrace();
+            LOG.severe("ERROR: InputController > userInput() " + e);
         }
     }
 
-    // TODO: regulate scanner input size before validation method?
+    // TODO: regulate scanner input size before validation method
+    // TODO: eventually will need to return and error code instead
     public boolean inputValidation(String input) {
         File testDir = new File(input);
         if (input.equals(null) || input.isEmpty() || input.contains(" ")) {
             System.out.println("\n > Input cannot be null or contain spaces!");
             return false;
         } else if (input.contains("EXIT") && input.length() < 5) {
-            sc.close();
             System.out.println("\n > Double check project for new testomatic.classes or erroneous files, Good Bye!");
             System.exit(0);
         } else if (!input.contains("\\") || input.length() < 4 || input.length() > 260 || !input.endsWith("\\")) {
@@ -95,8 +96,7 @@ public class InputController {
                 );
             }
         } catch (Exception e) {
-            System.out.println("ERROR: InputController > runTestProcess()");
-            e.printStackTrace();
+            LOG.severe("ERROR: InputController > runTestProcess()");
         } finally {
             validateClass.runTests(packageForNewTest);
             System.out.println(" > Done!");
