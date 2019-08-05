@@ -2,11 +2,14 @@ package testomatic.classes.service;
 
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class CreateTestConstructors {
 
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
     /**
-     *
+     * Create constructors for test classes
      * @param constructorList
      * @param fileName
      * @param writer
@@ -80,8 +83,7 @@ public class CreateTestConstructors {
                 );
             }
         } catch (Exception e) {
-            System.out.println(" > ERROR: CreateTestClasses > createConstructor() " + e );
-            e.printStackTrace();
+            LOG.severe(" > ERROR: CreateTestClasses > createConstructor() " + e );
         }
     }
 
@@ -122,8 +124,7 @@ public class CreateTestConstructors {
             }
             return testObjects;
         } catch (Exception e) {
-            System.out.println("CreateTestConstructor > createConstructorArgs()" + e);
-            e.printStackTrace();
+            LOG.severe("CreateTestConstructor > createConstructorArgs()" + e);
         }
         return "";
     }
@@ -146,8 +147,7 @@ public class CreateTestConstructors {
                 return listToString + "\n";
             }
         } catch(Exception e) {
-            System.out.println("CreateTestConstructors > listToString()" + e);
-            e.printStackTrace();
+            LOG.severe("CreateTestConstructors > listToString()" + e);
         }
         return "";
     }

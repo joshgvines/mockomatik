@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 public class CreateTestClasses {
 
-    Logger logger = Logger.getLogger(CreateTestClasses.class.getName());
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     CreateTestMethods createTestMethods = new CreateTestMethods();
     CreateTestConstructors createTestConstructors = new CreateTestConstructors();
@@ -52,40 +52,36 @@ public class CreateTestClasses {
                 imports += "import org.mockito.Mock;\n";
                 imports += "import org.mockito.junit.MockitoJUnitRunner;\n\n";
 
-                PrintWriter writer = new PrintWriter(file);
+                try (PrintWriter writer = new PrintWriter(file)) {
+                    writer.println("package " + destinationPackage + "; \n");
+                    writer.print(imports);
 
-                writer.println("package " + destinationPackage + "; \n");
-                writer.print(imports);
+                    writer.println("@RunWith(MockitoJUnitRunner.class)");
+                    writer.println("public class " + fileName + "Test {\n");
 
-                writer.println("@RunWith(MockitoJUnitRunner.class)");
-                writer.println("public class " + fileName + "Test {\n");
-
-                if(!primaryVariableList.isEmpty()){
-                    variables = listToString(primaryVariableList.get(primaryIndex));
-                    writer.print(variables);
+                    if(!primaryVariableList.isEmpty()){
+                        variables = listToString(primaryVariableList.get(primaryIndex));
+                        writer.print(variables);
+                    }
+                    // Write test constructor(s) to file
+                    createTestConstructors.createConstructor(
+                            testConstructors.getPrimaryConstructorList().get(primaryIndex), fileName, writer
+                    );
+                    // write test method(s) to file
+                    createTestMethods.createMethod(
+                            testMethods.getPrimaryTestMethodList().get(primaryIndex), writer
+                    );
+                    writer.println("}");
+                } finally {
+                    file.createNewFile();
                 }
-
-                // Write test constructor(s) to file
-                createTestConstructors.createConstructor(
-                        testConstructors.getPrimaryConstructorList().get(primaryIndex), fileName, writer
-                );
-                // write test method(s) to file
-                createTestMethods.createMethod(
-                        testMethods.getPrimaryTestMethodList().get(primaryIndex), writer
-                );
-                writer.println("}");
-
-                writer.close();
-                file.createNewFile();
             }
             OutputData outputData = new OutputData();
             outputData.outputFilesFound(fileNameList);
         } catch (IOException e) {
-            System.out.println(" > ERROR: CreateTestClasses > createTest()\n" +  e);
-            e.printStackTrace();
+            LOG.severe(" > ERROR: CreateTestClasses > createTest()\n" +  e);
         } catch (Exception e) {
-            System.out.println(" > ERROR: CreateTestClasses > createTest()\n" + e);
-            e.printStackTrace();
+            LOG.severe(" > ERROR: CreateTestClasses > createTest()\n" + e);
         }
     }
 
@@ -125,15 +121,19 @@ public class CreateTestClasses {
      * @return
      */
     private String listToString(List<String> list) {
-        if (!list.isEmpty()) {
-            String listToString = list.toString();
-            listToString = listToString.replaceAll("\\[", "");
-            listToString = listToString.replaceAll("]", "");
-            // Differentiate between variables and constructor arguments
-            if (listToString.contains("private ")) {
-                listToString = listToString.replaceAll(", ", "");
+        try {
+            if (!list.isEmpty()) {
+                String listToString = list.toString();
+                listToString = listToString.replaceAll("\\[", "");
+                listToString = listToString.replaceAll("]", "");
+                // Differentiate between variables and constructor arguments
+                if (listToString.contains("private ")) {
+                    listToString = listToString.replaceAll(", ", "");
+                }
+                return listToString + "\n";
             }
-            return listToString + "\n";
+        } catch(Exception e) {
+            LOG.severe("CreateTestClasses > listToString()" + e);
         }
         return "";
     }
