@@ -7,8 +7,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class CreateTestClasses {
+
+    Logger logger = Logger.getLogger(CreateTestClasses.class.getName());
+
     CreateTestMethods createTestMethods = new CreateTestMethods();
     CreateTestConstructors createTestConstructors = new CreateTestConstructors();
 
@@ -73,7 +77,6 @@ public class CreateTestClasses {
 
                 writer.close();
                 file.createNewFile();
-
             }
             OutputData outputData = new OutputData();
             outputData.outputFilesFound(fileNameList);
