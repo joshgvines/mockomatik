@@ -4,9 +4,16 @@ import testomatic.classes.control.InputController;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.logging.Logger;
 
 public class TestOMatic {
+
+    private static Logger logger = Logger.getLogger(TestOMatic.class.getName());
+
     public static void main(String[] args) {
+
+        logger.info("hello");
+
         Logo logo = new Logo();
         logo.runLogo();
 
