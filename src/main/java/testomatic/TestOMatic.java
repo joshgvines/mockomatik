@@ -1,7 +1,7 @@
 package testomatic;
 
 import testomatic.classes.control.InputController;
-import testomatic.logging.MyLogger;
+import testomatic.logging.LoggerConfig;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -13,7 +13,7 @@ public class TestOMatic {
 
     public static void main(String[] args) {
 
-        MyLogger.testLog();
+        LoggerConfig.testLog();
         LOG.fine(" >> LOG TEST << ");
 
         try {

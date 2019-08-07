@@ -6,8 +6,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ScanClass {
+
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private String fileName;
     private List<String> fileNameList = new ArrayList<>();
@@ -97,9 +100,9 @@ public class ScanClass {
                 }
             }
         } catch (IOException e) {
-            System.out.println("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
+            LOG.severe("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
         } catch (Exception e) {
-            System.out.println("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
+            LOG.severe("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
         }
         if (this.fileNameList != null && !this.fileNameList.isEmpty()) {
             return true;
@@ -136,9 +139,9 @@ public class ScanClass {
                 }
             }
         } catch (IOException e) {
-            System.out.println(" > ERROR: setConstructorArguments > file name: " + fileName + " " + e);
+            LOG.severe(" > ERROR: setConstructorArguments > file name: " + fileName + " " + e);
         } catch (Exception e) {
-            System.out.println(" > ERROR: setConstructorArguments > file name: " + fileName + " " + e);
+            LOG.severe(" > ERROR: setConstructorArguments > file name: " + fileName + " " + e);
         }
         return true;
     }
@@ -156,9 +159,9 @@ public class ScanClass {
                 }
             }
         } catch (IOException e) {
-            System.err.println(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
+            LOG.severe(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
         } catch (Exception e) {
-            System.err.println(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
+            LOG.severe(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
         }
     }
 
@@ -179,9 +182,9 @@ public class ScanClass {
                 }
             }
         } catch (IOException e) {
-            System.err.println(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
+            LOG.severe(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
         } catch (Exception e) {
-            System.err.println(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
+            LOG.severe(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
         }
     }
 

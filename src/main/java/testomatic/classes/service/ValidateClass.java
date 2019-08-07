@@ -1,6 +1,10 @@
 package testomatic.classes.service;
 
+import java.util.logging.Logger;
+
 public class ValidateClass {
+
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private String results;
 

@@ -2,8 +2,11 @@ package testomatic.classes.service;
 
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class CreateTestMethods {
+
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private String type;
     private String method;
@@ -48,8 +51,7 @@ public class CreateTestMethods {
                         isMethod = false;
                     }
                 } catch (Exception e) {
-                    System.out.println("ERROR: CreateTestMethods > createMethod() " + e);
-                    e.printStackTrace();
+                    LOG.severe("ERROR: CreateTestMethods > createMethod() " + e);
                 } finally {
                     // TODO: need a better way to check...
                     if (isMethod) {
@@ -63,7 +65,7 @@ public class CreateTestMethods {
                 }
             }
         } else {
-            // Class did not contain any valid methods to test
+            // Class did not contain any valid methods to test, use a default test method instead.
             writer.println("\t@Test\n" +
                     "\tpublic void testMethod() {\n" +
                     "\t\t//blah\n" +

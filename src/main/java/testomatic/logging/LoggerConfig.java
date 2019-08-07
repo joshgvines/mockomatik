@@ -4,7 +4,7 @@ import testomatic.TestOMatic;
 
 import java.util.logging.*;
 
-public class MyLogger {
+public class LoggerConfig {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -21,7 +21,7 @@ public class MyLogger {
             fh.setLevel(Level.FINE);
             LOG.addHandler(fh);
         } catch (Exception e) {
-            LOG.severe("logger failed");
+            LOG.info("jul logger has failed");
         }
     }
 
