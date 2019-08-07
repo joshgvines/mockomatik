@@ -14,8 +14,7 @@ public class TestOMatic {
     public static void main(String[] args) {
 
         MyLogger.testLog();
-        LOG.info(" >> LOG TEST : SHOULD BE VISIBLE << ");
-        LOG.fine(" >> LOG TEST : SHOULD NOT BE VISIBLE << ");
+        LOG.fine(" >> LOG TEST << ");
 
         try {
             Logo logo = new Logo();

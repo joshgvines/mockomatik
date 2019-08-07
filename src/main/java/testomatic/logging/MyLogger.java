@@ -17,7 +17,7 @@ public class MyLogger {
             ch.setLevel(Level.INFO);
             LOG.addHandler(ch);
 
-            FileHandler fh = new FileHandler("myLogger.log");
+            FileHandler fh = new FileHandler("TestOMaticLog.log", true);
             fh.setLevel(Level.FINE);
             LOG.addHandler(fh);
         } catch (Exception e) {
