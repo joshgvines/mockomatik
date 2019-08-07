@@ -15,6 +15,8 @@ public class InputController {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+    private Scanner sc = new Scanner(System.in);
+
     private CreateTestClasses createTestClasses = new CreateTestClasses();
     private TestConstructors testConstructors = new TestConstructors();
     private TestMethods testMethods = new TestMethods();
@@ -31,30 +33,26 @@ public class InputController {
     public void userInput() {
         String packageToTestPath;
         String packageForNewTest;
-        try (Scanner sc = new Scanner(System.in)) {
-            do {
-                System.out.println("\n > Enter A Path To A Package You Want To Test: ");
-                packageToTestPath = sc.nextLine();
-                if (packageToTestPath.equals("KILL")) {
-                    System.out.println(" > You have not done anything yet...");
-                }
-            } while (!(inputValidation(packageToTestPath)));
-            do {
-                System.out.println("\n > Enter A Path To A Destination For New Tests: ");
-                packageForNewTest = sc.nextLine();
-                if (packageForNewTest.equals("KILL")) {
-                    packageToTestPath = "";
-                    break;
-                }
-            } while (!(inputValidation(packageForNewTest)));
-
-            if (!packageForNewTest.equals("KILL")) {
-                runTestProcess(packageToTestPath, packageForNewTest);
-            } else {
-                System.out.println(" > Run Canceled...");
+        do {
+            System.out.println("\n > Enter A Path To A Package You Want To Test: ");
+            packageToTestPath = sc.nextLine();
+            if (packageToTestPath.equals("KILL")) {
+                System.out.println(" > You have not done anything yet...");
             }
-        } catch (Exception e) {
-            LOG.severe("ERROR: InputController > userInput() " + e);
+        } while (!(inputValidation(packageToTestPath)));
+        do {
+            System.out.println("\n > Enter A Path To A Destination For New Tests: ");
+            packageForNewTest = sc.nextLine();
+            if (packageForNewTest.equals("KILL")) {
+                packageToTestPath = "";
+                break;
+            }
+        } while (!(inputValidation(packageForNewTest)));
+
+        if (!packageForNewTest.equals("KILL")) {
+            runTestProcess(packageToTestPath, packageForNewTest);
+        } else {
+            System.out.println(" > Run Canceled...");
         }
     }
 
@@ -67,6 +65,7 @@ public class InputController {
             return false;
         } else if (input.contains("EXIT") && input.length() < 5) {
             System.out.println("\n > Double check project for new testomatic.classes or erroneous files, Good Bye!");
+            sc.close();
             System.exit(0);
         } else if (!input.contains("\\") || input.length() < 4 || input.length() > 260 || !input.endsWith("\\")) {
             System.out.println(" > Invalid path! Example: C:\\src\\packagewithclasses\\, [ must end with a '\\' ]");
