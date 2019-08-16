@@ -1,4 +1,4 @@
-# MockOMatic
+# MockOMatik
 Generate tests based on existing code.
 
 - Annotations will only work in a marked test directory.
