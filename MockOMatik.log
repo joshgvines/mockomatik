@@ -2,8 +2,8 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2019-08-15T21:41:26</date>
-  <millis>1565923286320</millis>
+  <date>2019-08-15T21:49:08</date>
+  <millis>1565923748084</millis>
   <sequence>0</sequence>
   <logger>global</logger>
   <level>FINE</level>
@@ -11,94 +11,5 @@
   <method>main</method>
   <thread>1</thread>
   <message> &gt;&gt; LOG TEST &lt;&lt; </message>
-</record>
-<record>
-  <date>2019-08-15T21:42:15</date>
-  <millis>1565923335210</millis>
-  <sequence>1</sequence>
-  <logger>global</logger>
-  <level>SEVERE</level>
-  <class>mockomatik.MockOMatik</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Could not find your location!java.util.NoSuchElementException: No line found</message>
-</record>
-</log>
-<?xml version="1.0" encoding="windows-1252" standalone="no"?>
-<!DOCTYPE log SYSTEM "logger.dtd">
-<log>
-<record>
-  <date>2019-08-15T21:42:16</date>
-  <millis>1565923336613</millis>
-  <sequence>0</sequence>
-  <logger>global</logger>
-  <level>FINE</level>
-  <class>mockomatik.MockOMatik</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message> &gt;&gt; LOG TEST &lt;&lt; </message>
-</record>
-<record>
-  <date>2019-08-15T21:42:28</date>
-  <millis>1565923348816</millis>
-  <sequence>1</sequence>
-  <logger>global</logger>
-  <level>SEVERE</level>
-  <class>mockomatik.MockOMatik</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Could not find your location!java.util.NoSuchElementException: No line found</message>
-</record>
-</log>
-<?xml version="1.0" encoding="windows-1252" standalone="no"?>
-<!DOCTYPE log SYSTEM "logger.dtd">
-<log>
-<record>
-  <date>2019-08-15T21:42:30</date>
-  <millis>1565923350073</millis>
-  <sequence>0</sequence>
-  <logger>global</logger>
-  <level>FINE</level>
-  <class>mockomatik.MockOMatik</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message> &gt;&gt; LOG TEST &lt;&lt; </message>
-</record>
-<record>
-  <date>2019-08-15T21:42:50</date>
-  <millis>1565923370590</millis>
-  <sequence>1</sequence>
-  <logger>global</logger>
-  <level>SEVERE</level>
-  <class>mockomatik.MockOMatik</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Could not find your location!java.util.NoSuchElementException: No line found</message>
-</record>
-</log>
-<?xml version="1.0" encoding="windows-1252" standalone="no"?>
-<!DOCTYPE log SYSTEM "logger.dtd">
-<log>
-<record>
-  <date>2019-08-15T21:45:04</date>
-  <millis>1565923504653</millis>
-  <sequence>0</sequence>
-  <logger>global</logger>
-  <level>FINE</level>
-  <class>mockomatik.MockOMatik</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message> &gt;&gt; LOG TEST &lt;&lt; </message>
-</record>
-<record>
-  <date>2019-08-15T21:45:08</date>
-  <millis>1565923508315</millis>
-  <sequence>1</sequence>
-  <logger>global</logger>
-  <level>SEVERE</level>
-  <class>mockomatik.MockOMatik</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Could not find your location!java.util.NoSuchElementException: No line found</message>
 </record>
 </log>
