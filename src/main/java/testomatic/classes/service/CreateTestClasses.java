@@ -2,6 +2,7 @@ package testomatic.classes.service;
 
 import testomatic.classes.model.TestConstructors;
 import testomatic.classes.model.TestMethods;
+import testomatic.classes.model.TestMockObjects;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class CreateTestClasses {
      */
     public void createTest(TestMethods testMethods,
                            TestConstructors testConstructors,
+                           TestMockObjects testMockObjects,
                            String packageForNewTest,
                            List<String> fileNameList,
                            List<List<String>> primaryVariableList,
@@ -63,6 +65,12 @@ public class CreateTestClasses {
                         variables = listToString(primaryVariableList.get(primaryIndex));
                         writer.print(variables);
                     }
+
+
+                    if (testMockObjects.getPrimaryTestMockList().get(primaryIndex).toString().contains(" Object ")) {
+                        writer.println(testMockObjects.getPrimaryTestMockList().get(primaryIndex));
+                    }
+
                     // Write test constructor(s) to file
                     createTestConstructors.createConstructor(
                             testConstructors.getPrimaryConstructorList().get(primaryIndex), fileName, writer

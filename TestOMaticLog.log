@@ -28,3 +28,107 @@
   <message> &gt;&gt; LOG TEST &lt;&lt; </message>
 </record>
 </log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2019-08-07T13:46:44</date>
+  <millis>1565203604293</millis>
+  <sequence>0</sequence>
+  <logger>global</logger>
+  <level>FINE</level>
+  <class>testomatic.TestOMatic</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message> &gt;&gt; LOG TEST &lt;&lt; </message>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2019-08-07T13:46:52</date>
+  <millis>1565203612203</millis>
+  <sequence>0</sequence>
+  <logger>global</logger>
+  <level>FINE</level>
+  <class>testomatic.TestOMatic</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message> &gt;&gt; LOG TEST &lt;&lt; </message>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2019-08-07T13:47:22</date>
+  <millis>1565203642612</millis>
+  <sequence>0</sequence>
+  <logger>global</logger>
+  <level>FINE</level>
+  <class>testomatic.TestOMatic</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message> &gt;&gt; LOG TEST &lt;&lt; </message>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2019-08-07T14:27:43</date>
+  <millis>1565206063913</millis>
+  <sequence>0</sequence>
+  <logger>global</logger>
+  <level>FINE</level>
+  <class>testomatic.TestOMatic</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message> &gt;&gt; LOG TEST &lt;&lt; </message>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2019-08-07T14:33:29</date>
+  <millis>1565206409932</millis>
+  <sequence>0</sequence>
+  <logger>global</logger>
+  <level>FINE</level>
+  <class>testomatic.TestOMatic</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message> &gt;&gt; LOG TEST &lt;&lt; </message>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2019-08-07T14:35:11</date>
+  <millis>1565206511858</millis>
+  <sequence>0</sequence>
+  <logger>global</logger>
+  <level>FINE</level>
+  <class>testomatic.TestOMatic</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message> &gt;&gt; LOG TEST &lt;&lt; </message>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2019-08-15T18:42:38</date>
+  <millis>1565912558690</millis>
+  <sequence>0</sequence>
+  <logger>global</logger>
+  <level>FINE</level>
+  <class>testomatic.TestOMatic</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message> &gt;&gt; LOG TEST &lt;&lt; </message>
+</record>

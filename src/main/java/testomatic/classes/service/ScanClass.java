@@ -18,6 +18,7 @@ public class ScanClass {
     private List<List<String>> primaryImportList = new ArrayList<>();
     private List<List<String>> primaryConstructorList = new ArrayList<>();
     private List<List<String>> primaryTestMethodList = new ArrayList<>();
+    private List<List<String>> primaryTestMockList = new ArrayList<>();
 
     /**
      * Checks if the file being read into buffer contains a valid constructor and arguments to be tested
@@ -39,6 +40,7 @@ public class ScanClass {
                     List<String> variableList = new ArrayList<>();
                     List<String> constructorList = new ArrayList<>();
                     List<String> testMethodList = new ArrayList<>();
+                    List<String> testMockList = new ArrayList<>();
 
                     String line;
                     boolean defaultConstructor = true;
@@ -59,7 +61,7 @@ public class ScanClass {
                             readValidMethod(line, br, testMethodList);
                         }
                         // Check for valid primitive variables
-                        else if (line.contains(" String ") || line.contains(" int ") || line.contains(" Integer ") ||
+                        else if (line.contains(" String ") || line.contains(" int ") || line.contains(" Integer ")    ||
                                 line.contains(" double ")  || line.contains(" Double ") || line.contains(" float ")   ||
                                 line.contains(" Float ")   || line.contains(" long ")   || line.contains(" Long ")    ||
                                 line.contains(" short ")   || line.contains(" Short ")  || line.contains(" boolean ") ||
@@ -82,6 +84,25 @@ public class ScanClass {
                                 variableList.add(line + "\n");
                             }
                         }
+                        // Common Java API object check
+                        else if (line.contains(" Object ")) {
+                            if (line.contains(" public ")) {
+                                line = line.replaceAll("public ", "private ");
+                            }
+                            if (line.contains(" protected ")) {
+                                line = line.replaceAll("protected ", "private ");
+                            }
+                            if (!line.contains(" private ")) {
+                                line = "private " + line;
+                                line = line.replaceAll("\\s+", " ");
+                                line = "\t" + line;
+                            }
+                            testMockList.add(line + "\n");
+                        }
+                        // Lines Not Captured:
+                        else {
+                            System.out.println(line);
+                        }
                     }
                     fr.close();
                     br.close();
@@ -92,11 +113,15 @@ public class ScanClass {
                     if (testMethodList.isEmpty() || testMethodList == null) {
                         testMethodList.add("// Ignored");
                     }
+                    if (testMockList.isEmpty()) {
+                        testMockList.add("// Ignored");
+                    }
                     fileNameList.add(fileName);
                     primaryTestMethodList.add(testMethodList);
                     primaryVariableList.add(variableList);
                     primaryImportList.add(importList);
                     primaryConstructorList.add(constructorList);
+                    primaryTestMockList.add(testMockList);
                 }
             }
         } catch (IOException e) {
@@ -147,7 +172,7 @@ public class ScanClass {
     }
 
     /**
-     * Ignores all line until the end of a multiline comment in  found.
+     * Ignores all line until the end of a multiline comment is found.
      * @param br
      */
     private void ignoreMultiLineComments(BufferedReader br) {
@@ -206,5 +231,9 @@ public class ScanClass {
 
     public List<List<String>> getPrimaryConstructorList() {
         return primaryConstructorList;
+    }
+
+    public List<List<String>> getPrimaryTestMockList() {
+        return primaryTestMockList;
     }
 }

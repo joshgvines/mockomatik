@@ -2,6 +2,7 @@ package testomatic.classes.control;
 
 import testomatic.classes.model.TestConstructors;
 import testomatic.classes.model.TestMethods;
+import testomatic.classes.model.TestMockObjects;
 import testomatic.classes.service.CreateTestClasses;
 import testomatic.classes.service.ScanClass;
 import testomatic.classes.service.ValidateClass;
@@ -20,6 +21,7 @@ public class InputController {
     private CreateTestClasses createTestClasses = new CreateTestClasses();
     private TestConstructors testConstructors = new TestConstructors();
     private TestMethods testMethods = new TestMethods();
+    private TestMockObjects testMockObjects = new TestMockObjects();
     private ScanClass scanClass = new ScanClass();
 
     private ValidateClass validateClass = new ValidateClass();
@@ -87,9 +89,10 @@ public class InputController {
                 // TODO: experimenting with mvc...
                 testConstructors.setPrimaryConstructorList(scanClass.getPrimaryConstructorList());
                 testMethods.setPrimaryTestMethodList(scanClass.getPrimaryTestMethodList());
+                testMockObjects.setPrimaryTestMockList(scanClass.getPrimaryTestMockList());
 
                 createTestClasses.createTest(
-                        testMethods, testConstructors,
+                        testMethods, testConstructors, testMockObjects,
                         packageForNewTest, fileName,
                         primaryVariableList, primaryImportList
                 );
