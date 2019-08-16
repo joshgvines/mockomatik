@@ -7,7 +7,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.logging.*;
 
-public class TestOMatic {
+public class MockOMatic {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2019-08-15T21:33:06</date>
+  <millis>1565922786316</millis>
+  <sequence>0</sequence>
+  <logger>global</logger>
+  <level>FINE</level>
+  <class>testomatic.MockOMatic</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message> &gt;&gt; LOG TEST &lt;&lt; </message>
+</record>
+</log>

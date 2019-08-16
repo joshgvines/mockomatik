@@ -1,7 +1,5 @@
 package testomatic.logging;
 
-import testomatic.TestOMatic;
-
 import java.util.logging.*;
 
 public class LoggerConfig {
@@ -17,7 +15,7 @@ public class LoggerConfig {
             ch.setLevel(Level.INFO);
             LOG.addHandler(ch);
 
-            FileHandler fh = new FileHandler("TestOMaticLog.log", true);
+            FileHandler fh = new FileHandler("MockOMatic.log", true);
             fh.setLevel(Level.FINE);
             LOG.addHandler(fh);
         } catch (Exception e) {
