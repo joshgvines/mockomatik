@@ -6,7 +6,7 @@ public class DemoClassF_MockableObjects {
     private Object obj;
 
     // Using common java objects which could be mocked with @Mock annotation
-    DemoClassF_MockableObjects(Object obj) {
+    public DemoClassF_MockableObjects(Object obj) {
         this.obj = obj;
     }
 

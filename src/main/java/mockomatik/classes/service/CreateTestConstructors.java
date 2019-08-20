@@ -114,6 +114,10 @@ public class CreateTestConstructors {
             testObjects = testObjects.replaceAll("Char ", "");
             testObjects = testObjects.replaceAll("byte ", "");
             testObjects = testObjects.replaceAll("Byte ", "");
+
+            // TODO: need a better way to support @Mock capable object in constructor
+            testObjects = testObjects.replaceAll("Object ", "");
+
             testObjects = testObjects.replaceAll(fileName, "");
             if (testObjects.contains("(")) {
                 testObjects = testObjects.replaceAll("\\(", "");
