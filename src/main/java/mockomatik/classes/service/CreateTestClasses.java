@@ -47,12 +47,12 @@ public class CreateTestClasses {
                 // Possible Imports
                 imports = listToString(primaryImportList.get(primaryIndex));
                 // Required Imports
-                imports += "import org.junit.After;\n";
-                imports += "import org.junit.Before;\n";
-                imports += "import org.junit.Test;\n";
-                imports += "import org.junit.runner.RunWith;\n";
-                imports += "import org.mockito.Mock;\n";
-                imports += "import org.mockito.junit.MockitoJUnitRunner;\n\n";
+                imports += "import org.junit.After;\n"
+                        + "import org.junit.Before;\n"
+                        + "import org.junit.Test;\n"
+                        + "import org.junit.runner.RunWith;\n"
+                        + "import org.mockito.Mock;\n"
+                        + "import org.mockito.junit.MockitoJUnitRunner;\n\n";
 
                 try (PrintWriter writer = new PrintWriter(file)) {
                     writer.println("package " + destinationPackage + "; \n");
@@ -61,14 +61,17 @@ public class CreateTestClasses {
                     writer.println("@RunWith(MockitoJUnitRunner.class)");
                     writer.println("public class " + fileName + "Test {\n");
 
+                    // Convert list for potential variables to a usable string for writer to use
                     if(!primaryVariableList.isEmpty()){
                         variables = listToString(primaryVariableList.get(primaryIndex));
                         writer.print(variables);
                     }
 
-
+                    // TODO: need a better way to support @Mock capable objects
                     if (testMockObjects.getPrimaryTestMockList().get(primaryIndex).toString().contains(" Object ")) {
-                        writer.println(testMockObjects.getPrimaryTestMockList().get(primaryIndex));
+                        for (String mock : testMockObjects.getPrimaryTestMockList().get(primaryIndex)) {
+                            writer.println(mock);
+                        }
                     }
 
                     // Write test constructor(s) to file

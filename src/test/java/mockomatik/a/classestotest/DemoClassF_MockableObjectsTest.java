@@ -12,14 +12,13 @@ public class DemoClassF_MockableObjectsTest {
 
     private String testString = "test str";
 
-[    private Object obj;
-]
+	@Mock private Object obj;
+
 	private DemoClassF_MockableObjects cut;
 
 	@Before
 	public void setUp() {
-		cut = new DemoClassF_MockableObjects(// Ignored
-
+		cut = new DemoClassF_MockableObjects(obj
 		);
 	}
 

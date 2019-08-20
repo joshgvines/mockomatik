@@ -84,8 +84,8 @@ public class ScanClass {
                                 variableList.add(line + "\n");
                             }
                         }
-                        // Common Java API object check
-                        else if (line.contains(" Object ")) {
+                        // Common @Mock capable Java API object check
+                        else if (line.contains(" Object ") && !line.contains("//")) {
                             if (line.contains(" public ")) {
                                 line = line.replaceAll("public ", "private ");
                             }
@@ -94,10 +94,11 @@ public class ScanClass {
                             }
                             if (!line.contains(" private ")) {
                                 line = "private " + line;
-                                line = line.replaceAll("\\s+", " ");
-                                line = "\t" + line;
+//                                line = line.replaceAll("\\s+", " ");
+//                                line = "\t" + line;
                             }
-                            testMockList.add(line + "\n");
+                            line = line.replaceAll("\\s+", " ");
+                            testMockList.add("\t@Mock" + line + "\n");
                         }
                         // Lines Not Captured:
                         else {
@@ -113,7 +114,7 @@ public class ScanClass {
                     if (testMethodList.isEmpty() || testMethodList == null) {
                         testMethodList.add("// Ignored");
                     }
-                    if (testMockList.isEmpty()) {
+                    if (testMockList.isEmpty() || testMethodList == null) {
                         testMockList.add("// Ignored");
                     }
                     fileNameList.add(fileName);
