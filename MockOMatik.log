@@ -13,3 +13,32 @@
   <message> &gt;&gt; LOG TEST &lt;&lt; </message>
 </record>
 </log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2019-08-19T14:00:37</date>
+  <millis>1566241237908</millis>
+  <sequence>0</sequence>
+  <logger>global</logger>
+  <level>FINE</level>
+  <class>mockomatik.MockOMatik</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message> &gt;&gt; LOG TEST &lt;&lt; </message>
+</record>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2019-08-19T15:35:43</date>
+  <millis>1566246943928</millis>
+  <sequence>0</sequence>
+  <logger>global</logger>
+  <level>FINE</level>
+  <class>mockomatik.MockOMatik</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message> &gt;&gt; LOG TEST &lt;&lt; </message>
+</record>
+</log>

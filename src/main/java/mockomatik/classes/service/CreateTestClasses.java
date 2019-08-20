@@ -14,8 +14,8 @@ public class CreateTestClasses {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    CreateTestMethods createTestMethods = new CreateTestMethods();
-    CreateTestConstructors createTestConstructors = new CreateTestConstructors();
+    private CreateTestMethods createTestMethods = new CreateTestMethods();
+    private CreateTestConstructors createTestConstructors = new CreateTestConstructors();
 
     /**
      * Put class content together into one file

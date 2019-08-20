@@ -16,15 +16,15 @@ public class InputController {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private Scanner sc = new Scanner(System.in);
+    private  final Scanner sc = new Scanner(System.in);
 
-    private CreateTestClasses createTestClasses = new CreateTestClasses();
-    private TestConstructors testConstructors = new TestConstructors();
-    private TestMethods testMethods = new TestMethods();
-    private TestMockObjects testMockObjects = new TestMockObjects();
-    private ScanClass scanClass = new ScanClass();
+    private final CreateTestClasses createTestClasses = new CreateTestClasses();
+    private final TestConstructors testConstructors = new TestConstructors();
+    private final TestMethods testMethods = new TestMethods();
+    private final TestMockObjects testMockObjects = new TestMockObjects();
+    private final ScanClass scanClass = new ScanClass();
 
-    private ValidateClass validateClass = new ValidateClass();
+    private final ValidateClass validateClass = new ValidateClass();
 
     public void runProgram() {
         while (true) {
