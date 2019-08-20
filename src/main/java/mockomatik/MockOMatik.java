@@ -17,7 +17,7 @@ public class MockOMatik {
         LOG.fine(" >> LOG TEST << ");
 
         try {
-            Logo logo = new Logo();
+            final Logo logo = new Logo();
             logo.runLogo();
         } catch (Exception e) {
             LOG.info("Logo did not load properly" + e);
@@ -30,7 +30,7 @@ public class MockOMatik {
 
             // TODO: better way to confirm location
             if (!path.equals("C:\\") && !path.equals("root") && !(path.toString().length() < 4)) {
-                InputController inputController = new InputController();
+                final InputController inputController = new InputController();
                 inputController.runProgram();
             } else {
                 System.out.println(" > Do not run in root drive, folder, or location!");
