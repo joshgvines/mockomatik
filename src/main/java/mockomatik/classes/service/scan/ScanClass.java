@@ -1,4 +1,4 @@
-package mockomatik.classes.service;
+package mockomatik.classes.service.scan;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 public class ScanClass {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+    private ObjectTypeManager otm = new ObjectTypeManager();
 
     private String fileName;
     private List<String> fileNameList = new ArrayList<>();
@@ -27,6 +29,7 @@ public class ScanClass {
      */
     public boolean scanClassForContent(String packageToTestPath) {
         try {
+            otm.loadTypes();
             File dir = new File(packageToTestPath);
             // TODO: change bufferedReader size, avoid creating a new bufferedReader every iteration
             for (File file : dir.listFiles()) {
@@ -60,13 +63,8 @@ public class ScanClass {
                         else if (line.contains("public ") && line.contains("(")) {
                             readValidMethod(line, br, testMethodList);
                         }
-                        // Check for valid primitive variables
-                        else if (line.contains(" String ") || line.contains(" int ") || line.contains(" Integer ")    ||
-                                line.contains(" double ")  || line.contains(" Double ") || line.contains(" float ")   ||
-                                line.contains(" Float ")   || line.contains(" long ")   || line.contains(" Long ")    ||
-                                line.contains(" short ")   || line.contains(" Short ")  || line.contains(" boolean ") ||
-                                line.contains(" Boolean ") || line.contains(" char ")   || line.contains(" byte ")    ||
-                                line.contains(" Byte ")) {
+                        // Check for valid primitive and String variables
+                        else if (otm.compareCommonTypes(line)) {
                             // Check for incompatible characters
                             if (!line.contains(fileName) && !line.contains("(") && !line.contains("this.")) {
                                 // Force variables to private modifier
@@ -85,7 +83,7 @@ public class ScanClass {
                             }
                         }
                         // Common @Mock capable Java API object check
-                        else if (line.contains(" Object ") && !line.contains("//")) {
+                        else if (otm.compareOtherTypes(line) && !line.contains("//")) {
                             if (line.contains(" public ")) {
                                 line = line.replaceAll("public ", "private ");
                             }
@@ -100,9 +98,10 @@ public class ScanClass {
                             line = line.replaceAll("\\s+", " ");
                             testMockList.add("\t@Mock" + line + "\n");
                         }
+
                         // Lines Not Captured:
                         else {
-                            System.out.println(line);
+//                            System.out.println(line);
                         }
                     }
                     fr.close();
@@ -125,8 +124,6 @@ public class ScanClass {
                     primaryTestMockList.add(testMockList);
                 }
             }
-        } catch (IOException e) {
-            LOG.severe("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
         } catch (Exception e) {
             LOG.severe("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
         }
@@ -164,8 +161,6 @@ public class ScanClass {
                     }
                 }
             }
-        } catch (IOException e) {
-            LOG.severe(" > ERROR: setConstructorArguments > file name: " + fileName + " " + e);
         } catch (Exception e) {
             LOG.severe(" > ERROR: setConstructorArguments > file name: " + fileName + " " + e);
         }
@@ -184,8 +179,6 @@ public class ScanClass {
                     break;
                 }
             }
-        } catch (IOException e) {
-            LOG.severe(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
         } catch (Exception e) {
             LOG.severe(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
         }
@@ -207,8 +200,6 @@ public class ScanClass {
                     break;
                 }
             }
-        } catch (IOException e) {
-            LOG.severe(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
         } catch (Exception e) {
             LOG.severe(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
         }

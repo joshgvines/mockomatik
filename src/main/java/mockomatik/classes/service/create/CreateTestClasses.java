@@ -1,8 +1,9 @@
-package mockomatik.classes.service;
+package mockomatik.classes.service.create;
 
 import mockomatik.classes.model.TestConstructors;
 import mockomatik.classes.model.TestMethods;
 import mockomatik.classes.model.TestMockObjects;
+import mockomatik.classes.service.OutputData;
 
 import java.io.File;
 import java.io.IOException;
