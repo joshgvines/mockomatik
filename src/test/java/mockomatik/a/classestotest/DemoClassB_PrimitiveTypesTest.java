@@ -29,6 +29,7 @@ public class DemoClassB_PrimitiveTypesTest {
     private Byte testByte = 2;
 	private Scanner keyboard = new Scanner(System.in);
 
+// Ignored
 	private DemoClassB_PrimitiveTypes cut;
 
 	@Before

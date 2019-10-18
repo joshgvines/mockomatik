@@ -13,6 +13,7 @@ public class DemoClassC_MultiLineCommentTest {
     private String testClassInfoOne = "test value One";
     private String testClassInfoTwo = "test value Two";
 
+// Ignored
 	private DemoClassC_MultiLineComment cut;
 
 	@Before

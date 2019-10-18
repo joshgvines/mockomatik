@@ -67,14 +67,12 @@ public class CreateTestClasses {
                         variables = listToString(primaryVariableList.get(primaryIndex));
                         writer.print(variables);
                     }
-
-                    // TODO: need a better way to support @Mock capable objects
-                    if (testMockObjects.getPrimaryTestMockList().get(primaryIndex).toString().contains(" Object ")) {
+                    // If testMockList is not empty, then output contents
+                    if (!testMockObjects.getPrimaryTestMockList().get(primaryIndex).isEmpty()) {
                         for (String mock : testMockObjects.getPrimaryTestMockList().get(primaryIndex)) {
                             writer.println(mock);
                         }
                     }
-
                     // Write test constructor(s) to file
                     createTestConstructors.createConstructor(
                             testConstructors.getPrimaryConstructorList().get(primaryIndex), fileName, writer
