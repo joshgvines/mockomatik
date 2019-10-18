@@ -27,6 +27,7 @@ public class DemoClassB_PrimitiveTypesTest {
     private Integer testInt = 7000000;
     private byte testbyte = 1;
     private Byte testByte = 2;
+	private Scanner keyboard = new Scanner(System.in);
 
 	private DemoClassB_PrimitiveTypes cut;
 

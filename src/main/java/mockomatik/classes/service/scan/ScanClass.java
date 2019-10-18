@@ -3,7 +3,6 @@ package mockomatik.classes.service.scan;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -31,97 +30,70 @@ public class ScanClass {
         try {
             otm.loadTypes();
             File dir = new File(packageToTestPath);
-            // TODO: change bufferedReader size, avoid creating a new bufferedReader every iteration
             for (File file : dir.listFiles()) {
                 if (file.isFile() && file.getName().contains(".java")) {
                     setFileName(file);
 
-                    FileReader fr = new FileReader(file);
-                    BufferedReader br = new BufferedReader(fr, 16384);
-
-                    List<String> importList = new ArrayList<>();
-                    List<String> variableList = new ArrayList<>();
                     List<String> constructorList = new ArrayList<>();
                     List<String> testMethodList = new ArrayList<>();
                     List<String> testMockList = new ArrayList<>();
+                    List<String> variableList = new ArrayList<>();
+                    List<String> importList = new ArrayList<>();
 
                     String line;
                     boolean defaultConstructor = true;
-                    while ((line = br.readLine()) != null) {
-                        // Check for multiline comments
-                        if (line.contains("/*")) {
-                            ignoreMultiLineComments(br);
-                        // Check for imports
-                        } else if (line.contains("import") && !line.contains(fileName) && !line.contains("//")) {
-                            importList.add(line + "\n");
-                        }
-                        // Check for constructor
-                        else if (line.contains("public " + fileName + "(") && !line.contains("//")) {
-                            defaultConstructor = readValidConstructor(line, br, constructorList);
-                        }
-                        // Check for methods
-                        else if (line.contains("public ") && line.contains("(")) {
-                            readValidMethod(line, br, testMethodList);
-                        }
-                        // Check for valid primitive and String variables
-                        else if (otm.compareCommonTypes(line)) {
-                            // Check for incompatible characters
-                            if (!line.contains(fileName) && !line.contains("(") && !line.contains("this.")) {
-                                // Force variables to private modifier
-                                if (line.contains(" public ")) {
-                                    line = line.replaceAll("public ", "private ");
+                    // While loop acts as a content filter to gather reusable lines for test templates
+                    try (BufferedReader br = new BufferedReader(new FileReader(file), 16384)) {
+                        while ((line = br.readLine()) != null) {
+                            // Check for single line comments
+                            if (line.contains("//")) {
+                                continue;
+                                // Check for multiline comments
+                            } else if (line.contains("/*")) {
+                                ignoreMultiLineComments(br);
+                                // Check for imports
+                            } else if (line.contains("import ") && line.contains(".") && !line.contains(fileName)) {
+                                importList.add(line + "\n");
+                                // Check for constructor
+                            } else if (line.contains("public " + fileName + "(")) {
+                                defaultConstructor = readValidConstructor(line, br, constructorList);
+                                // Check for methods
+                            } else if (line.contains("public ") && line.contains("(")) {
+                                readValidMethod(line, br, testMethodList);
+                                // Check for valid primitive and String variables
+                            } else if (otm.compareCommonTypes(line)) {
+                                if (!line.contains(fileName) && !line.contains("(") && !line.contains("this.")) {
+                                    line = forcePrivate(line);
+                                    variableList.add(line + "\n");
                                 }
-                                if (line.contains(" protected ")) {
-                                    line = line.replaceAll("protected ", "private ");
-                                }
-                                if (!line.contains(" private ")) {
-                                    line = "private " + line;
-                                    line = line.replaceAll("\\s+", " ");
-                                    line = "\t" + line;
-                                }
+                                // Compare to list of types in types.txt
+                            } else if (otm.compareOtherTypes(line)) {
+                                line = forcePrivate(line);
+                                line = line.replaceAll("\\s+", " ");
+                                testMockList.add("\t@Mock" + line + "\n");
+                            } else if (line.contains(";") && !line.contains("{")
+                                    && !line.contains("}") && !line.contains("package ")) {
+                                line = forcePrivate(line);
                                 variableList.add(line + "\n");
+                            } else {
+                                System.out.println(line);
                             }
                         }
-                        // Common @Mock capable Java API object check
-                        else if (otm.compareOtherTypes(line) && !line.contains("//")) {
-                            if (line.contains(" public ")) {
-                                line = line.replaceAll("public ", "private ");
-                            }
-                            if (line.contains(" protected ")) {
-                                line = line.replaceAll("protected ", "private ");
-                            }
-                            if (!line.contains(" private ")) {
-                                line = "private " + line;
-//                                line = line.replaceAll("\\s+", " ");
-//                                line = "\t" + line;
-                            }
-                            line = line.replaceAll("\\s+", " ");
-                            testMockList.add("\t@Mock" + line + "\n");
+                        // TODO: not sure how this is picking up on constructors with comments?????
+                        if (defaultConstructor) {
+                            constructorList.add("// Ignored");
+                        } if (testMethodList.isEmpty() || testMethodList == null) {
+                            testMethodList.add("// Ignored");
+                        } if (testMockList.isEmpty() || testMethodList == null) {
+                            testMockList.add("// Ignored");
                         }
-
-                        // Lines Not Captured:
-                        else {
-//                            System.out.println(line);
-                        }
+                        fileNameList.add(fileName);
+                        primaryTestMethodList.add(testMethodList);
+                        primaryVariableList.add(variableList);
+                        primaryImportList.add(importList);
+                        primaryConstructorList.add(constructorList);
+                        primaryTestMockList.add(testMockList);
                     }
-                    fr.close();
-                    br.close();
-                    // TODO: not sure how this is picking up on constructors with comments?????
-                    if (defaultConstructor) {
-                        constructorList.add("// Ignored");
-                    }
-                    if (testMethodList.isEmpty() || testMethodList == null) {
-                        testMethodList.add("// Ignored");
-                    }
-                    if (testMockList.isEmpty() || testMethodList == null) {
-                        testMockList.add("// Ignored");
-                    }
-                    fileNameList.add(fileName);
-                    primaryTestMethodList.add(testMethodList);
-                    primaryVariableList.add(variableList);
-                    primaryImportList.add(importList);
-                    primaryConstructorList.add(constructorList);
-                    primaryTestMockList.add(testMockList);
                 }
             }
         } catch (Exception e) {
@@ -132,6 +104,25 @@ public class ScanClass {
         }
         return false;
     }
+
+    /**
+     * Force fields to private modifier when needed
+     * @param line
+     * @return
+     */
+    private String forcePrivate(String line) {
+        if (line.contains(" public ")) {
+            line = line.replaceAll("public ", "private ");
+        } if (line.contains(" protected ")) {
+            line = line.replaceAll("protected ", "private ");
+        } if (!line.contains(" private ")) {
+            line = "private " + line;
+            line = line.replaceAll("\\s+", " ");
+            line = "\t" + line;
+        }
+        return line;
+    }
+
 
     /**
      * Remove file extension and set the name of the file being read to string to fileName

@@ -1,7 +1,6 @@
 package mockomatik;
 
 import mockomatik.classes.control.InputController;
-import mockomatik.classes.service.scan.ObjectTypeManager;
 import mockomatik.logging.LoggerConfig;
 
 import java.nio.file.FileSystems;
@@ -18,7 +17,6 @@ public class MockOMatik {
         LOG.fine(" >> LOG TEST << ");
 
         try {
-
             final Logo logo = new Logo();
             logo.runLogo();
         } catch (Exception e) {

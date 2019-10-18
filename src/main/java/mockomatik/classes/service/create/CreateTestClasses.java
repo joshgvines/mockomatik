@@ -139,7 +139,7 @@ public class CreateTestClasses {
                 listToString = listToString.replaceAll("\\[", "");
                 listToString = listToString.replaceAll("]", "");
                 // Differentiate between variables and constructor arguments
-                if (listToString.contains("private ")) {
+                if (listToString.contains("private ") || listToString.contains("import ")) {
                     listToString = listToString.replaceAll(", ", "");
                 }
                 return listToString + "\n";

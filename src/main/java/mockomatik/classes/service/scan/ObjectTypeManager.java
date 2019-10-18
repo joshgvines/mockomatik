@@ -11,7 +11,7 @@ public class ObjectTypeManager {
     private final String filePath = "src\\main\\resources\\types.txt";
     private final File typesFile = new File(filePath);
 
-    // Temporary Dedicated Type list
+    // Temporary Type list
     private List<String> otherTypes = new ArrayList<>();
     private final String[] commonTypes = new String[]
     {
