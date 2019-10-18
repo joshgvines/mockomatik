@@ -5,15 +5,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ObjectTypeManager {
 
-    private final String filePath = "src\\main\\resources\\types.txt";
-    private final File typesFile = new File(filePath);
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     // Temporary Type list
-    private List<String> otherTypes = new ArrayList<>();
-    private final String[] commonTypes = new String[]
+    public List<String> otherTypes = new ArrayList<>();
+    public final String[] commonTypes = new String[]
     {
             " String " , " char "   , " int "     , " Integer " ,
             " double " , " Double " , " float "   , " Float "   ,
@@ -21,10 +21,10 @@ public class ObjectTypeManager {
             " byte "   , " Byte "   , " boolean " , " Boolean " ,
     };
 
-    public void loadTypes() {
+    public ObjectTypeManager(String filePath) {
+        File typesFile = new File(filePath);
         if (typesFile.exists()) {
-            try(FileReader fr = new FileReader(typesFile);
-                BufferedReader br = new BufferedReader(fr);) {
+            try (BufferedReader br = new BufferedReader(new FileReader(typesFile))) {
                 String line;
                 while((line = br.readLine()) != null) {
                     line = line.trim();
@@ -32,6 +32,8 @@ public class ObjectTypeManager {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                LOG.severe("ObjectTypeManger has failed" + e);
+                System.exit(0);
             }
         }
     }

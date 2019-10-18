@@ -11,12 +11,12 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class CreateTestClasses {
+public class TestClass {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private CreateTestMethods createTestMethods = new CreateTestMethods();
-    private CreateTestConstructors createTestConstructors = new CreateTestConstructors();
+    private TestMethod testMethod = new TestMethod();
+    private TestConstructor testConstructor = new TestConstructor();
 
     /**
      * Put class content together into one file
@@ -74,11 +74,11 @@ public class CreateTestClasses {
                         }
                     }
                     // Write test constructor(s) to file
-                    createTestConstructors.createConstructor(
+                    testConstructor.createConstructor(
                             testConstructors.getPrimaryConstructorList().get(primaryIndex), fileName, writer
                     );
                     // write test method(s) to file
-                    createTestMethods.createMethod(
+                    testMethod.createMethod(
                             testMethods.getPrimaryTestMethodList().get(primaryIndex), writer
                     );
                     writer.println("}");

@@ -11,7 +11,8 @@ public class ScanClass {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private ObjectTypeManager otm = new ObjectTypeManager();
+    private ObjectTypeManager otm = new ObjectTypeManager(
+            "src\\main\\resources\\types.txt");
 
     private String fileName;
     private List<String> fileNameList = new ArrayList<>();
@@ -28,7 +29,6 @@ public class ScanClass {
      */
     public boolean scanClassForContent(String packageToTestPath) {
         try {
-            otm.loadTypes();
             File dir = new File(packageToTestPath);
             for (File file : dir.listFiles()) {
                 if (file.isFile() && file.getName().contains(".java")) {
@@ -97,6 +97,7 @@ public class ScanClass {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             LOG.severe("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
         }
         if (this.fileNameList != null && !this.fileNameList.isEmpty()) {
@@ -153,6 +154,7 @@ public class ScanClass {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             LOG.severe(" > ERROR: setConstructorArguments > file name: " + fileName + " " + e);
         }
         return true;
@@ -192,6 +194,7 @@ public class ScanClass {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             LOG.severe(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
         }
     }

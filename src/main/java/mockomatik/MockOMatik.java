@@ -36,6 +36,7 @@ public class MockOMatik {
                 System.out.println(" > Do not run in root drive, folder, or location!");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             LOG.severe("Could not find your location!" + e);
         } finally {
             System.exit(0);

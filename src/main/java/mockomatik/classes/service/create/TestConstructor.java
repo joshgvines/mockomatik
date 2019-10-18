@@ -1,12 +1,17 @@
 package mockomatik.classes.service.create;
 
+import mockomatik.classes.service.scan.ObjectTypeManager;
+
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class CreateTestConstructors {
+public class TestConstructor {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+    private ObjectTypeManager otm = new ObjectTypeManager(
+            "src\\main\\resources\\types.txt");
 
     /**
      * Create constructors for test classes
@@ -99,31 +104,23 @@ public class CreateTestConstructors {
                 int startOfObjects = testObjects.indexOf(fileName + "(");
                 testObjects = testObjects.substring(startOfObjects, testObjects.indexOf(")"));
             }
-            testObjects = testObjects.replaceAll("String ", "");
-            testObjects = testObjects.replaceAll("int ", "");
-            testObjects = testObjects.replaceAll("Integer ", "");
-            testObjects = testObjects.replaceAll("boolean ", "");
-            testObjects = testObjects.replaceAll("Boolean ", "");
-            testObjects = testObjects.replaceAll("double ", "");
-            testObjects = testObjects.replaceAll("Double ", "");
-            testObjects = testObjects.replaceAll("float ", "");
-            testObjects = testObjects.replaceAll("Float ", "");
-            testObjects = testObjects.replaceAll("short ", "");
-            testObjects = testObjects.replaceAll("Short ", "");
-            testObjects = testObjects.replaceAll("char ", "");
-            testObjects = testObjects.replaceAll("Char ", "");
-            testObjects = testObjects.replaceAll("byte ", "");
-            testObjects = testObjects.replaceAll("Byte ", "");
-
-            // TODO: need a better way to support @Mock capable object in constructor
-            testObjects = testObjects.replaceAll("Object ", "");
-
+            for (String type : otm.commonTypes) {
+                type = type.trim() + " ";
+                System.out.println(type);
+                testObjects = testObjects.replaceAll(type, "");
+            }
+            System.out.println(otm.otherTypes);
+            for (String type : otm.otherTypes) {
+                type = type.trim() + " ";
+                System.out.println(type);
+                testObjects = testObjects.replaceAll(type, "");
+            }
             testObjects = testObjects.replaceAll(fileName, "");
+
             if (testObjects.contains("(")) {
                 testObjects = testObjects.replaceAll("\\(", "");
                 testObjects = testObjects.replaceAll("\\s", "");
-            }
-            if(testObjects.contains(",")) {
+            } if (testObjects.contains(",")) {
                 testObjects = testObjects.replaceAll(",", ",\n\t\t\t\t\t");
             }
             return testObjects;
