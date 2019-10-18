@@ -3,8 +3,8 @@ package mockomatik.classes.control;
 import mockomatik.classes.model.TestConstructors;
 import mockomatik.classes.model.TestMethods;
 import mockomatik.classes.model.TestMockObjects;
-import mockomatik.classes.service.CreateTestClasses;
-import mockomatik.classes.service.ScanClass;
+import mockomatik.classes.service.create.CreateTestClasses;
+import mockomatik.classes.service.scan.ScanClass;
 import mockomatik.classes.service.ValidateClass;
 
 import java.io.File;
