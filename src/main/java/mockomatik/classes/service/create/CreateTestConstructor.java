@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class TestConstructor {
+public class CreateTestConstructor {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -106,13 +106,10 @@ public class TestConstructor {
             }
             for (String type : otm.commonTypes) {
                 type = type.trim() + " ";
-                System.out.println(type);
                 testObjects = testObjects.replaceAll(type, "");
             }
-            System.out.println(otm.otherTypes);
             for (String type : otm.otherTypes) {
                 type = type.trim() + " ";
-                System.out.println(type);
                 testObjects = testObjects.replaceAll(type, "");
             }
             testObjects = testObjects.replaceAll(fileName, "");
