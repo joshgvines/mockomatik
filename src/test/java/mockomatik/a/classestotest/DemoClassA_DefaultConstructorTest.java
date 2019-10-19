@@ -10,6 +10,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class DemoClassA_DefaultConstructorTest {
 
+// Ignored
 	private DemoClassA_DefaultConstructor cut;
 
 	@Before

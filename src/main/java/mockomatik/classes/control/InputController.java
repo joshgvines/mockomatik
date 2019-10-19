@@ -3,8 +3,8 @@ package mockomatik.classes.control;
 import mockomatik.classes.model.TestConstructors;
 import mockomatik.classes.model.TestMethods;
 import mockomatik.classes.model.TestMockObjects;
-import mockomatik.classes.service.CreateTestClasses;
-import mockomatik.classes.service.ScanClass;
+import mockomatik.classes.service.create.CreateTestClass;
+import mockomatik.classes.service.scan.ScanClass;
 import mockomatik.classes.service.ValidateClass;
 
 import java.io.File;
@@ -18,7 +18,7 @@ public class InputController {
 
     private  final Scanner sc = new Scanner(System.in);
 
-    private final CreateTestClasses createTestClasses = new CreateTestClasses();
+    private final CreateTestClass createTestClass = new CreateTestClass();
     private final TestConstructors testConstructors = new TestConstructors();
     private final TestMethods testMethods = new TestMethods();
     private final TestMockObjects testMockObjects = new TestMockObjects();
@@ -91,7 +91,7 @@ public class InputController {
                 testMethods.setPrimaryTestMethodList(scanClass.getPrimaryTestMethodList());
                 testMockObjects.setPrimaryTestMockList(scanClass.getPrimaryTestMockList());
 
-                createTestClasses.createTest(
+                createTestClass.createTest(
                         testMethods, testConstructors, testMockObjects,
                         packageForNewTest, fileName,
                         primaryVariableList, primaryImportList

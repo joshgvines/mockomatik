@@ -1,8 +1,9 @@
-package mockomatik.classes.service;
+package mockomatik.classes.service.create;
 
 import mockomatik.classes.model.TestConstructors;
 import mockomatik.classes.model.TestMethods;
 import mockomatik.classes.model.TestMockObjects;
+import mockomatik.classes.service.OutputData;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,12 +11,12 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class CreateTestClasses {
+public class CreateTestClass {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private CreateTestMethods createTestMethods = new CreateTestMethods();
-    private CreateTestConstructors createTestConstructors = new CreateTestConstructors();
+    private CreateTestMethod createTestMethod = new CreateTestMethod();
+    private CreateTestConstructor createTestConstructor = new CreateTestConstructor();
 
     /**
      * Put class content together into one file
@@ -66,20 +67,18 @@ public class CreateTestClasses {
                         variables = listToString(primaryVariableList.get(primaryIndex));
                         writer.print(variables);
                     }
-
-                    // TODO: need a better way to support @Mock capable objects
-                    if (testMockObjects.getPrimaryTestMockList().get(primaryIndex).toString().contains(" Object ")) {
+                    // If testMockList is not empty, then output contents
+                    if (!testMockObjects.getPrimaryTestMockList().get(primaryIndex).isEmpty()) {
                         for (String mock : testMockObjects.getPrimaryTestMockList().get(primaryIndex)) {
                             writer.println(mock);
                         }
                     }
-
                     // Write test constructor(s) to file
-                    createTestConstructors.createConstructor(
+                    createTestConstructor.createConstructor(
                             testConstructors.getPrimaryConstructorList().get(primaryIndex), fileName, writer
                     );
                     // write test method(s) to file
-                    createTestMethods.createMethod(
+                    createTestMethod.createMethod(
                             testMethods.getPrimaryTestMethodList().get(primaryIndex), writer
                     );
                     writer.println("}");
@@ -138,7 +137,7 @@ public class CreateTestClasses {
                 listToString = listToString.replaceAll("\\[", "");
                 listToString = listToString.replaceAll("]", "");
                 // Differentiate between variables and constructor arguments
-                if (listToString.contains("private ")) {
+                if (listToString.contains("private ") || listToString.contains("import ")) {
                     listToString = listToString.replaceAll(", ", "");
                 }
                 return listToString + "\n";

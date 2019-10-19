@@ -13,6 +13,7 @@ public class DemoClassD_IrregularConstructorTest {
     private String testClassInfoOne = "test";
     private String testClassInfoTwo = "test";
 
+// Ignored
 	private DemoClassD_IrregularConstructor cut;
 
 	@Before

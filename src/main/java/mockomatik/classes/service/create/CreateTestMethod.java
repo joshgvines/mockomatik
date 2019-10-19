@@ -1,10 +1,10 @@
-package mockomatik.classes.service;
+package mockomatik.classes.service.create;
 
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class CreateTestMethods {
+public class CreateTestMethod {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 

@@ -15,6 +15,7 @@ public class DemoClassE_MultipleConstructorsTest {
 	private int testByte;
 	private String otherString;
 
+// Ignored
 	private DemoClassE_MultipleConstructors cut1,  cut2,  cut3;
 
 	@Before
