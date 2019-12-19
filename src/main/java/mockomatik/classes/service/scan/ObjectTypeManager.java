@@ -11,9 +11,12 @@ public class ObjectTypeManager {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+    private ObjectTypeManager() {
+    }
+
     // Temporary Type list
-    public List<String> otherTypes = new ArrayList<>();
-    public final String[] commonTypes = new String[]
+    public static List<String> otherTypes = new ArrayList<>();
+    public static final String[] commonTypes = new String[]
     {
             " String " , " char "   , " int "     , " Integer " ,
             " double " , " Double " , " float "   , " Float "   ,
@@ -21,8 +24,8 @@ public class ObjectTypeManager {
             " byte "   , " Byte "   , " boolean " , " Boolean " ,
     };
 
-    public ObjectTypeManager(String filePath) {
-        File typesFile = new File(filePath);
+    public static void load() {
+        File typesFile = new File("src\\main\\resources\\types.txt");
         if (typesFile.exists()) {
             try (BufferedReader br = new BufferedReader(new FileReader(typesFile))) {
                 String line;
@@ -38,7 +41,7 @@ public class ObjectTypeManager {
         }
     }
 
-    public boolean compareOtherTypes(String str) {
+    public static boolean compareOtherTypes(String str) {
         for (String read : otherTypes) {
             if (str.contains(read)) {
                 return true;
@@ -47,7 +50,7 @@ public class ObjectTypeManager {
         return false;
     }
 
-    public boolean compareCommonTypes(String str) {
+    public static boolean compareCommonTypes(String str) {
         for (String read : commonTypes) {
             if (str.contains(read)) {
                 return true;

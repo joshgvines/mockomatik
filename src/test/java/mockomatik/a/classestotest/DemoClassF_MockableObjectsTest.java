@@ -15,14 +15,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class DemoClassF_MockableObjectsTest {
 
     private String testString = "test str";
+    private URL url;
     private StringBuilder sb;
     private Socket socket;
 
 	@Mock private Object obj;
 
 	@Mock private File file;
-
-	@Mock private URL url;
 
 	private DemoClassF_MockableObjects cut;
 

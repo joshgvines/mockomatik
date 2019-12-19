@@ -10,8 +10,8 @@ public class CreateTestConstructor {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private ObjectTypeManager otm = new ObjectTypeManager(
-            "src\\main\\resources\\types.txt");
+    protected CreateTestConstructor() {
+    }
 
     /**
      * Create constructors for test classes
@@ -19,7 +19,7 @@ public class CreateTestConstructor {
      * @param fileName
      * @param writer
      */
-    public void createConstructor(List<String> constructorList, String fileName, PrintWriter writer) {
+    protected void createConstructor(List<String> constructorList, String fileName, PrintWriter writer) {
         String testObjects;
         try {
             // Multiple constructors
@@ -36,10 +36,9 @@ public class CreateTestConstructor {
                         "\tpublic void setUp() {\n"
                 );
                 for (int setUpIndex = 0; setUpIndex < constructorList.size(); setUpIndex++) {
-                    testObjects = createConstructorArgs(constructorList.get(setUpIndex), fileName);
+                    testObjects = createConstructorArguments(constructorList.get(setUpIndex), fileName);
                     writer.println(
-                            "\t\tcut" + (setUpIndex + 1) + " = new " + fileName + "(" + testObjects + "\n" +
-                                    "\t\t);"
+                        "\t\tcut" + (setUpIndex + 1) + " = new " + fileName + "(" + testObjects + "\n" + "\t\t);"
                     );
                 }
                 writer.println("\t}\n" + "\t@After\n" +
@@ -61,7 +60,7 @@ public class CreateTestConstructor {
                         "\tpublic void setUp() {\n"
                 );
                 testObjects = listToString(constructorList);
-                testObjects = createConstructorArgs(testObjects, fileName);
+                testObjects = createConstructorArguments(testObjects, fileName);
                 writer.println("\t\tcut = new " + fileName + "(" + testObjects + "\n" +
                         "\t\t);\n" +
                         "\t}\n"
@@ -71,21 +70,9 @@ public class CreateTestConstructor {
                         "\t\tcut = null;\n" +
                         "\t}\n"
                 );
-            }
-            // Default Constructor
-            else {
-                writer.println("\tprivate " + fileName + " cut;\n");
-                writer.print("\t@Before\n" +
-                        "\tpublic void setUp() {\n"
-                );
-                writer.println("\t\tcut = new " + fileName + "();\n" +
-                        "\t}\n"
-                );
-                writer.println("\t@After\n" +
-                        "\tpublic void tearDown() {\n" +
-                        "\t\tcut = null;\n" +
-                        "\t}\n"
-                );
+            } else {
+                // Default Constructor
+                createDefaultConstructor(writer, fileName);
             }
         } catch (Exception e) {
             LOG.severe(" > ERROR: CreateTestClasses > createConstructor() " + e );
@@ -96,19 +83,19 @@ public class CreateTestConstructor {
      * Formats arguments to be used in constructor tests
      * @param testObjects
      * @param fileName
-     * @return
+     * @return String testObjects
      */
-    private String createConstructorArgs(String testObjects, String fileName) {
+    private String createConstructorArguments(String testObjects, String fileName) {
         try {
             if (testObjects.contains(")")) {
                 int startOfObjects = testObjects.indexOf(fileName + "(");
                 testObjects = testObjects.substring(startOfObjects, testObjects.indexOf(")"));
             }
-            for (String type : otm.commonTypes) {
+            for (String type : ObjectTypeManager.commonTypes) {
                 type = type.trim() + " ";
                 testObjects = testObjects.replaceAll(type, "");
             }
-            for (String type : otm.otherTypes) {
+            for (String type : ObjectTypeManager.otherTypes) {
                 type = type.trim() + " ";
                 testObjects = testObjects.replaceAll(type, "");
             }
@@ -122,7 +109,7 @@ public class CreateTestConstructor {
             }
             return testObjects;
         } catch (Exception e) {
-            LOG.severe("CreateTestConstructor > createConstructorArgs()" + e);
+            LOG.severe("CreateTestConstructor > createConstructorArguments()" + e);
         }
         return "";
     }
@@ -148,5 +135,25 @@ public class CreateTestConstructor {
             LOG.severe("CreateTestConstructors > listToString()" + e);
         }
         return "";
+    }
+
+    /**
+     * Writes basic default constructor cut object creation inside @Before method to avoid empty test errors.
+     * @param writer
+     * @param fileName
+     */
+    private void createDefaultConstructor(PrintWriter writer, String fileName) {
+        writer.println("\tprivate " + fileName + " cut;\n");
+        writer.print("\t@Before\n" +
+                "\tpublic void setUp() {\n"
+        );
+        writer.println("\t\tcut = new " + fileName + "();\n" +
+                "\t}\n"
+        );
+        writer.println("\t@After\n" +
+                "\tpublic void tearDown() {\n" +
+                "\t\tcut = null;\n" +
+                "\t}\n"
+        );
     }
 }

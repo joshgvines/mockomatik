@@ -11,9 +11,6 @@ public class ScanClass {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private ObjectTypeManager otm = new ObjectTypeManager(
-            "src\\main\\resources\\types.txt");
-
     private String fileName;
     private List<String> fileNameList = new ArrayList<>();
     private List<List<String>> primaryVariableList = new ArrayList<>();
@@ -61,13 +58,13 @@ public class ScanClass {
                             } else if (line.contains("public ") && line.contains("(")) {
                                 readValidMethod(line, br, testMethodList);
                                 // Check for valid primitive and String variables
-                            } else if (otm.compareCommonTypes(line)) {
+                            } else if (ObjectTypeManager.compareCommonTypes(line)) {
                                 if (!line.contains(fileName) && !line.contains("(") && !line.contains("this.")) {
                                     line = forcePrivate(line);
                                     variableList.add(line + "\n");
                                 }
                                 // Compare to list of types in types.txt
-                            } else if (otm.compareOtherTypes(line)) {
+                            } else if (ObjectTypeManager.compareOtherTypes(line)) {
                                 line = forcePrivate(line);
                                 line = line.replaceAll("\\s+", " ");
                                 testMockList.add("\t@Mock" + line + "\n");

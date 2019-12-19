@@ -4,6 +4,7 @@ import mockomatik.classes.model.TestConstructors;
 import mockomatik.classes.model.TestMethods;
 import mockomatik.classes.model.TestMockObjects;
 import mockomatik.classes.service.create.CreateTestClass;
+import mockomatik.classes.service.scan.ObjectTypeManager;
 import mockomatik.classes.service.scan.ScanClass;
 import mockomatik.classes.service.ValidateClass;
 
@@ -27,6 +28,7 @@ public class InputController {
     private final ValidateClass validateClass = new ValidateClass();
 
     public void runProgram() {
+        ObjectTypeManager.load();
         while (true) {
             userInput();
         }
@@ -35,6 +37,7 @@ public class InputController {
     public void userInput() {
         String packageToTestPath;
         String packageForNewTest;
+
         do {
             System.out.println("\n > Enter A Path To A Package You Want To Test: ");
             packageToTestPath = sc.nextLine();
@@ -42,6 +45,7 @@ public class InputController {
                 System.out.println(" > You have not done anything yet...");
             }
         } while (!(inputValidation(packageToTestPath)));
+
         do {
             System.out.println("\n > Enter A Path To A Destination For New Tests: ");
             packageForNewTest = sc.nextLine();
@@ -59,7 +63,6 @@ public class InputController {
     }
 
     // TODO: regulate scanner input size before validation method
-    // TODO: eventually will need to return and error code instead
     public boolean inputValidation(String input) {
         File testDir = new File(input);
         if (input.equals(null) || input.isEmpty() || input.contains(" ")) {
@@ -82,11 +85,11 @@ public class InputController {
     public void runTestProcess(String packageToTestPath, String packageForNewTest) {
         try {
             if (scanClass.scanClassForContent(packageToTestPath)) {
+
                 List<List<String>> primaryVariableList = scanClass.getPrimaryVariableList();
                 List<List<String>> primaryImportList = scanClass.getPrimaryImportList();
                 List<String> fileName = scanClass.getFileNameList();
 
-                // TODO: experimenting with mvc...
                 testConstructors.setPrimaryConstructorList(scanClass.getPrimaryConstructorList());
                 testMethods.setPrimaryTestMethodList(scanClass.getPrimaryTestMethodList());
                 testMockObjects.setPrimaryTestMockList(scanClass.getPrimaryTestMockList());
