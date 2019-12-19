@@ -13,7 +13,7 @@ public class ScanClass {
 
     private String fileName;
     private List<String> fileNameList = new ArrayList<>();
-    private List<List<String>> primaryVariableList = new ArrayList<>();
+    private List<List<String>> primaryTestVariableList = new ArrayList<>();
     private List<List<String>> primaryImportList = new ArrayList<>();
     private List<List<String>> primaryConstructorList = new ArrayList<>();
     private List<List<String>> primaryTestMethodList = new ArrayList<>();
@@ -86,7 +86,7 @@ public class ScanClass {
                         }
                         fileNameList.add(fileName);
                         primaryTestMethodList.add(testMethodList);
-                        primaryVariableList.add(variableList);
+                        primaryTestVariableList.add(variableList);
                         primaryImportList.add(importList);
                         primaryConstructorList.add(constructorList);
                         primaryTestMockList.add(testMockList);
@@ -200,8 +200,8 @@ public class ScanClass {
         return fileNameList;
     }
 
-    public List<List<String>> getPrimaryVariableList()  {
-        return primaryVariableList;
+    public List<List<String>> getPrimaryTestVariableList()  {
+        return primaryTestVariableList;
     }
 
     public List<List<String>> getPrimaryImportList() {
@@ -219,4 +219,5 @@ public class ScanClass {
     public List<List<String>> getPrimaryTestMockList() {
         return primaryTestMockList;
     }
+
 }

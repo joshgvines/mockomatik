@@ -2,7 +2,7 @@ package mockomatik.classes.service.create;
 
 import mockomatik.classes.model.TestConstructors;
 import mockomatik.classes.model.TestMethods;
-import mockomatik.classes.model.TestMockObjects;
+import mockomatik.classes.model.TestMembers;
 import mockomatik.classes.service.OutputData;
 
 import java.io.File;
@@ -24,15 +24,13 @@ public class CreateTestClass {
      * @param testConstructors
      * @param packageForNewTest
      * @param fileNameList
-     * @param primaryVariableList
      * @param primaryImportList
      */
     public void createTest(TestMethods testMethods,
                            TestConstructors testConstructors,
-                           TestMockObjects testMockObjects,
+                           TestMembers testMembers,
                            String packageForNewTest,
                            List<String> fileNameList,
-                           List<List<String>> primaryVariableList,
                            List<List<String>> primaryImportList) {
         String fileName;
         String variables;
@@ -63,13 +61,13 @@ public class CreateTestClass {
                     writer.println("public class " + fileName + "Test {\n");
 
                     // Convert list for potential variables to a usable string for writer to use
-                    if(!primaryVariableList.isEmpty()){
-                        variables = listToString(primaryVariableList.get(primaryIndex));
+                    if(!testMembers.getPrimaryTestVariableList().isEmpty()){
+                        variables = listToString(testMembers.getPrimaryTestVariableList().get(primaryIndex));
                         writer.print(variables);
                     }
                     // If testMockList is not empty, then output contents
-                    if (!testMockObjects.getPrimaryTestMockList().get(primaryIndex).isEmpty()) {
-                        for (String mock : testMockObjects.getPrimaryTestMockList().get(primaryIndex)) {
+                    if (!testMembers.getPrimaryTestMockList().get(primaryIndex).isEmpty()) {
+                        for (String mock : testMembers.getPrimaryTestMockList().get(primaryIndex)) {
                             writer.println(mock);
                         }
                     }

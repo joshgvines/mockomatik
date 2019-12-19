@@ -2,7 +2,7 @@ package mockomatik.classes.control;
 
 import mockomatik.classes.model.TestConstructors;
 import mockomatik.classes.model.TestMethods;
-import mockomatik.classes.model.TestMockObjects;
+import mockomatik.classes.model.TestMembers;
 import mockomatik.classes.service.create.CreateTestClass;
 import mockomatik.classes.service.scan.ObjectTypeManager;
 import mockomatik.classes.service.scan.ScanClass;
@@ -17,13 +17,12 @@ public class InputController {
 
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private  final Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     private final CreateTestClass createTestClass = new CreateTestClass();
     private final TestConstructors testConstructors = new TestConstructors();
     private final TestMethods testMethods = new TestMethods();
-    private final TestMockObjects testMockObjects = new TestMockObjects();
-    private final ScanClass scanClass = new ScanClass();
+    private final TestMembers testMembers = new TestMembers();
 
     private final ValidateClass validateClass = new ValidateClass();
 
@@ -56,7 +55,7 @@ public class InputController {
         } while (!(inputValidation(packageForNewTest)));
 
         if (!packageForNewTest.equals("KILL")) {
-            runTestProcess(packageToTestPath, packageForNewTest);
+            runTestCreationProcess(packageToTestPath, packageForNewTest);
         } else {
             System.out.println(" > Run Canceled...");
         }
@@ -82,26 +81,27 @@ public class InputController {
         return true;
     }
 
-    public void runTestProcess(String packageToTestPath, String packageForNewTest) {
+    private void runTestCreationProcess(String packageToTestPath, String packageForNewTest) {
         try {
+            ScanClass scanClass = new ScanClass();
             if (scanClass.scanClassForContent(packageToTestPath)) {
 
-                List<List<String>> primaryVariableList = scanClass.getPrimaryVariableList();
                 List<List<String>> primaryImportList = scanClass.getPrimaryImportList();
-                List<String> fileName = scanClass.getFileNameList();
+                List<String> fileNames = scanClass.getFileNameList();
 
+                //
                 testConstructors.setPrimaryConstructorList(scanClass.getPrimaryConstructorList());
                 testMethods.setPrimaryTestMethodList(scanClass.getPrimaryTestMethodList());
-                testMockObjects.setPrimaryTestMockList(scanClass.getPrimaryTestMockList());
+                testMembers.setPrimaryTestMockList(scanClass.getPrimaryTestMockList());
+                testMembers.setPrimaryVariablesList(scanClass.getPrimaryTestVariableList());
 
                 createTestClass.createTest(
-                        testMethods, testConstructors, testMockObjects,
-                        packageForNewTest, fileName,
-                        primaryVariableList, primaryImportList
+                        testMethods, testConstructors, testMembers,
+                        packageForNewTest, fileNames, primaryImportList
                 );
             }
         } catch (Exception e) {
-            LOG.severe("ERROR: InputController > runTestProcess()");
+            LOG.severe("ERROR: InputController > runTestCreationProcess() " + e);
         } finally {
             validateClass.runTests(packageForNewTest);
             System.out.println(" > Done!");

@@ -20,8 +20,10 @@ public class MockOMatik {
             final Logo logo = new Logo();
             logo.runLogo();
         } catch (Exception e) {
-            LOG.info("Logo did not load properly" + e);
+            e.printStackTrace();
+            LOG.info("Logo did not load properly!" + e);
         }
+
         try {
             Path path = FileSystems.getDefault().getPath(".").toAbsolutePath();
             System.out.println("  > Your Location: " + path);
@@ -29,16 +31,18 @@ public class MockOMatik {
             System.out.println("  > Type 'KILL' To Cancel/Restart Current Run.");
 
             // TODO: better way to confirm location
-            if (!path.equals("C:\\") && !path.equals("root") && !(path.toString().length() < 4)) {
+            if (!path.equals("C:\\") && !path.equals("root") && !path.equals("/") && !(path.toString().length() < 4)) {
                 final InputController inputController = new InputController();
                 inputController.runProgram();
             } else {
                 System.out.println(" > Do not run in root drive, folder, or location!");
             }
+
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.severe("Could not find your location!" + e);
+            LOG.severe(" > Could not find your location!" + e);
         } finally {
+            System.out.println("\n > Exiting Application \n");
             System.exit(0);
         }
     }
