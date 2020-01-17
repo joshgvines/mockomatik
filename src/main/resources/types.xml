@@ -1,0 +1,12 @@
+<?xml version="1.0"?>  
+<types>
+	
+	<!-- Add Your Custom Types List Here -->
+	<class>Object</class>
+	<class>File</class>
+	<class>TestObject</class>
+	<class>TestObject</class>
+	<class>TestObject</class>
+	<class>TestObject</class>
+	
+</types>

@@ -27,7 +27,6 @@ public class InputController {
     private final ValidateClass validateClass = new ValidateClass();
 
     public void runProgram() {
-        ObjectTypeManager.load();
         while (true) {
             userInput();
         }

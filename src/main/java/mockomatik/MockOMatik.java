@@ -1,6 +1,7 @@
 package mockomatik;
 
 import mockomatik.classes.control.InputController;
+import mockomatik.classes.service.scan.ObjectTypeManager;
 import mockomatik.logging.LoggerConfig;
 
 import java.nio.file.FileSystems;
@@ -15,14 +16,10 @@ public class MockOMatik {
 
         LoggerConfig.testLog();
         LOG.fine(" >> LOG TEST << ");
-
-        try {
-            final Logo logo = new Logo();
-            logo.runLogo();
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOG.info("Logo did not load properly!" + e);
-        }
+        
+    	ObjectTypeManager.readXml();
+//        ObjectTypeManager.load();
+        Logo.runLogo();
 
         try {
             Path path = FileSystems.getDefault().getPath(".").toAbsolutePath();

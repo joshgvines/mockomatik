@@ -2,7 +2,7 @@ package mockomatik;
 
 public class Logo {
 
-    public void runLogo() {
+    public static void runLogo() {
         System.out.println("   __  __            _       ____  _   __  __       _   _ _    ");
         System.out.println("  |  \\/  |          | |     / __ \\( ) |  \\/  |     | | (_) |   ");
         System.out.println("  | \\  / | ___   ___| | __ | |  | |/  | \\  / | __ _| |_ _| | __");
