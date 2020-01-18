@@ -1,21 +1,21 @@
 package mockomatik.classes.control;
 
-import mockomatik.classes.model.TestConstructors;
-import mockomatik.classes.model.TestMethods;
-import mockomatik.classes.model.TestMembers;
-import mockomatik.classes.service.create.CreateTestClass;
-import mockomatik.classes.service.scan.ObjectTypeManager;
-import mockomatik.classes.service.scan.ScanClass;
-import mockomatik.classes.service.ValidateClass;
-
 import java.io.File;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Logger;
+
+import jgv.java.SHJLogger.Priority;
+import jgv.java.SHJLogger.SHJLogger;
+import mockomatik.classes.model.TestConstructors;
+import mockomatik.classes.model.TestMembers;
+import mockomatik.classes.model.TestMethods;
+import mockomatik.classes.service.ValidateClass;
+import mockomatik.classes.service.create.CreateTestClass;
+import mockomatik.classes.service.scan.ScanClass;
 
 public class InputController {
-
-    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	
+	private SHJLogger logger = new SHJLogger(this.getClass().toString());
 
     private final Scanner sc = new Scanner(System.in);
 
@@ -87,8 +87,7 @@ public class InputController {
 
                 List<List<String>> primaryImportList = scanClass.getPrimaryImportList();
                 List<String> fileNames = scanClass.getFileNameList();
-
-                //
+                
                 testConstructors.setPrimaryConstructorList(scanClass.getPrimaryConstructorList());
                 testMethods.setPrimaryTestMethodList(scanClass.getPrimaryTestMethodList());
                 testMembers.setPrimaryTestMockList(scanClass.getPrimaryTestMockList());
@@ -100,7 +99,7 @@ public class InputController {
                 );
             }
         } catch (Exception e) {
-            LOG.severe("ERROR: InputController > runTestCreationProcess() " + e);
+        	logger.log(Priority.ERROR, "InputController > runTestCreationProcess() " + e);
         } finally {
             validateClass.runTests(packageForNewTest);
             System.out.println(" > Done!");

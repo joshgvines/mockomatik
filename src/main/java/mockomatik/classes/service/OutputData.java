@@ -1,12 +1,14 @@
 package mockomatik.classes.service;
 
 import java.util.List;
-import java.util.logging.Logger;
+
+import jgv.java.SHJLogger.Priority;
+import jgv.java.SHJLogger.SHJLogger;
 
 // TODO: output to text file
 public class OutputData {
 
-    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private SHJLogger logger = new SHJLogger(this.getClass().toString());
 
     public void outputConstructorInfo(int primaryIndex, String fileName, List<String> constructorList) {
 
@@ -20,6 +22,7 @@ public class OutputData {
         if (!fileNameList.isEmpty() && fileNameList != null) {
             for (String fileName : fileNameList) {
                 System.out.println(" > " + fileName + " : " + "if success here");
+                logger.log(Priority.OKAY, "Run output here!");
             }
         }
     }

@@ -1,19 +1,20 @@
 package mockomatik.classes.service.create;
 
-import mockomatik.classes.model.TestConstructors;
-import mockomatik.classes.model.TestMethods;
-import mockomatik.classes.model.TestMembers;
-import mockomatik.classes.service.OutputData;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.logging.Logger;
+
+import jgv.java.SHJLogger.Priority;
+import jgv.java.SHJLogger.SHJLogger;
+import mockomatik.classes.model.TestConstructors;
+import mockomatik.classes.model.TestMembers;
+import mockomatik.classes.model.TestMethods;
+import mockomatik.classes.service.OutputData;
 
 public class CreateTestClass {
 
-    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private SHJLogger logger = new SHJLogger(this.getClass().toString());
 
     private CreateTestMethod createTestMethod = new CreateTestMethod();
     private CreateTestConstructor createTestConstructor = new CreateTestConstructor();
@@ -87,9 +88,9 @@ public class CreateTestClass {
             OutputData outputData = new OutputData();
             outputData.outputFilesFound(fileNameList);
         } catch (IOException e) {
-            LOG.severe(" > ERROR: CreateTestClasses > createTest()\n" +  e);
+            logger.log(Priority.ERROR, "CreateTestClasses > createTest()\n" +  e);
         } catch (Exception e) {
-            LOG.severe(" > ERROR: CreateTestClasses > createTest()\n" + e);
+            logger.log(Priority.ERROR, "CreateTestClasses > createTest()\n" + e);
         }
     }
 
@@ -141,7 +142,7 @@ public class CreateTestClass {
                 return listToString + "\n";
             }
         } catch(Exception e) {
-            LOG.severe("CreateTestClasses > listToString()" + e);
+            logger.log(Priority.ERROR, "CreateTestClasses > listToString()" + e);
         }
         return "";
     }

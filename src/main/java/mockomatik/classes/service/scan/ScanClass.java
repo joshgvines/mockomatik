@@ -5,11 +5,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+
+import jgv.java.SHJLogger.Priority;
+import jgv.java.SHJLogger.SHJLogger;
 
 public class ScanClass {
 
-    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private SHJLogger logger = new SHJLogger(this.getClass().toString());
 
     private String fileName;
     private List<String> fileNameList = new ArrayList<>();
@@ -95,7 +97,7 @@ public class ScanClass {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.severe("\n > ERROR: Method: scanClassForContent(), File Name: " + fileName + " " + e);
+            logger.log(Priority.ERROR, "Method: scanClassForContent(), File Name: " + fileName + " " + e);
         }
         if (this.fileNameList != null && !this.fileNameList.isEmpty()) {
             return true;
@@ -152,7 +154,7 @@ public class ScanClass {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.severe(" > ERROR: setConstructorArguments > file name: " + fileName + " " + e);
+            logger.log(Priority.ERROR, "setConstructorArguments > file name: " + fileName + " " + e);
         }
         return true;
     }
@@ -170,7 +172,7 @@ public class ScanClass {
                 }
             }
         } catch (Exception e) {
-            LOG.severe(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
+            logger.log(Priority.ERROR, "ignoreMultiLineComments() > file name: " + fileName + " " + e);
         }
     }
 
@@ -192,7 +194,7 @@ public class ScanClass {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.severe(" > ERROR: ignoreMultiLineComments() > file name: " + fileName + " " + e);
+            logger.log(Priority.ERROR, "ignoreMultiLineComments() > file name: " + fileName + " " + e);
         }
     }
 

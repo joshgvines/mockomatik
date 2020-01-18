@@ -1,16 +1,18 @@
 package mockomatik.classes.service;
 
-import java.util.logging.Logger;
+import jgv.java.SHJLogger.Priority;
+import jgv.java.SHJLogger.SHJLogger;
 
 public class ValidateClass {
 
-    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private SHJLogger logger = new SHJLogger(this.getClass().toString());
 
     private String results;
 
     public void runTests(String packageWithNewTest) {
         if (packageWithNewTest != null) {
             System.out.println("add testing method here");
+            logger.log(Priority.OKAY, "Run output here!");
         }
     }
 

@@ -1,24 +1,16 @@
 package mockomatik;
 
-import mockomatik.classes.control.InputController;
-import mockomatik.classes.service.scan.ObjectTypeManager;
-import mockomatik.logging.LoggerConfig;
-
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.util.logging.*;
+
+import mockomatik.classes.control.InputController;
+import mockomatik.classes.service.scan.ObjectTypeManager;
 
 public class MockOMatik {
 
-    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
     public static void main(String[] args) {
-
-        LoggerConfig.testLog();
-        LOG.fine(" >> LOG TEST << ");
-        
+    	
     	ObjectTypeManager.readXml();
-//        ObjectTypeManager.load();
         Logo.runLogo();
 
         try {
@@ -27,17 +19,12 @@ public class MockOMatik {
             System.out.println("  > Type 'EXIT' To Quit Program.");
             System.out.println("  > Type 'KILL' To Cancel/Restart Current Run.");
 
-            // TODO: better way to confirm location
-            if (!path.equals("C:\\") && !path.equals("root") && !path.equals("/") && !(path.toString().length() < 4)) {
-                final InputController inputController = new InputController();
-                inputController.runProgram();
-            } else {
-                System.out.println(" > Do not run in root drive, folder, or location!");
-            }
+            final InputController inputController = new InputController();
+            inputController.runProgram();
+
 
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.severe(" > Could not find your location!" + e);
         } finally {
             System.out.println("\n > Exiting Application \n");
             System.exit(0);

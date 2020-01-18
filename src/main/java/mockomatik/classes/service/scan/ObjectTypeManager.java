@@ -3,26 +3,18 @@ package mockomatik.classes.service.scan;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-
 
 public class ObjectTypeManager {
-
-    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private ObjectTypeManager() {
     }
@@ -48,7 +40,6 @@ public class ObjectTypeManager {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                LOG.severe("ObjectTypeManger has failed" + e);
                 System.exit(0);
             }
         }
