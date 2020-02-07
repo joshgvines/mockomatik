@@ -5,8 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import jgv.java.SHJLogger.Priority;
-import jgv.java.SHJLogger.SHJLogger;
+import io.jgv.logger.impl.SHJLoggerImpl;
 import mockomatik.classes.model.TestConstructors;
 import mockomatik.classes.model.TestMembers;
 import mockomatik.classes.model.TestMethods;
@@ -14,7 +13,7 @@ import mockomatik.classes.service.OutputData;
 
 public class CreateTestClass {
 
-	private SHJLogger logger = new SHJLogger(this.getClass().toString());
+	private SHJLoggerImpl logger = SHJLoggerImpl.getLogger();
 
     private CreateTestMethod createTestMethod = new CreateTestMethod();
     private CreateTestConstructor createTestConstructor = new CreateTestConstructor();
@@ -88,9 +87,9 @@ public class CreateTestClass {
             OutputData outputData = new OutputData();
             outputData.outputFilesFound(fileNameList);
         } catch (IOException e) {
-            logger.log(Priority.ERROR, "CreateTestClasses > createTest()\n" +  e);
+            logger.error("CreateTestClasses > createTest()\n" +  e);
         } catch (Exception e) {
-            logger.log(Priority.ERROR, "CreateTestClasses > createTest()\n" + e);
+            logger.error("CreateTestClasses > createTest()\n" + e);
         }
     }
 
@@ -142,7 +141,7 @@ public class CreateTestClass {
                 return listToString + "\n";
             }
         } catch(Exception e) {
-            logger.log(Priority.ERROR, "CreateTestClasses > listToString()" + e);
+            logger.error("CreateTestClasses > listToString()" + e);
         }
         return "";
     }

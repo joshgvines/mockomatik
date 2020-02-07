@@ -3,12 +3,11 @@ package mockomatik.classes.service.create;
 import java.io.PrintWriter;
 import java.util.List;
 
-import jgv.java.SHJLogger.Priority;
-import jgv.java.SHJLogger.SHJLogger;
+import io.jgv.logger.impl.SHJLoggerImpl;
 
 public class CreateTestMethod {
 
-	private SHJLogger logger = new SHJLogger(this.getClass().toString());
+	private SHJLoggerImpl logger = SHJLoggerImpl.getLogger();
 
     private String type;
     private String method;
@@ -32,7 +31,7 @@ public class CreateTestMethod {
                 try {
                     isMethod = filterMethod();
                 } catch (Exception e) {
-                    logger.log(Priority.ERROR, "CreateTestMethods > createMethod() " + e);
+                    logger.error("CreateTestMethods > createMethod() " + e);
                 } finally {
 
                     if (isMethod) {

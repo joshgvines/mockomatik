@@ -4,8 +4,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Scanner;
 
-import jgv.java.SHJLogger.Priority;
-import jgv.java.SHJLogger.SHJLogger;
+import io.jgv.logger.impl.SHJLoggerImpl;
 import mockomatik.classes.model.TestConstructors;
 import mockomatik.classes.model.TestMembers;
 import mockomatik.classes.model.TestMethods;
@@ -15,7 +14,7 @@ import mockomatik.classes.service.scan.ScanClass;
 
 public class InputController {
 	
-	private SHJLogger logger = new SHJLogger(this.getClass().toString());
+	private final static SHJLoggerImpl logger = SHJLoggerImpl.getLogger();
 
     private final Scanner sc = new Scanner(System.in);
 
@@ -99,7 +98,7 @@ public class InputController {
                 );
             }
         } catch (Exception e) {
-        	logger.log(Priority.ERROR, "InputController > runTestCreationProcess() " + e);
+        	logger.error("InputController > runTestCreationProcess() " + e);
         } finally {
             validateClass.runTests(packageForNewTest);
             System.out.println(" > Done!");
