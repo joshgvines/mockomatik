@@ -9,5 +9,5 @@ Generate test templates based on existing code.
 
 © Copyright 2020 Joshua G Vines
 
-Licensed under the MIT License.
+Licensed under the [MIT License](LICENSE).
 
