@@ -21,11 +21,17 @@
 /.settings
 .settings
 
-
 .idea/vcs.xml
 .idea/workspace.xml
 *.log
 *.lck
+*.log.*
+
+/SHJLogs
+SHJLogs/
+./SHJLogs
+SHJLogs
+SHJLogs/
 
 *.classpath
 .classpath
@@ -36,3 +42,8 @@
 /out
 /.gradle
 /gradle
+
+/eclipse
+.eclipse
+.metadata
+/metadata
