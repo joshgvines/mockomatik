@@ -7,7 +7,7 @@ Generate test templates based on existing code.
 
 ## License & Copyright
 
-Copyright (c) [2020] [Joshua G Vines]
+Copyright (c) 2020 Joshua G Vines
 
 Licensed under the MIT License
 
