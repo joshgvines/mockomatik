@@ -8,6 +8,8 @@ Generate test templates based on existing code.
 - Package statements will not work if output is not directed to the correct test package.
 - Unless you have the required jar files, gradle cannot be set to 'Offline work'.
 
+---
+
 ## License & Copyright
 
 © Copyright 2020 Joshua G Vines
