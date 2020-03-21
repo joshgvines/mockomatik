@@ -1,4 +1,7 @@
 # MockOMatik
+
+**Version 1.0.0**
+
 Generate test templates based on existing code.
 
 - Annotations will only work in a marked test directory.
