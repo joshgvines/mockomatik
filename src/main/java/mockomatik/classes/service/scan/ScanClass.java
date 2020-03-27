@@ -6,11 +6,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.jgv.logger.impl.SHJLoggerImpl;
-
 public class ScanClass {
-
-	private SHJLoggerImpl logger = SHJLoggerImpl.getLogger();
 
     private String fileName;
     private List<String> fileNameList = new ArrayList<>();
@@ -96,7 +92,7 @@ public class ScanClass {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Method: scanClassForContent(), File Name: " + fileName + " " + e);
+            System.out.println("Method: scanClassForContent(), File Name: " + fileName + " " + e);
         }
         if (this.fileNameList != null && !this.fileNameList.isEmpty()) {
             return true;
@@ -153,7 +149,7 @@ public class ScanClass {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("setConstructorArguments > file name: " + fileName + " " + e);
+            System.out.println("setConstructorArguments > file name: " + fileName + " " + e);
         }
         return true;
     }
@@ -171,7 +167,7 @@ public class ScanClass {
                 }
             }
         } catch (Exception e) {
-            logger.error("ignoreMultiLineComments() > file name: " + fileName + " " + e);
+            System.out.println("ignoreMultiLineComments() > file name: " + fileName + " " + e);
         }
     }
 
@@ -193,7 +189,7 @@ public class ScanClass {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("ignoreMultiLineComments() > file name: " + fileName + " " + e);
+            System.out.println("ignoreMultiLineComments() > file name: " + fileName + " " + e);
         }
     }
 

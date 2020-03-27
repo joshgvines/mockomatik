@@ -3,12 +3,9 @@ package mockomatik.classes.service.create;
 import java.io.PrintWriter;
 import java.util.List;
 
-import io.jgv.logger.impl.SHJLoggerImpl;
 import mockomatik.classes.service.scan.ObjectTypeManager;
 
 public class CreateTestConstructor {
-
-	private SHJLoggerImpl logger = SHJLoggerImpl.getLogger();
 
     protected CreateTestConstructor() {
     }
@@ -75,7 +72,7 @@ public class CreateTestConstructor {
                 createDefaultConstructor(writer, fileName);
             }
         } catch (Exception e) {
-            logger.error("CreateTestClasses > createConstructor() " + e );
+            System.out.println("CreateTestClasses > createConstructor() " + e );
         }
     }
 
@@ -109,7 +106,7 @@ public class CreateTestConstructor {
             }
             return testObjects;
         } catch (Exception e) {
-            logger.error("CreateTestConstructor > createConstructorArguments()" + e);
+            System.out.println("CreateTestConstructor > createConstructorArguments()" + e);
         }
         return "";
     }
@@ -132,7 +129,7 @@ public class CreateTestConstructor {
                 return listToString + "\n";
             }
         } catch(Exception e) {
-            logger.error("CreateTestConstructors > listToString()" + e);
+            System.out.println("CreateTestConstructors > listToString()" + e);
         }
         return "";
     }

@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import io.jgv.logger.impl.SHJLoggerImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import mockomatik.classes.model.TestConstructors;
 import mockomatik.classes.model.TestMembers;
 import mockomatik.classes.model.TestMethods;
@@ -13,8 +15,8 @@ import mockomatik.classes.service.OutputData;
 
 public class CreateTestClass {
 
-	private SHJLoggerImpl logger = SHJLoggerImpl.getLogger();
-
+    final static Logger logger = LogManager.getLogger(CreateTestClass.class);
+    
     private CreateTestMethod createTestMethod = new CreateTestMethod();
     private CreateTestConstructor createTestConstructor = new CreateTestConstructor();
 
@@ -87,9 +89,9 @@ public class CreateTestClass {
             OutputData outputData = new OutputData();
             outputData.outputFilesFound(fileNameList);
         } catch (IOException e) {
-            logger.error("CreateTestClasses > createTest()\n" +  e);
+            logger.error("CreateTestClasses > createTest()", e);
         } catch (Exception e) {
-            logger.error("CreateTestClasses > createTest()\n" + e);
+            logger.error("CreateTestClasses > createTest()", e);
         }
     }
 
@@ -116,7 +118,7 @@ public class CreateTestClass {
                     (destinationPackage.indexOf("com") + 4), (destinationPackage.length() - 1));
         } else {
             // TODO: Throw correct error here
-            System.out.println(" > ERROR: CreateTestClasses > createPackageStatement()\n" +
+            logger.error(" CreateTestClasses > createPackageStatement()\n" +
                     " > An invalid or incompatible path was entered as a destination package!");
             System.exit(0);
         }
@@ -141,7 +143,7 @@ public class CreateTestClass {
                 return listToString + "\n";
             }
         } catch(Exception e) {
-            logger.error("CreateTestClasses > listToString()" + e);
+            logger.error("CreateTestClasses > listToString()", e);
         }
         return "";
     }
