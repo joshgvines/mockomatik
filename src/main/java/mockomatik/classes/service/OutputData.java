@@ -7,8 +7,8 @@ public class OutputData {
 
     public void outputConstructorInfo(int primaryIndex, String fileName, List<String> constructorList) {
 
-        System.out.println("_" + primaryIndex + ")__" + fileName + "______________________________\n"
-                + constructorList);
+//        System.out.println("_" + primaryIndex + ")__" + fileName + "______________________________\n"
+//                + constructorList);
 
     }
 

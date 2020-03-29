@@ -4,8 +4,8 @@ import java.util.List;
 
 public class TestConstructors {
 
-    List<List<String>> primaryConstructorList;
-    List<String> constructorArguments;
+    private List<List<String>> primaryConstructorList;
+    private List<String> constructorArguments;
 
     public List<List<String>> getPrimaryConstructorList() {
         return primaryConstructorList;

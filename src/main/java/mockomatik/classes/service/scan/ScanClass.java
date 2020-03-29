@@ -70,7 +70,8 @@ public class ScanClass {
                                 line = forcePrivate(line);
                                 variableList.add(line + "\n");
                             } else {
-                                System.out.println(line);
+                                // Irrelevant line
+                                line = null;
                             }
                         }
                         // TODO: not sure how this is picking up on constructors with comments?????

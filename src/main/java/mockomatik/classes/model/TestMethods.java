@@ -4,8 +4,8 @@ import java.util.List;
 
 public class TestMethods {
 
-    List<List<String>> primaryTestMethodList;
-    List<String> methodVariableList;
+    private List<List<String>> primaryTestMethodList;
+    private List<String> methodVariableList;
 
     public List<List<String>> getPrimaryTestMethodList() {
         return primaryTestMethodList;

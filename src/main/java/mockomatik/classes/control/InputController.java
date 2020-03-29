@@ -36,14 +36,15 @@ public class InputController {
         do {
             System.out.print(CONSOLE_NAME);
             command = sc.nextLine();
-        } while (!(inputValidation(command)));
+        } while (!inputValidation(command));
         
         packageToTestPath = firstPathForCreate();
-        if (packageToTestPath != null) {
+        if (packageToTestPath != null && !packageToTestPath.isEmpty()) {
+            
             packageForNewTest = secondPathForCreate(packageToTestPath);
-        }
-        if (packageForNewTest != null) {
-            runTestCreationProcess(packageToTestPath, packageForNewTest);
+            if (packageForNewTest != null && !packageForNewTest.isEmpty()) {
+                runTestCreationProcess(packageToTestPath, packageForNewTest);
+            }
         }
     }
     
@@ -55,7 +56,8 @@ public class InputController {
             if (killCheck(packageToTestPath)) {
                 return null;
             }
-        } while (!(inputValidation(packageToTestPath)));
+        } while (!pathValidation(packageToTestPath));
+        historyManager.addToHistory(packageToTestPath);
         return packageToTestPath;
     }
     
@@ -67,7 +69,8 @@ public class InputController {
             if (killCheck(packageForNewTest)) {
                 return null;
             }
-        } while (!(inputValidation(packageForNewTest)));
+        } while (!pathValidation(packageForNewTest));
+        historyManager.addToHistory(packageForNewTest);
         return packageForNewTest;
     }
     
@@ -87,40 +90,35 @@ public class InputController {
             sc.close();
             System.exit(0);
         } else if (input.equals(Command.KILL.getCommand())) {
-            historyManager.addToHistory(input);
             System.out.println(" > No session in progress to /kill");
-            return false;
         } else if (input.equals(Command.HELP.getCommand())) {
             System.out.println(Command.OPTIONS.getCommand());
-            historyManager.addToHistory(input);
-            return false;
         } else if (input.equals(Command.HISTORY.getCommand())) {
-            historyManager.addToHistory(input);
             historyManager.displayHistory();
-            return false;
         } else if (input.contains(Command.CREATE.getCommand())) {
             historyManager.addToHistory(input);
             return true;
-        } else if (pathValidation(input)) {
-            return true;
+        } else if (input != null && !input.isEmpty()) {
+            System.out.println(" > Please enter a valid command, '/help' for options");
         }
-        historyManager.addToHistory(input);
-        System.out.println(" > please enter a valid command! Try '/help' for Options");
+        if (input != null && !input.isEmpty()) {
+            historyManager.addToHistory(input);
+        }
         return false;
     }
     
     private boolean pathValidation(String input) {
-        if (!input.contains("\\") || input.length() < 3 || input.length() > 260 || !input.endsWith("\\")) {
-            System.out.println(" > Invalid path! Example: C:\\src\\packagewithclasses\\, [ must end with a '\\' ]");
-            return false;
-        } 
-        File testDir = new File(input);
-        if(!testDir.exists()) {
+        if (!(input.length() < 3) && !(input.length() > 260) && input.endsWith("\\")) {            
+            File testDir = new File(input);
+            if(testDir.exists()) {
+                return true;
+            }
             System.out.println(" > Path does not exist or is unreachable!");
-            return false;
-        }         
+        } else {
+            System.out.println(" > Invalid path! Example: C:\\src\\packagewithclasses\\, [ must end with a '\\' ]");
+        }
         System.out.println(input);
-        return true;
+        return false;
     }
 
     private void runTestCreationProcess(String packageToTestPath, String packageForNewTest) {
@@ -148,5 +146,4 @@ public class InputController {
             System.out.println(" > Done!");
         }
     }
-
 }
