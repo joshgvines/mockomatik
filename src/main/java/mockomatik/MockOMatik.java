@@ -23,8 +23,8 @@ public class MockOMatik {
         try {
             Path path = FileSystems.getDefault().getPath(".").toAbsolutePath();
             System.out.println("  > Your Location: " + path);
-            System.out.println("  > Type 'EXIT' To Quit Program.");
-            System.out.println("  > Type 'KILL' To Cancel/Restart Current Run.");
+            System.out.println("  > Type '/exit' To Quit Program.");
+            System.out.println("  > Type '/help' For Options.\n");
             
             final InputController inputController = new InputController();
             inputController.runProgram();

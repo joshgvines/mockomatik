@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import mockomatik.classes.enums.ClassComponent;
 import mockomatik.classes.model.TestConstructors;
 import mockomatik.classes.model.TestMembers;
 import mockomatik.classes.model.TestMethods;
@@ -48,18 +49,13 @@ public class CreateTestClass {
                 // Possible Imports
                 imports = listToString(primaryImportList.get(primaryIndex));
                 // Required Imports
-                imports += "import org.junit.After;\n"
-                        + "import org.junit.Before;\n"
-                        + "import org.junit.Test;\n"
-                        + "import org.junit.runner.RunWith;\n"
-                        + "import org.mockito.Mock;\n"
-                        + "import org.mockito.junit.MockitoJUnitRunner;\n\n";
+                imports += ClassComponent.REQUIRED_IMPORTS.getComponent();
 
                 try (PrintWriter writer = new PrintWriter(file)) {
                     writer.println("package " + destinationPackage + "; \n");
                     writer.print(imports);
 
-                    writer.println("@RunWith(MockitoJUnitRunner.class)");
+                    writer.println(ClassComponent.MOCKITO_RUNNER.getComponent());
                     writer.println("public class " + fileName + "Test {\n");
 
                     // Convert list for potential variables to a usable string for writer to use

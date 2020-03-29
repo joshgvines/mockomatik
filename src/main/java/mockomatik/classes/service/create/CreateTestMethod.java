@@ -3,6 +3,8 @@ package mockomatik.classes.service.create;
 import java.io.PrintWriter;
 import java.util.List;
 
+import mockomatik.classes.enums.ClassComponent;
+
 public class CreateTestMethod {
 
     private String type;
@@ -31,7 +33,7 @@ public class CreateTestMethod {
                 } finally {
 
                     if (isMethod) {
-                        writer.println("\t@Test\n" +
+                        writer.println(ClassComponent.JUNIT_TEST_HEADER.getComponent() +
                                 "\tpublic void test" + testMethodName + "() {\n" +
                                 "\t\t//cut." + methodName + "( ... )\n" +
                                 "\t}\n"
@@ -83,7 +85,7 @@ public class CreateTestMethod {
      * @param writer
      */
     private void createDefaultMethod(PrintWriter writer)  {
-        writer.println("\t@Test\n" +
+        writer.println(ClassComponent.JUNIT_TEST_HEADER.getComponent() +
                 "\tpublic void testMethod() {\n" +
                 "\t\t//blah\n" +
                 "\t}"

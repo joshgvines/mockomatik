@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Scanner;
 
+import mockomatik.classes.enums.Command;
 import mockomatik.classes.model.TestConstructors;
 import mockomatik.classes.model.TestMembers;
 import mockomatik.classes.model.TestMethods;
@@ -14,13 +15,13 @@ import mockomatik.classes.service.scan.ScanClass;
 public class InputController {
 
     private final Scanner sc = new Scanner(System.in);
-
     private final CreateTestClass createTestClass = new CreateTestClass();
     private final TestConstructors testConstructors = new TestConstructors();
     private final TestMethods testMethods = new TestMethods();
     private final TestMembers testMembers = new TestMembers();
-
-    private final ValidateClass validateClass = new ValidateClass();
+    private final ValidateClass validateClass = new ValidateClass();   
+    private InputHistoryManager historyManager = new InputHistoryManager();
+    private final String CONSOLE_NAME = "Mockom > ";
 
     public void runProgram() {
         while (true) {
@@ -29,50 +30,96 @@ public class InputController {
     }
 
     public void userInput() {
-        String packageToTestPath;
-        String packageForNewTest;
-
+        String command = null;
+        String packageForNewTest = null;
+        String packageToTestPath = null;
         do {
-            System.out.println("\n > Enter A Path To A Package You Want To Test: ");
+            System.out.print(CONSOLE_NAME);
+            command = sc.nextLine();
+        } while (!(inputValidation(command)));
+        
+        packageToTestPath = firstPathForCreate();
+        if (packageToTestPath != null) {
+            packageForNewTest = secondPathForCreate(packageToTestPath);
+        }
+        if (packageForNewTest != null) {
+            runTestCreationProcess(packageToTestPath, packageForNewTest);
+        }
+    }
+    
+    public String firstPathForCreate() {
+        String packageToTestPath;
+        do {
+            System.out.print(CONSOLE_NAME + "INPUT_PATH: ");
             packageToTestPath = sc.nextLine();
-            if (packageToTestPath.equals("KILL")) {
-                System.out.println(" > You have not done anything yet...");
+            if (killCheck(packageToTestPath)) {
+                return null;
             }
         } while (!(inputValidation(packageToTestPath)));
-
+        return packageToTestPath;
+    }
+    
+    public String secondPathForCreate(String packageToTestPath) {
+        String packageForNewTest;
         do {
-            System.out.println("\n > Enter A Path To A Destination For New Tests: ");
+            System.out.print(CONSOLE_NAME + "OUTPUT_PATH: ");
             packageForNewTest = sc.nextLine();
-            if (packageForNewTest.equals("KILL")) {
-                packageToTestPath = "";
-                break;
+            if (killCheck(packageForNewTest)) {
+                return null;
             }
         } while (!(inputValidation(packageForNewTest)));
-
-        if (!packageForNewTest.equals("KILL")) {
-            runTestCreationProcess(packageToTestPath, packageForNewTest);
-        } else {
-            System.out.println(" > Run Canceled...");
+        return packageForNewTest;
+    }
+    
+    private boolean killCheck(String packageForNewTest) {
+        if (packageForNewTest.equals(Command.KILL.getCommand())) {
+            historyManager.addToHistory(packageForNewTest);
+            System.out.println(" > Session killed...");
+            return true;
         }
+        return false;
     }
 
     // TODO: regulate scanner input size before validation method
-    public boolean inputValidation(String input) {
-        File testDir = new File(input);
-        if (input.equals(null) || input.isEmpty() || input.contains(" ")) {
-            System.out.println("\n > Input cannot be null or contain spaces!");
-            return false;
-        } else if (input.contains("EXIT") && input.length() < 5) {
-            System.out.println("\n > Double check project for new mockomatik.classes or erroneous files, Good Bye!");
+    private boolean inputValidation(String input) {
+        if (input.equals(Command.EXIT.getCommand())) {
+            System.out.println(" > Good Bye!");
             sc.close();
             System.exit(0);
-        } else if (!input.contains("\\") || input.length() < 4 || input.length() > 260 || !input.endsWith("\\")) {
+        } else if (input.equals(Command.KILL.getCommand())) {
+            historyManager.addToHistory(input);
+            System.out.println(" > No session in progress to /kill");
+            return false;
+        } else if (input.equals(Command.HELP.getCommand())) {
+            System.out.println(Command.OPTIONS.getCommand());
+            historyManager.addToHistory(input);
+            return false;
+        } else if (input.equals(Command.HISTORY.getCommand())) {
+            historyManager.addToHistory(input);
+            historyManager.displayHistory();
+            return false;
+        } else if (input.contains(Command.CREATE.getCommand())) {
+            historyManager.addToHistory(input);
+            return true;
+        } else if (pathValidation(input)) {
+            return true;
+        }
+        historyManager.addToHistory(input);
+        System.out.println(" > please enter a valid command! Try '/help' for Options");
+        return false;
+    }
+    
+    private boolean pathValidation(String input) {
+        if (!input.contains("\\") || input.length() < 3 || input.length() > 260 || !input.endsWith("\\")) {
             System.out.println(" > Invalid path! Example: C:\\src\\packagewithclasses\\, [ must end with a '\\' ]");
             return false;
-        } else if(!testDir.exists()) {
-            System.out.println("\n > The entered directory/location does not exist or is unreachable!");
+        } 
+        File testDir = new File(input);
+        if(!testDir.exists()) {
+            System.out.println(" > Path does not exist or is unreachable!");
             return false;
-        }
+        }         
+        System.out.println(input);
         return true;
     }
 

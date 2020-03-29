@@ -3,6 +3,7 @@ package mockomatik.classes.service.create;
 import java.io.PrintWriter;
 import java.util.List;
 
+import mockomatik.classes.enums.ClassComponent;
 import mockomatik.classes.service.scan.ObjectTypeManager;
 
 public class CreateTestConstructor {
@@ -29,18 +30,16 @@ public class CreateTestConstructor {
                         writer.print(" cut" + (cutIndex + 1) + ", ");
                     }
                 }
-                writer.print("\t@Before\n" +
-                        "\tpublic void setUp() {\n"
-                );
+                // @Before
+                writer.print(ClassComponent.JUNIT_BEFORE_HEADER.getComponent());
                 for (int setUpIndex = 0; setUpIndex < constructorList.size(); setUpIndex++) {
                     testObjects = createConstructorArguments(constructorList.get(setUpIndex), fileName);
                     writer.println(
                         "\t\tcut" + (setUpIndex + 1) + " = new " + fileName + "(" + testObjects + "\n" + "\t\t);"
                     );
                 }
-                writer.println("\t}\n" + "\t@After\n" +
-                        "\tpublic void tearDown() {"
-                );
+                // @After
+                writer.println(ClassComponent.JUNIT_MULTI_AFTER_HEADER.getComponent());
                 for (int tearDownIndex = 0; tearDownIndex < constructorList.size(); tearDownIndex++) {
                     if (tearDownIndex == (constructorList.size() - 1)) {
                         writer.println("\t\tcut" + (tearDownIndex + 1) + " = null;\n\t}\n");
@@ -53,20 +52,15 @@ public class CreateTestConstructor {
             // TODO: change redundant check
             else if (constructorList.size() == 1) {
                 writer.println("\tprivate " + fileName + " cut;\n");
-                writer.print("\t@Before\n" +
-                        "\tpublic void setUp() {\n"
-                );
+                // @Before
+                writer.print(ClassComponent.JUNIT_BEFORE_HEADER.getComponent());
                 testObjects = listToString(constructorList);
                 testObjects = createConstructorArguments(testObjects, fileName);
                 writer.println("\t\tcut = new " + fileName + "(" + testObjects + "\n" +
                         "\t\t);\n" +
-                        "\t}\n"
-                );
-                writer.println("\t@After\n" +
-                        "\tpublic void tearDown() {\n" +
-                        "\t\tcut = null;\n" +
-                        "\t}\n"
-                );
+                        "\t}\n");
+                // @After
+                writer.println(ClassComponent.JUNIT_SINGLE_AFTER_HEADER.getComponent());
             } else {
                 // Default Constructor
                 createDefaultConstructor(writer, fileName);
@@ -141,16 +135,11 @@ public class CreateTestConstructor {
      */
     private void createDefaultConstructor(PrintWriter writer, String fileName) {
         writer.println("\tprivate " + fileName + " cut;\n");
-        writer.print("\t@Before\n" +
-                "\tpublic void setUp() {\n"
-        );
+        // @Before
+        writer.print(ClassComponent.JUNIT_SINGLE_AFTER_HEADER.getComponent());
         writer.println("\t\tcut = new " + fileName + "();\n" +
-                "\t}\n"
-        );
-        writer.println("\t@After\n" +
-                "\tpublic void tearDown() {\n" +
-                "\t\tcut = null;\n" +
-                "\t}\n"
-        );
+                "\t}\n");
+        // @After
+        writer.println(ClassComponent.JUNIT_SINGLE_AFTER_HEADER.getComponent());
     }
 }

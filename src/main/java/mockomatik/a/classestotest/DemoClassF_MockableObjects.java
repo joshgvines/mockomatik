@@ -21,7 +21,7 @@ public class DemoClassF_MockableObjects {
     private StringBuilder sb;
     public Socket socket;
 
-    // Using common java objects which could be mocked with @Mock annotation
+    // Using common java objects which could be accidently mocked with an @Mock annotation
     public DemoClassF_MockableObjects(Object obj, File file) {
         this.obj = obj;
         this.file = file;
