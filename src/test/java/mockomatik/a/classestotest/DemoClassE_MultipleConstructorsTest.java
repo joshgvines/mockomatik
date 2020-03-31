@@ -20,7 +20,7 @@ public class DemoClassE_MultipleConstructorsTest {
 
 	@Before
 	public void setUp() {
-		cut1 = new DemoClassE_MultipleConstructors(
+		cut1 = new DemoClassE_MultipleConstructors(/*NoArgs*/
 		);
 		cut2 = new DemoClassE_MultipleConstructors(testString
 		);
@@ -28,6 +28,7 @@ public class DemoClassE_MultipleConstructorsTest {
 					testInt
 		);
 	}
+
 	@After
 	public void tearDown() {
 		cut1 = null;

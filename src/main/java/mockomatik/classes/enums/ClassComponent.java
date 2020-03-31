@@ -21,7 +21,7 @@ public enum ClassComponent {
             "\t\tcut = null;\n" +
             "\t}\n"),
     
-    JUNIT_MULTI_AFTER_HEADER("\t}\n" + "\t@After\n" +
+    JUNIT_MULTI_AFTER_HEADER("\t@After\n" +
             "\tpublic void tearDown() {");
 
     private String classComponent;

@@ -36,8 +36,7 @@ public class DemoClassB_PrimitiveTypesTest {
 	public void setUp() {
 		cut = new DemoClassB_PrimitiveTypes(testfloat,
 					testdouble,
-					testshort
-		);
+					testshort);
 	}
 
 	@After

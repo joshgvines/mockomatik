@@ -15,9 +15,7 @@ public class DemoClassA_DefaultConstructorTest {
 
 	@Before
 	public void setUp() {
-		cut = new DemoClassA_DefaultConstructor(// Ignored
-
-		);
+		cut = new DemoClassA_DefaultConstructor(/*NoArgs*/);
 	}
 
 	@After

@@ -13,12 +13,13 @@ public class CreateTestConstructor {
 
     /**
      * Create constructors for test classes
+     * 
      * @param constructorList
      * @param fileName
      * @param writer
      */
     protected void createConstructor(List<String> constructorList, String fileName, PrintWriter writer) {
-        String testObjects;
+        String constructorArguments;
         try {
             // Multiple constructors
             if (constructorList.size() > 1) {
@@ -33,11 +34,11 @@ public class CreateTestConstructor {
                 // @Before
                 writer.print(ClassComponent.JUNIT_BEFORE_HEADER.getComponent());
                 for (int setUpIndex = 0; setUpIndex < constructorList.size(); setUpIndex++) {
-                    testObjects = createConstructorArguments(constructorList.get(setUpIndex), fileName);
+                    constructorArguments = createConstructorArguments(constructorList.get(setUpIndex), fileName);
                     writer.println(
-                        "\t\tcut" + (setUpIndex + 1) + " = new " + fileName + "(" + testObjects + "\n" + "\t\t);"
-                    );
+                            "\t\tcut" + (setUpIndex + 1) + " = new " + fileName + "(" + constructorArguments + "\n\t\t);");
                 }
+                writer.println("\t}\n");
                 // @After
                 writer.println(ClassComponent.JUNIT_MULTI_AFTER_HEADER.getComponent());
                 for (int tearDownIndex = 0; tearDownIndex < constructorList.size(); tearDownIndex++) {
@@ -49,16 +50,13 @@ public class CreateTestConstructor {
                 }
             }
             // Single Constructor
-            // TODO: change redundant check
             else if (constructorList.size() == 1) {
                 writer.println("\tprivate " + fileName + " cut;\n");
                 // @Before
                 writer.print(ClassComponent.JUNIT_BEFORE_HEADER.getComponent());
-                testObjects = listToString(constructorList);
-                testObjects = createConstructorArguments(testObjects, fileName);
-                writer.println("\t\tcut = new " + fileName + "(" + testObjects + "\n" +
-                        "\t\t);\n" +
-                        "\t}\n");
+                constructorArguments = listToString(constructorList);
+                constructorArguments = createConstructorArguments(constructorArguments, fileName);
+                writer.println("\t\tcut = new " + fileName + "(" + constructorArguments + ");\n\t}\n");
                 // @After
                 writer.println(ClassComponent.JUNIT_SINGLE_AFTER_HEADER.getComponent());
             } else {
@@ -66,47 +64,66 @@ public class CreateTestConstructor {
                 createDefaultConstructor(writer, fileName);
             }
         } catch (Exception e) {
-            System.out.println("CreateTestClasses > createConstructor() " + e );
+            System.out.println("CreateTestClasses > createConstructor() " + e);
         }
     }
 
     /**
      * Formats arguments to be used in constructor tests
-     * @param testObjects
+     * 
+     * @param testObject
      * @param fileName
      * @return String testObjects
      */
-    private String createConstructorArguments(String testObjects, String fileName) {
+    private String createConstructorArguments(String testObject, String fileName) {
         try {
-            if (testObjects.contains(")")) {
-                int startOfObjects = testObjects.indexOf(fileName + "(");
-                testObjects = testObjects.substring(startOfObjects, testObjects.indexOf(")"));
-            }
-            for (String type : ObjectTypeManager.commonTypes) {
-                type = type.trim() + " ";
-                testObjects = testObjects.replaceAll(type, "");
-            }
-            for (String type : ObjectTypeManager.otherTypes) {
-                type = type.trim() + " ";
-                testObjects = testObjects.replaceAll(type, "");
-            }
-            testObjects = testObjects.replaceAll(fileName, "");
 
-            if (testObjects.contains("(")) {
-                testObjects = testObjects.replaceAll("\\(", "");
-                testObjects = testObjects.replaceAll("\\s", "");
-            } if (testObjects.contains(",")) {
-                testObjects = testObjects.replaceAll(",", ",\n\t\t\t\t\t");
+            System.out.println(fileName);
+
+            // Ensure string is not a default constructor first
+            if (testObject.contains(")") && !testObject.contains("()")) {
+                /*
+                 * Get first index of fileName which should represent the beginning of the
+                 * constructor (using parentheses is not as accurate)
+                 */
+                int startOfArgumentsIndex = testObject.indexOf(fileName.trim());
+                int endOfArgumentsIndex = testObject.indexOf("{");
+                //TODO: Simplify this process
+                testObject = testObject.substring(startOfArgumentsIndex, endOfArgumentsIndex);
+                testObject = testObject.replaceAll(fileName, "");
+                testObject = testObject.replaceAll("\\(", "");
+                testObject = testObject.replaceAll("\\)", "");
+                testObject = testObject.replaceAll("\n", "");
+                testObject = testObject.replaceAll("\t", "");
+                testObject = testObject.replaceAll("\\s", " ");
+                
+                if (testObject.contains(" ")) {
+                    testObject = testObject.trim().replaceAll(" +", " ");
+                    System.out.println(testObject);
+                    testObject = " " + testObject;
+                    testObject = testObject.replaceAll("#", "");
+                    testObject = testObject.replaceAll(" ", "#");
+                    testObject = testObject.replaceAll("#/?[A-Za-z]+#", "");
+                }
+            } else {
+                testObject = "/*NoArgs*/";
             }
-            return testObjects;
+            // Final format and new lines
+            testObject = testObject.replaceAll("\\s", "");
+            if (testObject.contains(",")) {
+                testObject = testObject.replaceAll(",", ",\n\t\t\t\t");
+                return testObject;
+            }
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("CreateTestConstructor > createConstructorArguments()" + e);
         }
-        return "";
+        return testObject;
     }
 
     /**
      * Converts a list of Strings to a usable string.
+     * 
      * @param list
      * @return
      */
@@ -122,14 +139,16 @@ public class CreateTestConstructor {
                 }
                 return listToString + "\n";
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("CreateTestConstructors > listToString()" + e);
         }
         return "";
     }
 
     /**
-     * Writes basic default constructor cut object creation inside @Before method to avoid empty test errors.
+     * Writes basic default constructor cut object creation inside @Before method to
+     * avoid empty test errors.
+     * 
      * @param writer
      * @param fileName
      */
@@ -137,8 +156,7 @@ public class CreateTestConstructor {
         writer.println("\tprivate " + fileName + " cut;\n");
         // @Before
         writer.print(ClassComponent.JUNIT_SINGLE_AFTER_HEADER.getComponent());
-        writer.println("\t\tcut = new " + fileName + "();\n" +
-                "\t}\n");
+        writer.println("\t\tcut = new " + fileName + "();\n" + "\t}\n");
         // @After
         writer.println(ClassComponent.JUNIT_SINGLE_AFTER_HEADER.getComponent());
     }

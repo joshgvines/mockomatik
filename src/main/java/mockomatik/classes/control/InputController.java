@@ -108,7 +108,7 @@ public class InputController {
     }
     
     private boolean pathValidation(String input) {
-        if (!(input.length() < 3) && !(input.length() > 260) && input.endsWith("\\")) {            
+        if (!(input.length() < 3) && !(input.length() > 260) && input.endsWith("\\") && !(input.contains("\\\\"))) {            
             File testDir = new File(input);
             if(testDir.exists()) {
                 return true;
