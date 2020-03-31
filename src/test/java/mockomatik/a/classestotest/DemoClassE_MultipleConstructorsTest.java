@@ -25,7 +25,7 @@ public class DemoClassE_MultipleConstructorsTest {
 		cut2 = new DemoClassE_MultipleConstructors(testString
 		);
 		cut3 = new DemoClassE_MultipleConstructors(testString,
-					testInt
+				testInt
 		);
 	}
 

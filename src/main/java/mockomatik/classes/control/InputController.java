@@ -10,7 +10,7 @@ import mockomatik.classes.model.TestMembers;
 import mockomatik.classes.model.TestMethods;
 import mockomatik.classes.service.ValidateClass;
 import mockomatik.classes.service.create.CreateTestClass;
-import mockomatik.classes.service.scan.ScanClass;
+import mockomatik.classes.service.scan.impl.ScanClassImpl;
 
 public class InputController {
 
@@ -38,41 +38,54 @@ public class InputController {
             command = sc.nextLine();
         } while (!inputValidation(command));
         
-        packageToTestPath = firstPathForCreate();
+        packageToTestPath = getPath("INPUT_PATH: ");
         if (packageToTestPath != null && !packageToTestPath.isEmpty()) {
             
-            packageForNewTest = secondPathForCreate(packageToTestPath);
+            packageForNewTest = getPath("OUTPUT_PATH: ");
             if (packageForNewTest != null && !packageForNewTest.isEmpty()) {
                 runTestCreationProcess(packageToTestPath, packageForNewTest);
             }
         }
     }
     
-    public String firstPathForCreate() {
-        String packageToTestPath;
+    private String getPath(String pathType) {
+        String path = null;
         do {
-            System.out.print(CONSOLE_NAME + "INPUT_PATH: ");
-            packageToTestPath = sc.nextLine();
-            if (killCheck(packageToTestPath)) {
+            System.out.print(CONSOLE_NAME + pathType);
+            path = sc.nextLine();
+            if (killCheck(path)) {
                 return null;
             }
-        } while (!pathValidation(packageToTestPath));
-        historyManager.addToHistory(packageToTestPath);
-        return packageToTestPath;
+        } while (!pathValidation(path));
+        historyManager.addToHistory(path);
+        return path;
     }
     
-    public String secondPathForCreate(String packageToTestPath) {
-        String packageForNewTest;
-        do {
-            System.out.print(CONSOLE_NAME + "OUTPUT_PATH: ");
-            packageForNewTest = sc.nextLine();
-            if (killCheck(packageForNewTest)) {
-                return null;
-            }
-        } while (!pathValidation(packageForNewTest));
-        historyManager.addToHistory(packageForNewTest);
-        return packageForNewTest;
-    }
+//    private String firstPathForCreate() {
+//        String packageToTestPath;
+//        do {
+//            System.out.print(CONSOLE_NAME + "INPUT_PATH: ");
+//            packageToTestPath = sc.nextLine();
+//            if (killCheck(packageToTestPath)) {
+//                return null;
+//            }
+//        } while (!pathValidation(packageToTestPath));
+//        historyManager.addToHistory(packageToTestPath);
+//        return packageToTestPath;
+//    }
+//    
+//    private String secondPathForCreate(String packageToTestPath) {
+//        String packageForNewTest;
+//        do {
+//            System.out.print(CONSOLE_NAME + "OUTPUT_PATH: ");
+//            packageForNewTest = sc.nextLine();
+//            if (killCheck(packageForNewTest)) {
+//                return null;
+//            }
+//        } while (!pathValidation(packageForNewTest));
+//        historyManager.addToHistory(packageForNewTest);
+//        return packageForNewTest;
+//    }
     
     private boolean killCheck(String packageForNewTest) {
         if (packageForNewTest.equals(Command.KILL.getCommand())) {
@@ -123,7 +136,7 @@ public class InputController {
 
     private void runTestCreationProcess(String packageToTestPath, String packageForNewTest) {
         try {
-            ScanClass scanClass = new ScanClass();
+            ScanClassImpl scanClass = new ScanClassImpl();
             if (scanClass.scanClassForContent(packageToTestPath)) {
 
                 List<List<String>> primaryImportList = scanClass.getPrimaryImportList();
@@ -134,10 +147,9 @@ public class InputController {
                 testMembers.setPrimaryTestMockList(scanClass.getPrimaryTestMockList());
                 testMembers.setPrimaryVariablesList(scanClass.getPrimaryTestVariableList());
 
-                createTestClass.createTest(
+                createTestClass.createClass(
                         testMethods, testConstructors, testMembers,
-                        packageForNewTest, fileNames, primaryImportList
-                );
+                        packageForNewTest, fileNames, primaryImportList);
             }
         } catch (Exception e) {
         	System.out.print("InputController > runTestCreationProcess() ");

@@ -17,40 +17,41 @@ public class CreateTestMethod {
 
     /**
      * Create @Test methods for test classes
+     * 
      * @param testMethodList
      * @param writer
      */
-    protected void createMethod(List<String> testMethodList, PrintWriter writer) {
+    public void createMethod(List<String> testMethodList, PrintWriter writer) {
         if (testMethodList.toString().contains("(")) {
             boolean isMethod = true;
-            for(int index = 0; index < testMethodList.size(); index++) {
+            for (int index = 0; index < testMethodList.size(); index++) {
                 method = testMethodList.get(index);
-                // TODO: Strings should never be null or throw a null exception
                 try {
                     isMethod = filterMethod();
                 } catch (Exception e) {
                     System.out.println("CreateTestMethods > createMethod() " + e);
                 } finally {
-
                     if (isMethod) {
-                        writer.println(ClassComponent.JUNIT_TEST_HEADER.getComponent() +
-                                "\tpublic void test" + testMethodName + "() {\n" +
-                                "\t\t//cut." + methodName + "( ... )\n" +
-                                "\t}\n"
-                        );
+                        writer.println(ClassComponent.JUNIT_TEST_HEADER.getComponent() 
+                                + "\tpublic void test" + testMethodName + "() {\n"
+                                + "\t\t//cut." + methodName + "( ... )\n"
+                                + "\t}\n");
                     }
-                    // Index did not contain a valid method to test
                 }
             }
         } else {
-            // Class did not contain any valid methods to test, use a default test method instead.
+            /* 
+             * Class did not contain any valid methods to test, use a default test 
+             * method instead. 
+             */
             createDefaultMethod(writer);
         }
     }
 
     /**
      * Gather method components and info
-     * @return boolen
+     * 
+     * @return boolean
      */
     private boolean filterMethod() {
         // check for getters
@@ -82,14 +83,14 @@ public class CreateTestMethod {
 
     /**
      * Writes basic default test method to avoid empty test errors.
+     * 
      * @param writer
      */
-    private void createDefaultMethod(PrintWriter writer)  {
-        writer.println(ClassComponent.JUNIT_TEST_HEADER.getComponent() +
-                "\tpublic void testMethod() {\n" +
-                "\t\t//blah\n" +
-                "\t}"
-        );
+    private void createDefaultMethod(PrintWriter writer) {
+        writer.println(ClassComponent.JUNIT_TEST_HEADER.getComponent() 
+                + "\tpublic void testMethod() {\n"
+                + "\t\t//blah\n" 
+                + "\t}");
     }
 
 }

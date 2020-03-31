@@ -19,7 +19,7 @@ public class DemoClassC_MultiLineCommentTest {
 	@Before
 	public void setUp() {
 		cut = new DemoClassC_MultiLineComment(testClassInfoOne,
-					testClassInfoTwo);
+				testClassInfoTwo);
 	}
 
 	@After

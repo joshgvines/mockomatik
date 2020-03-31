@@ -13,16 +13,16 @@ public enum ClassComponent {
     
     JUNIT_TEST_HEADER("\t@Test\n"),
     
-    JUNIT_BEFORE_HEADER("\t@Before\n" +
-            "\tpublic void setUp() {\n"),
+    JUNIT_BEFORE_HEADER("\t@Before\n"
+            + "\tpublic void setUp() {\n"),
     
-    JUNIT_SINGLE_AFTER_HEADER("\t@After\n" +
-            "\tpublic void tearDown() {\n" +
-            "\t\tcut = null;\n" +
-            "\t}\n"),
+    JUNIT_SINGLE_AFTER_HEADER("\t@After\n"
+            + "\tpublic void tearDown() {\n"
+            + "\t\tcut = null;\n"
+            + "\t}\n"),
     
-    JUNIT_MULTI_AFTER_HEADER("\t@After\n" +
-            "\tpublic void tearDown() {");
+    JUNIT_MULTI_AFTER_HEADER("\t@After\n"
+            + "\tpublic void tearDown() {");
 
     private String classComponent;
     

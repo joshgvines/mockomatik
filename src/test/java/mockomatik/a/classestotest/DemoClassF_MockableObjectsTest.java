@@ -27,7 +27,7 @@ public class DemoClassF_MockableObjectsTest {
 	@Before
 	public void setUp() {
 		cut = new DemoClassF_MockableObjects(obj,
-					file);
+				file);
 	}
 
 	@After

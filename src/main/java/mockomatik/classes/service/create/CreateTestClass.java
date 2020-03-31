@@ -17,24 +17,28 @@ import mockomatik.classes.service.OutputData;
 public class CreateTestClass {
 
     final static Logger logger = LogManager.getLogger(CreateTestClass.class);
-    
+
     private CreateTestMethod createTestMethod = new CreateTestMethod();
     private CreateTestConstructor createTestConstructor = new CreateTestConstructor();
 
+    public CreateTestClass() {}
+    
     /**
      * Put class content together into one file
+     * 
      * @param testMethods
      * @param testConstructors
      * @param packageForNewTest
      * @param fileNameList
      * @param primaryImportList
      */
-    public void createTest(TestMethods testMethods,
-                           TestConstructors testConstructors,
-                           TestMembers testMembers,
-                           String packageForNewTest,
-                           List<String> fileNameList,
-                           List<List<String>> primaryImportList) {
+    public void createClass(TestMethods testMethods,
+            TestConstructors testConstructors,
+            TestMembers testMembers,
+            String packageForNewTest,
+            List<String> fileNameList,
+            List<List<String>> primaryImportList) {
+        
         String fileName;
         String variables;
         String destinationPackage;
@@ -59,7 +63,7 @@ public class CreateTestClass {
                     writer.println("public class " + fileName + "Test {\n");
 
                     // Convert list for potential variables to a usable string for writer to use
-                    if(!testMembers.getPrimaryTestVariableList().isEmpty()){
+                    if (!testMembers.getPrimaryTestVariableList().isEmpty()) {
                         variables = listToString(testMembers.getPrimaryTestVariableList().get(primaryIndex));
                         writer.print(variables);
                     }
@@ -71,12 +75,9 @@ public class CreateTestClass {
                     }
                     // Write test constructor(s) to file
                     createTestConstructor.createConstructor(
-                            testConstructors.getPrimaryConstructorList().get(primaryIndex), fileName, writer
-                    );
+                            testConstructors.getPrimaryConstructorList().get(primaryIndex), fileName, writer);
                     // write test method(s) to file
-                    createTestMethod.createMethod(
-                            testMethods.getPrimaryTestMethodList().get(primaryIndex), writer
-                    );
+                    createTestMethod.createMethod(testMethods.getPrimaryTestMethodList().get(primaryIndex), writer);
                     writer.println("}");
                 } finally {
                     file.createNewFile();
@@ -93,6 +94,7 @@ public class CreateTestClass {
 
     /**
      * Creates a package statement based on the location of the file.
+     * 
      * @param packageForNewTest
      * @return
      */
@@ -100,22 +102,23 @@ public class CreateTestClass {
         String destinationPackage = packageForNewTest;
         destinationPackage = destinationPackage.replaceAll("\\\\", ".");
 
-        // TODO: Needs to adapt to different project environments, or give the option to add a package type
+        // TODO: Needs to adapt to different project environments, or give the option to
+        // add a package type
         destinationPackage = destinationPackage.toLowerCase();
         if (destinationPackage.contains("java")) {
-            destinationPackage = destinationPackage.substring(
-                    (destinationPackage.indexOf("java") + 5), (destinationPackage.length() - 1));
+            destinationPackage = destinationPackage.substring((destinationPackage.indexOf("java") + 5),
+                    (destinationPackage.length() - 1));
         } else if (destinationPackage.contains("src")) {
-            destinationPackage = destinationPackage.substring(
-                    (destinationPackage.indexOf("src") + 4), (destinationPackage.length() - 1));
+            destinationPackage = destinationPackage.substring((destinationPackage.indexOf("src") + 4),
+                    (destinationPackage.length() - 1));
         } else if (destinationPackage.contains("com")) {
             destinationPackage = destinationPackage.toLowerCase();
-            destinationPackage = destinationPackage.substring(
-                    (destinationPackage.indexOf("com") + 4), (destinationPackage.length() - 1));
+            destinationPackage = destinationPackage.substring((destinationPackage.indexOf("com") + 4),
+                    (destinationPackage.length() - 1));
         } else {
             // TODO: Throw correct error here
-            logger.error(" CreateTestClasses > createPackageStatement()\n" +
-                    " > An invalid or incompatible path was entered as a destination package!");
+            logger.error(" CreateTestClasses > createPackageStatement()\n"
+                    + " > An invalid or incompatible path was entered as a destination package!");
             System.exit(0);
         }
         return destinationPackage;
@@ -123,6 +126,7 @@ public class CreateTestClass {
 
     /**
      * Converts a list of Strings to a usable string.
+     * 
      * @param list
      * @return
      */
@@ -138,7 +142,7 @@ public class CreateTestClass {
                 }
                 return listToString + "\n";
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.error("CreateTestClasses > listToString()", e);
         }
         return "";

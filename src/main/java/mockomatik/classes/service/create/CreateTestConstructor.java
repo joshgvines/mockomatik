@@ -8,8 +8,7 @@ import mockomatik.classes.service.scan.ObjectTypeManager;
 
 public class CreateTestConstructor {
 
-    protected CreateTestConstructor() {
-    }
+    protected CreateTestConstructor() {}
 
     /**
      * Create constructors for test classes
@@ -18,7 +17,7 @@ public class CreateTestConstructor {
      * @param fileName
      * @param writer
      */
-    protected void createConstructor(List<String> constructorList, String fileName, PrintWriter writer) {
+    public void createConstructor(List<String> constructorList, String fileName, PrintWriter writer) {
         String constructorArguments;
         try {
             // Multiple constructors
@@ -35,8 +34,8 @@ public class CreateTestConstructor {
                 writer.print(ClassComponent.JUNIT_BEFORE_HEADER.getComponent());
                 for (int setUpIndex = 0; setUpIndex < constructorList.size(); setUpIndex++) {
                     constructorArguments = createConstructorArguments(constructorList.get(setUpIndex), fileName);
-                    writer.println(
-                            "\t\tcut" + (setUpIndex + 1) + " = new " + fileName + "(" + constructorArguments + "\n\t\t);");
+                    writer.println("\t\tcut" + (setUpIndex + 1) + " = new " + fileName + "(" + constructorArguments
+                            + "\n\t\t);");
                 }
                 writer.println("\t}\n");
                 // @After
@@ -88,15 +87,15 @@ public class CreateTestConstructor {
                  */
                 int startOfArgumentsIndex = testObject.indexOf(fileName.trim());
                 int endOfArgumentsIndex = testObject.indexOf("{");
-                //TODO: Simplify this process
+                /*
+                 * TODO: Simplify this process: 
+                 * Removing all characters here is not as accurate
+                 */
                 testObject = testObject.substring(startOfArgumentsIndex, endOfArgumentsIndex);
-                testObject = testObject.replaceAll(fileName, "");
-                testObject = testObject.replaceAll("\\(", "");
+                testObject = testObject.replaceAll("(" + fileName + "|\\(|\n|\t)", "");
                 testObject = testObject.replaceAll("\\)", "");
-                testObject = testObject.replaceAll("\n", "");
-                testObject = testObject.replaceAll("\t", "");
                 testObject = testObject.replaceAll("\\s", " ");
-                
+
                 if (testObject.contains(" ")) {
                     testObject = testObject.trim().replaceAll(" +", " ");
                     System.out.println(testObject);
