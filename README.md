@@ -1,6 +1,6 @@
 # MockOMatik
 
-**Version 1.0.0**
+**Version 0.0.1**
 
 Generate test templates based on existing code.
 

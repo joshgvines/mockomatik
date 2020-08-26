@@ -1,0 +1,42 @@
+package com.mockomatik.a.democlassestotest; 
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
+public class DemoClassE_MultipleConstructorsTest {
+
+	private String testString;
+	private int testInt;
+	private int testByte;
+	private String otherString;
+
+// Ignored
+	private DemoClassE_MultipleConstructors cut1,  cut2,  cut3;
+
+	@Before
+	public void setUp() {
+		cut1 = new DemoClassE_MultipleConstructors(/*NoArgs*/
+		);
+		cut2 = new DemoClassE_MultipleConstructors(testString
+		);
+		cut3 = new DemoClassE_MultipleConstructors(testString,
+				testInt
+		);
+	}
+
+	@After
+	public void tearDown() {
+		cut1 = null;
+		cut2 = null;
+		cut3 = null;
+	}
+
+	@Test
+	public void testMethod() {
+		//blah
+	}
+}
