@@ -61,7 +61,13 @@ SHJLogs/
 /bin/
 
 # Tests
-/test/com/mockomatik/a/*
-/src/test/com/mockomatik/a/*
-/test/com/mockomatik/a
-/src/test/com/mockomatik/a
+/src/test/java/com/mockomatik/a/democode/*
+/src/test/java/com/mockomatik/a/democode/
+/src/test/java/com/mockomatik/a/*
+/src/test/java/com/mockomatik/a/
+
+/src/main/java/com/mockomatik/a/democode/*
+/src/main/java/com/mockomatik/a/democode/
+/src/main/java/com/mockomatik/a/*
+/src/main/java/com/mockomatik/a/
+
