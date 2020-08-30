@@ -12,7 +12,7 @@
 *.tar.gz
 *.rar
 
-# Basic Settings
+# Basic IDE Settings
 /.idea
 /idea
 .idea
@@ -23,19 +23,15 @@
 
 .idea/vcs.xml
 .idea/workspace.xml
+
+# Logging
 *.log
+*.logs
 *.lck
 *.log.*
 
-/SHJLogs
-SHJLogs/
-./SHJLogs
-SHJLogs
-SHJLogs/
-
 *.classpath
 .classpath
-
 
 # Output
 /build
@@ -48,3 +44,5 @@ SHJLogs/
 .metadata
 /metadata
 /bin/
+
+# Tests
