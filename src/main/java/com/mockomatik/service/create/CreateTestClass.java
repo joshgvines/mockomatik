@@ -101,13 +101,13 @@ public class CreateTestClass {
 
 //            final long startTime = System.currentTimeMillis();
 
-            List<String> membersList = testClassModel.getVariableList();
-            String variables = CreateUtility.listToString(membersList);
-            writer.print(variables);
+//            List<String> membersList = testClassModel.getVariableList();
+//            String variables = CreateUtility.listToString(membersList);
+//            writer.print(variables);
 
-//            for (String mock : testClassModel.getVariableList()) {
-//                writer.println(mock);
-//            }
+            for (String mock : testClassModel.getVariableList()) {
+                writer.print(mock);
+            }
 //            final long endTime = System.currentTimeMillis();
 //            System.out.println("norm Total execution time: " + (endTime - startTime));
         }
@@ -119,14 +119,14 @@ public class CreateTestClass {
 
 //            final long startTime = System.currentTimeMillis();
 
-            List<String> mockedMembersList = testClassModel.getMockedVariableList();
-            String mockedVariables = CreateUtility.listToString(mockedMembersList);
-            log.info("Mocked Var In create:::: {}", mockedVariables);
-            writer.print(mockedVariables);
+//            List<String> mockedMembersList = testClassModel.getMockedVariableList();
+//            String mockedVariables = CreateUtility.listToString(mockedMembersList);
+//            log.info("Mocked Var In create:::: {}", mockedVariables);
+//            writer.print(mockedVariables);
 
-//            for (String mock : testClassModel.getMockedVariableList()) {
-//                writer.println(mock);
-//            }
+            for (String mock : testClassModel.getMockedVariableList()) {
+                writer.print(mock);
+            }
 //            final long endTime = System.currentTimeMillis();
 //            System.out.println("mock Total execution time: " + (endTime - startTime));
         }

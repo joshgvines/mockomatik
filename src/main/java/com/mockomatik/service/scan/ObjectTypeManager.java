@@ -28,10 +28,10 @@ public class ObjectTypeManager {
     public static List<String> otherTypes = new ArrayList<>();
     public static final String[] commonTypes = new String[]
     {
-            " String " , " char "   , " int "     , " Integer " ,
-            " double " , " Double " , " float "   , " Float "   ,
-            " long "   , " Long "   , " short "   , " Short "   ,
-            " byte "   , " Byte "   , " boolean " , " Boolean " ,
+            "String " , "char "   , "int "     , "Integer " ,
+            "double " , "Double " , "float "   , "Float "   ,
+            "long "   , "Long "   , "short "   , "Short "   ,
+            "byte "   , "Byte "   , "boolean " , "Boolean " ,
     };
 
     public static void load() {

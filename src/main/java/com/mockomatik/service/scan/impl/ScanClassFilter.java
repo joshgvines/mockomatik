@@ -8,9 +8,7 @@ import com.mockomatik.service.scan.ObjectTypeManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,22 +24,24 @@ public class ScanClassFilter {
     private List<String> classImportList;
 
     private MethodNameManager methodNameManager;
-
-    private static boolean isInsideClass;
+    private boolean isInsideClass;
 
     public TestClassModel classScanFilter(File file) throws IOException {
-        methodNameManager = new MethodNameManager();
-        initClassListsForNewFilter();
-        formatAndSetFileName(file);
-        try (BufferedReader br = new BufferedReader(new FileReader(file), 16384)) {
+        try (FileByLineCollection fileByLineCollection = QuickFormatter.formatForStringArray(file)) {
+            methodNameManager = new MethodNameManager();
+            initClassListsForNewFilter();
+            formatAndSetFileName(file);
             isInsideClass = false;
-            String line = null;
-            while ((line = br.readLine()) != null) {
-                filterLine(br, line);
+            while (!fileByLineCollection.isMaxed()) {
+                String line = fileByLineCollection.drop();
+                filterLine(fileByLineCollection, line);
             }
             addIgnoredLines();
             TestClassModel testClassModel = buildTestClassesModel();
             return testClassModel;
+        } catch (Exception e) {
+            log.error("Testing collection close");
+            throw e;
         }
     }
 
@@ -71,28 +71,25 @@ public class ScanClassFilter {
         return testClassModel;
     }
 
-    /**
-      * Content filter to gather reusable lines for test templates.
-      */
-    private void filterLine(BufferedReader br, String line) throws IOException {
-               if ( commentFilter( br, line )              ) {
-        } else if ( loggerFilter( line )                   ) {
-        } else if ( !isInsideClass && importFilter( line ) ) {
-        } else if ( constructorFilter( br, line )          ) {
-        } else if ( methodFilter( br, line )               ) {
-        } else if ( commonTypesFilter( line )              ) {
-        } else if ( otherTypesFilter( line )               ) {
-//        } else if ( irregularTypesFilter( line )         ) {
+    private void filterLine(FileByLineCollection fileByLineCollection, String line) throws IOException {
+               if ( commentFilter( fileByLineCollection, line )     ) {
+        } else if ( loggerFilter( line )                            ) {
+        } else if ( !isInsideClass && importFilter( line )          ) {
+        } else if ( constructorFilter( fileByLineCollection, line ) ) {
+        } else if ( methodFilter( fileByLineCollection, line )      ) {
+        } else if ( commonTypesFilter( line )                       ) {
+        } else if ( otherTypesFilter( line )                        ) {
         }    else { line = null; }
     }
 
-    private boolean commentFilter(BufferedReader br, String line) throws IOException {
-        if (line.contains(" /*")) {
-            return ignoreMultiLineComments(br);
+    private boolean commentFilter(FileByLineCollection fileByLineCollection, String line) throws IOException {
+        if (line.contains("/*")) {
+            return fileByLineCollection.dropUntilFinds("*/");
         }
         return line.contains(" //");
     }
 
+    // TODO: refactor filter to remove this, its not needed.
     private boolean loggerFilter(String line) {
         return line.contains( "log.info("  )
             || line.contains( "log.error(" )
@@ -106,38 +103,34 @@ public class ScanClassFilter {
         return false;
     }
 
-    private boolean constructorFilter(BufferedReader br, String line) throws IOException {
+    private boolean constructorFilter(FileByLineCollection fileByLineCollection, String line) throws IOException {
         if (line.contains("public " + fileName + "(")) {
-            return readAndAddValidConstructor(line, br);
+            return readAndAddValidConstructor(line, fileByLineCollection);
         }
         return false;
     }
 
-    private boolean methodFilter(BufferedReader br, String line) throws IOException {
+    private boolean methodFilter(FileByLineCollection fileByLineCollection, String line) throws IOException {
         if (line.contains("public ") && line.contains("(")) {
-
             if (methodNameManager.addMethodName(extractMethodName(line))) {
-                return readAndAddValidMethod(line, br);
+                return readAndAddValidMethod(line, fileByLineCollection);
             }
         }
         return false;
     }
 
     private String extractMethodName(String line) {
-        String methodName = line.substring(line.indexOf("public ") + 7, line.indexOf("("));
+        String methodName = line.replace("public", "");
         methodName = methodName.trim();
-        methodName = methodName.substring(0, line.indexOf(" "));
-        log.info(methodName);
+        int firstSpaceIndex = methodName.indexOf(" ");
+        methodName = methodName.substring(firstSpaceIndex, methodName.indexOf("("));
+
         return methodName;
     }
 
     private boolean commonTypesFilter(String line) {
         if (ObjectTypeManager.compareCommonTypes(line)) {
-            if (!line.contains(fileName)
-                && !line.contains("(")
-                && !line.contains("return ")
-                && !line.contains("{")
-                && !line.contains("this.")) {
+            if (!line.contains(fileName) && isValidType(line)) {
 
                 line = CreateUtility.convertToPrivateModifier(line);
                 return classVariableList.add(line + "\n");
@@ -147,10 +140,7 @@ public class ScanClassFilter {
     }
 
     private boolean otherTypesFilter(String line) {
-        if (ObjectTypeManager.compareOtherTypes(line)
-                && !line.contains("{")
-                && !line.contains("return ")
-                && !line.contains("this.")) {
+        if (ObjectTypeManager.compareOtherTypes(line) && isValidType(line)) {
 
             line = CreateUtility.convertToPrivateModifier(line);
             line = line.replaceAll("\\s+", " ");
@@ -159,38 +149,33 @@ public class ScanClassFilter {
         return false;
     }
 
-    private boolean irregularTypesFilter(String line) {
-        if (line.contains(";")
+    private boolean isValidType(String line) {
+        return (!line.contains("(")
                 && !line.contains("{")
-                && !line.contains("}")
-                && !line.contains("package ")) {
-
-            line = CreateUtility.convertToPrivateModifier(line);
-            return classVariableList.add(line + "\n");
-        }
-        return false;
+                && !line.contains("return ")
+                && !line.contains("this."));
     }
 
     // TODO: not sure how this is picking up on constructors with comments???
     private void addIgnoredLines() {
         if (classConstructorList.isEmpty()) {
-            classConstructorList.add("// Ignored");
+            classConstructorList.add("");
         }
         if (classMethodList.isEmpty() || classMethodList == null) {
-            classMethodList.add("// Ignored");
+            classMethodList.add("");
         }
         if (classMockedVariableList.isEmpty() || classMethodList == null) {
-            classMockedVariableList.add("// Ignored");
+            classMockedVariableList.add("");
         }
     }
 
     // TODO: refactor
-    private boolean readAndAddValidConstructor(String line, BufferedReader bufferedReader) throws IOException {
+    private boolean readAndAddValidConstructor(String line, FileByLineCollection fileByLineCollection) throws IOException {
         try {
-            StringBuilder sb = new StringBuilder();
-            sb.append(line + "\n");
-            while ((line = bufferedReader.readLine()) != null) {
-                if (!line.contains("//") && !commentFilter(bufferedReader, line)) {
+            StringBuilder sb = new StringBuilder(line + "\n");
+            while (!fileByLineCollection.isMaxed()) {
+                line = fileByLineCollection.drop();
+                if (!line.contains("//") && !commentFilter(fileByLineCollection, line)) {
                     sb.append(line + "\n");
                     if (line.contains("}")) {
                         isInsideClass = true;
@@ -206,11 +191,11 @@ public class ScanClassFilter {
         return false;
     }
 
-    private boolean readAndAddValidMethod(String line, BufferedReader bufferedReader) throws IOException {
+    private boolean readAndAddValidMethod(String line, FileByLineCollection fileByLineCollection) throws IOException {
         try {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(line + "\n");
-            while ((line = bufferedReader.readLine()) != null) {
+            StringBuilder stringBuilder = new StringBuilder(line + "\n");
+            while (!fileByLineCollection.isMaxed()) {
+                line = fileByLineCollection.drop();
                 stringBuilder.append(line + "\n");
                 if (line.contains("}")) {
                     isInsideClass = true;
@@ -219,22 +204,6 @@ public class ScanClassFilter {
             }
         } catch (Exception e) {
             log.error("Failed to read method(s), file name: {} " +
-                    "error: {}", fileName, e);
-            throw e;
-        }
-        return false;
-    }
-
-    private boolean ignoreMultiLineComments(BufferedReader bufferedReader) throws IOException {
-        try {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                if (line.contains("*/")) {
-                    return true;
-                }
-            }
-        } catch (Exception e) {
-            log.error("Failed to ignore multiLine comment(s), file name: {} " +
                     "error: {}", fileName, e);
             throw e;
         }

@@ -4,7 +4,10 @@ import com.mockomatik.model.TestClassModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ClassCollection {
+import java.io.Closeable;
+import java.io.IOException;
+
+public class ClassCollection implements Closeable {
 
     private static final Logger log = LogManager.getLogger(ClassCollection.class);
 
@@ -61,4 +64,9 @@ public class ClassCollection {
         }
     }
 
+    @Override
+    public void close() throws IOException {
+        classCollection = null;
+        System.gc();
+    }
 }

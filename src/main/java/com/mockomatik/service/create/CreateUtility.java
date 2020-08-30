@@ -29,21 +29,25 @@ public class CreateUtility {
     }
 
     /**
+     * TODO: should use string builder
      * Force fields to private modifier when needed
      *
      * @param line
      * @return
      */
     public static String convertToPrivateModifier(String line) {
-        if (line.contains(" public ")) {
+        if (line.contains("public ")) {
             line = line.replaceAll("public ", "private ");
         }
-        if (line.contains(" protected ")) {
+        if (line.contains("protected ")) {
             line = line.replaceAll("protected ", "private ");
         }
-        if (!line.contains(" private ")) {
+        if (!line.contains("private ")) {
             line = "private " + line;
             line = line.replaceAll("\\s+", " ");
+            line = "\t" + line;
+        }
+        if (!line.contains("\t") || !line.contains("\\t")) {
             line = "\t" + line;
         }
         return line;
