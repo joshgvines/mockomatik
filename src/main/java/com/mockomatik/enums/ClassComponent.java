@@ -24,9 +24,9 @@ public enum ClassComponent {
     JUNIT_MULTI_AFTER_HEADER("\t@After\n"
             + "\tpublic void tearDown() {");
 
-    private String classComponent;
+    private final String classComponent;
 
-    private ClassComponent(String classComponent) {
+    ClassComponent(String classComponent) {
         this.classComponent = classComponent;
     }
 

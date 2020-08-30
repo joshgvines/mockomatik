@@ -16,8 +16,8 @@ public class CreateTestClass {
 
     final static Logger log = LogManager.getLogger(CreateTestClass.class);
 
-    private CreateTestMethod createTestMethod = new CreateTestMethod();
-    private CreateTestConstructor createTestConstructor = new CreateTestConstructor();
+    private final CreateTestMethod createTestMethod = new CreateTestMethod();
+    private final CreateTestConstructor createTestConstructor = new CreateTestConstructor();
 
     private TestClassModel testClassModel;
     private String packageForNewTest;

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class InputHistoryManager {
 
-    private List<String> historyList = new ArrayList<>();
+    private final List<String> historyList = new ArrayList<>();
 
     InputHistoryManager() {
 

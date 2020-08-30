@@ -11,9 +11,9 @@ import com.mockomatik.enums.Command;
  */
 public class InputController {
 
-    private TestCreationController testCreationController = new TestCreationController();
-    private Scanner scanner = new Scanner(System.in);
-    private InputHistoryManager historyManager = new InputHistoryManager();
+    private final TestCreationController testCreationController = new TestCreationController();
+    private final Scanner scanner = new Scanner(System.in);
+    private final InputHistoryManager historyManager = new InputHistoryManager();
     private final String CONSOLE_NAME = "Mockom > ";
 
     public void runProgram() {
@@ -41,10 +41,7 @@ public class InputController {
     }
 
     private boolean packageExists(String packageToTestPath) {
-        if (packageToTestPath != null && !packageToTestPath.isEmpty()) {
-            return true;
-        }
-        return false;
+        return packageToTestPath != null && !packageToTestPath.isEmpty();
     }
 
     private String getPath(String pathType) {

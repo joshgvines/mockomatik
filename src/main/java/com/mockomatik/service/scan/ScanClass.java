@@ -11,7 +11,7 @@ public interface ScanClass {
      * then uses '.add(line)' for appropriate arrayList.
      * @param packageToTestPath
      */
-    public ClassCollection scanDirectoryForJavaFiles(String packageToTestPath);
+    ClassCollection scanDirectoryForJavaFiles(String packageToTestPath);
 
 
 }

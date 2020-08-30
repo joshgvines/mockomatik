@@ -16,9 +16,9 @@ public enum Command {
             + "/kill     -  Quit the current run (Only works if a session is already started)\n"
             + "/history  -  Display recently entered commands");
     
-    private String command;
+    private final String command;
     
-    private Command(String command) {
+    Command(String command) {
         this.command = command;
     }
     

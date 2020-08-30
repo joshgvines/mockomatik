@@ -3,12 +3,12 @@ package com.mockomatik.model;
 import java.util.List;
 
 public class TestClassModel {
-    private String fileName;
-    private List<String> importList;
-    private List<String> constructorList;
-    private List<String> mockedVariableList;
-    private List<String> variableList;
-    private List<String> methodList;
+    private final String fileName;
+    private final List<String> importList;
+    private final List<String> constructorList;
+    private final List<String> mockedVariableList;
+    private final List<String> variableList;
+    private final List<String> methodList;
 
 
     public TestClassModel(String fileName,

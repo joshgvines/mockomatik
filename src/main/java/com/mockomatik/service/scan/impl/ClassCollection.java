@@ -12,7 +12,7 @@ public class ClassCollection implements Closeable {
     private static final Logger log = LogManager.getLogger(ClassCollection.class);
 
     private final static int MAX_SIZE = 1000;
-    private int capacity;
+    private final int capacity;
     private int top = 0;
 
     private TestClassModel[] classCollection;
@@ -50,10 +50,7 @@ public class ClassCollection implements Closeable {
     }
 
     public boolean isEmpty() {
-        if (top <= 0) {
-            return true;
-        }
-        return false;
+        return top <= 0;
     }
 
     private void isFull() {

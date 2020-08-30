@@ -48,10 +48,7 @@ public class ScanClassImpl implements ScanClass {
     }
 
     private boolean classCollectionIsValid() {
-        if (classCollection != null && !classCollection.isEmpty()) {
-            return true;
-        }
-        return false;
+        return classCollection != null && !classCollection.isEmpty();
     }
 
     private boolean packageToTestIsValid(File packageToTestDirectory) {

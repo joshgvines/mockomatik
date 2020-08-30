@@ -84,7 +84,7 @@ public class QuickFormatter {
         if (file.exists()) {
             System.out.println(loc);
             file = new File(loc);
-            try (FileWriter fOut = new FileWriter(file);) {
+            try (FileWriter fOut = new FileWriter(file)) {
                 for (String newFileLine : newFileContent) {
                     fOut.write(newFileLine);
                 }
