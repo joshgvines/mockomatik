@@ -29,6 +29,21 @@
 *.logs
 *.lck
 *.log.*
+/SHJLogs
+SHJLogs/
+./SHJLogs
+SHJLogs
+SHJLogs/
+/logs
+/log
+./logs
+./log
+
+/logs/*
+/log/*
+./logs/*
+./log/*
+
 
 *.classpath
 .classpath
@@ -46,3 +61,7 @@
 /bin/
 
 # Tests
+/test/com/mockomatik/a/*
+/src/test/com/mockomatik/a/*
+/test/com/mockomatik/a
+/src/test/com/mockomatik/a
