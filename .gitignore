@@ -11,6 +11,9 @@
 /idea
 .idea
 
+.project
+.project/
+
 /settings
 /.settings
 .settings
@@ -45,11 +48,11 @@
 # Gradle Output
 /build
 /out
+/bin
 /.gradle
 
-.metadata
-/metadata
-/bin/
+#.metadata
+#/metadata
 
 # Src Out Tests
 /src/test/java/com/mockomatik/a/democode/*
