@@ -1,25 +1,64 @@
-# Compiled class file
-*.class
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
 # Package Files #
-*.jar
+#*.jar
 *.nar
 *.ear
 *.zip
 *.tar.gz
 *.rar
 
-# Basic Settings
+# Basic IDE Settings
+/.idea
+/idea
+.idea
+
+/settings
+/.settings
+.settings
+
+/eclipse
+.eclipse
+
 .idea/vcs.xml
 .idea/workspace.xml
-*.log
-*.lck
 
-# Output
+# Logging Out
+*.log
+*.logs
+*.lck
+*.log.*
+/logs
+/log
+./logs
+./log
+
+/logs/*
+/log/*
+./logs/*
+./log/*
+
+*.classpath
+.classpath
+
+# Compiled class file
+*.class
+
+# Gradle Output
 /build
 /out
 /.gradle
-/gradle
+
+.metadata
+/metadata
+/bin/
+
+# Src Out Tests
+/src/test/java/com/mockomatik/a/democode/*
+/src/test/java/com/mockomatik/a/democode/
+/src/test/java/com/mockomatik/a/*
+/src/test/java/com/mockomatik/a/
+
+/src/main/java/com/mockomatik/a/democode/*
+/src/main/java/com/mockomatik/a/democode/
+/src/main/java/com/mockomatik/a/*
+/src/main/java/com/mockomatik/a/
+
