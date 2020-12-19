@@ -1,10 +1,12 @@
-package com.mockomatik.service.scan.impl;
+package com.mockomatik.service.scan.filter;
 
 import com.mockomatik.model.TestClassModel;
 import com.mockomatik.service.create.CreateUtility;
 import com.mockomatik.service.create.TestClassModelBuilder;
 import com.mockomatik.service.scan.MethodNameManager;
 import com.mockomatik.service.scan.ObjectTypeManager;
+import com.mockomatik.service.scan.impl.FileByLineCollection;
+import com.mockomatik.service.scan.impl.QuickFormatter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,25 +25,34 @@ public class ScanClassFilter {
     private List<String> classVariableList;
     private List<String> classImportList;
 
+    private CommentFilter  commentFilter = new CommentFilter();
     private MethodNameManager methodNameManager;
     private boolean isInsideClass;
 
+    // TODO: should probably be a string builder
+    private String line;
+
     public TestClassModel classScanFilter(File file) throws IOException {
+        isInsideClass = false;
         try (FileByLineCollection fileByLineCollection = QuickFormatter.formatForStringArray(file)) {
-            methodNameManager = new MethodNameManager();
             initClassListsForNewFilter();
             formatAndSetFileName(file);
-            isInsideClass = false;
-            while (!fileByLineCollection.isMaxed()) {
-                String line = fileByLineCollection.drop();
-                filterLine(fileByLineCollection, line);
-            }
+
+            runFilterByLines(fileByLineCollection);
+            // TODO: refactor addIgnoredLines out, its not needed
             addIgnoredLines();
-            TestClassModel testClassModel = buildTestClassesModel();
-            return testClassModel;
+            return buildTestClassesModel();
         } catch (Exception e) {
-            log.error("Testing collection close");
+            log.error("Scanner failed");
             throw e;
+        }
+    }
+
+    private void runFilterByLines(FileByLineCollection fileByLineCollection) throws IOException {
+        while (!fileByLineCollection.isMaxed()) {
+            line = fileByLineCollection.dropLne();
+            filterLine(fileByLineCollection);
+            line = null;
         }
     }
 
@@ -52,6 +63,8 @@ public class ScanClassFilter {
     }
 
     private void initClassListsForNewFilter() {
+        methodNameManager = new MethodNameManager();
+
         classConstructorList = new ArrayList<>();
         classImportList = new ArrayList<>();
         classMethodList = new ArrayList<>();
@@ -71,55 +84,59 @@ public class ScanClassFilter {
         return testClassModel;
     }
 
-    private void filterLine(FileByLineCollection fileByLineCollection, String line) throws IOException {
-               if ( commentFilter( fileByLineCollection, line )     ) {
-        } else if ( loggerFilter( line )                            ) {
-        } else if ( !isInsideClass && importFilter( line )          ) {
-        } else if ( constructorFilter( fileByLineCollection, line ) ) {
-        } else if ( methodFilter( fileByLineCollection, line )      ) {
-        } else if ( commonTypesFilter( line )                       ) {
-        } else if ( otherTypesFilter( line )                        ) {
+    private void filterLine(FileByLineCollection fileByLineCollection) throws IOException {
+               if ( commentFilter.commentFilter( fileByLineCollection, line )     ) {
+        } else if ( loggerFilter()                            ) {
+        } else if ( !isInsideClass && importFilter()          ) {
+        } else if ( constructorFilter( fileByLineCollection ) ) {
+        } else if ( methodFilter( fileByLineCollection )      ) {
+        } else if ( commonFilterFromArray( )                      ) {
+        } else if ( otherTypesFilter( )                       ) {
         }    else { line = null; }
     }
 
-    private boolean commentFilter(FileByLineCollection fileByLineCollection, String line) throws IOException {
-        if (line.contains("/*")) {
-            return fileByLineCollection.dropUntilFinds("*/");
-        }
-        return line.contains(" //");
-    }
-
     // TODO: refactor filter to remove this, its not needed.
-    private boolean loggerFilter(String line) {
+    private boolean loggerFilter() {
         return line.contains( "log.info("  )
             || line.contains( "log.error(" )
             || line.contains( "log.warn("  );
     }
 
-    private boolean importFilter(String line) {
+    private boolean importFilter() {
         if (line.contains("import ") && line.contains(".") && !line.contains(fileName)) {
             return classImportList.add(line + "\n");
         }
         return false;
     }
 
-    private boolean constructorFilter(FileByLineCollection fileByLineCollection, String line) throws IOException {
+    private boolean constructorFilter(FileByLineCollection fileByLineCollection) throws IOException {
         if (line.contains("public " + fileName + "(")) {
-            return readAndAddValidConstructor(line, fileByLineCollection);
+            // TODO support mutiline constructor args..
+            String argsTestString = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
+            argsTestString = argsTestString.trim();
+
+            if (!argsTestString.equals(" ") || !argsTestString.equals("")) {
+                String[] constructorArgs = argsTestString.trim().split(",");
+
+                if (!commonFilterFromArray(constructorArgs)) {
+                    log.info("commonFilterFromArray failed");
+                }
+            }
+            return readAndAddValidConstructor(fileByLineCollection);
         }
         return false;
     }
 
-    private boolean methodFilter(FileByLineCollection fileByLineCollection, String line) throws IOException {
+    private boolean methodFilter(FileByLineCollection fileByLineCollection) throws IOException {
         if (line.contains("public ") && line.contains("(")) {
-            if (methodNameManager.addMethodName(extractMethodName(line))) {
-                return readAndAddValidMethod(line, fileByLineCollection);
+            if (methodNameManager.addMethodName(extractMethodName())) {
+                return readAndAddValidMethod(fileByLineCollection);
             }
         }
         return false;
     }
 
-    private String extractMethodName(String line) {
+    private String extractMethodName() {
         String methodName = line.replace("public", "");
         methodName = methodName.trim();
         int firstSpaceIndex = methodName.indexOf(" ");
@@ -128,19 +145,49 @@ public class ScanClassFilter {
         return methodName;
     }
 
-    private boolean commonTypesFilter(String line) {
+    private boolean commonFilterFromArray(String[] possibleTypesArray) {
+        for (String possibleArg : possibleTypesArray) {
+            String tempLine = line;
+            line = possibleArg;
+            if (!classVariableList.isEmpty()) {
+                for (String classVar : classVariableList) {
+                    line = CreateUtility.convertToPrivateModifier(line);
+                    log.info("classVar : {}, line : {}", classVar, line);
+                    if (line.equals(classVar)) {
+                        line = line + "_";
+                    }
+                }
+            }
+            commonFilterFromArray();
+            otherTypesFilter();
+            line = tempLine;
+        }
+        return false;
+    }
+
+    private boolean commonFilterFromArray() {
         if (ObjectTypeManager.compareCommonTypes(line)) {
-            if (!line.contains(fileName) && isValidType(line)) {
+            if (!line.contains(fileName) && isValidType()) {
 
                 line = CreateUtility.convertToPrivateModifier(line);
+                if (!line.contains("=")) {
+                    if (line.contains("double ")
+                            || line.contains("int ")
+                            || line.contains("float ")
+                            || line.contains("long ")) {
+                        line = line + " = 0;";
+                    } else {
+                        line = line + " = null;";
+                    }
+                }
                 return classVariableList.add(line + "\n");
             }
         }
         return false;
     }
 
-    private boolean otherTypesFilter(String line) {
-        if (ObjectTypeManager.compareOtherTypes(line) && isValidType(line)) {
+    private boolean otherTypesFilter() {
+        if (ObjectTypeManager.compareOtherTypes(line) && isValidType()) {
 
             line = CreateUtility.convertToPrivateModifier(line);
             line = line.replaceAll("\\s+", " ");
@@ -149,7 +196,7 @@ public class ScanClassFilter {
         return false;
     }
 
-    private boolean isValidType(String line) {
+    private boolean isValidType() {
         return (!line.contains("(")
                 && !line.contains("{")
                 && !line.contains("return ")
@@ -170,12 +217,12 @@ public class ScanClassFilter {
     }
 
     // TODO: refactor
-    private boolean readAndAddValidConstructor(String line, FileByLineCollection fileByLineCollection) throws IOException {
+    private boolean readAndAddValidConstructor(FileByLineCollection fileByLineCollection) throws IOException {
         try {
             StringBuilder sb = new StringBuilder(line + "\n");
             while (!fileByLineCollection.isMaxed()) {
-                line = fileByLineCollection.drop();
-                if (!line.contains("//") && !commentFilter(fileByLineCollection, line)) {
+                line = fileByLineCollection.dropLne();
+                if (!line.contains("//") && !commentFilter.commentFilter(fileByLineCollection, line)) {
                     sb.append(line + "\n");
                     if (line.contains("}")) {
                         isInsideClass = true;
@@ -191,11 +238,11 @@ public class ScanClassFilter {
         return false;
     }
 
-    private boolean readAndAddValidMethod(String line, FileByLineCollection fileByLineCollection) throws IOException {
+    private boolean readAndAddValidMethod(FileByLineCollection fileByLineCollection) {
         try {
             StringBuilder stringBuilder = new StringBuilder(line + "\n");
             while (!fileByLineCollection.isMaxed()) {
-                line = fileByLineCollection.drop();
+                line = fileByLineCollection.dropLne();
                 stringBuilder.append(line + "\n");
                 if (line.contains("}")) {
                     isInsideClass = true;

@@ -105,9 +105,10 @@ public class CreateTestClass {
 //            String variables = CreateUtility.listToString(membersList);
 //            writer.print(variables);
 
-            for (String mock : testClassModel.getVariableList()) {
-                writer.print(mock);
+            for (String nonMock : testClassModel.getVariableList()) {
+                writer.print(nonMock);
             }
+            writer.println();
 //            final long endTime = System.currentTimeMillis();
 //            System.out.println("norm Total execution time: " + (endTime - startTime));
         }

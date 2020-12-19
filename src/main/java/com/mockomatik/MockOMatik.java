@@ -15,7 +15,7 @@ public class MockOMatik {
 
     public static void main(String[] args) {
 
-    	ObjectTypeManager.readXml();
+        ObjectTypeManager.readXml();
         Logo.runLogo();
 
         try {

@@ -25,16 +25,16 @@ public class FileByLineCollection implements Closeable {
         }
     }
 
-    public String drop() {
+    public String dropLne() {
         String temp = fileLines[bottom];
         fileLines[bottom++] = null;
         return temp;
     }
 
-    public boolean dropUntilFinds(String key) {
+    public boolean dropLinesUntilFinds(String key) {
         String temp = null;
         while (!isMaxed()) {
-            temp = drop();
+            temp = dropLne();
             if (temp.equals(key)) {
                 return true;
             }

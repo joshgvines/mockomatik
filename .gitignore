@@ -1,11 +1,5 @@
-# Compiled class file
-*.class
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
 # Package Files #
-*.jar
+#*.jar
 *.nar
 *.ear
 *.zip
@@ -21,19 +15,17 @@
 /.settings
 .settings
 
+/eclipse
+.eclipse
+
 .idea/vcs.xml
 .idea/workspace.xml
 
-# Logging
+# Logging Out
 *.log
 *.logs
 *.lck
 *.log.*
-/SHJLogs
-SHJLogs/
-./SHJLogs
-SHJLogs
-SHJLogs/
 /logs
 /log
 ./logs
@@ -44,23 +36,22 @@ SHJLogs/
 ./logs/*
 ./log/*
 
-
 *.classpath
 .classpath
 
-# Output
+# Compiled class file
+*.class
+
+# Gradle Output
 /build
 /out
 /.gradle
-/gradle
 
-/eclipse
-.eclipse
 .metadata
 /metadata
 /bin/
 
-# Tests
+# Src Out Tests
 /src/test/java/com/mockomatik/a/democode/*
 /src/test/java/com/mockomatik/a/democode/
 /src/test/java/com/mockomatik/a/*

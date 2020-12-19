@@ -47,6 +47,7 @@ public class CreateUtility {
             line = line.replaceAll("\\s+", " ");
             line = "\t" + line;
         }
+        line = line.trim();
         if (!line.contains("\t") || !line.contains("\\t")) {
             line = "\t" + line;
         }

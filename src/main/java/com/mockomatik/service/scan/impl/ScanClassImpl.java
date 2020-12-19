@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import com.mockomatik.model.TestClassModel;
 import com.mockomatik.service.scan.ScanClass;
+import com.mockomatik.service.scan.filter.ScanClassFilter;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 

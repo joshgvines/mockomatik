@@ -1,6 +1,5 @@
 package com.mockomatik.service.scan;
 
-import com.mockomatik.service.scan.impl.ScanClassFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

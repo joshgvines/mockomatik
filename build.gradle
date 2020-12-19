@@ -1,10 +1,9 @@
-group 'com.mockomatik'
-
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 
-version '0.0.1-com.mockomatik'
+group 'com.mockomatik'
+version '0.1.0'
 
 repositories {
 //    jcenter()
@@ -12,10 +11,9 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.1'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.1'
 
-    testCompile 'junit:junit:4.12'
-//    testCompile 'org.mockito:mockito-core:2.7.22'
+    testCompile 'junit:junit:4.13'
     testCompile 'org.mockito:mockito-core:3.4.6'
 }
